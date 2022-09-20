@@ -2,8 +2,8 @@ import { Feather } from '@expo/vector-icons'
 import PropTypes from 'prop-types'
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import globalStyles from '../styles/global.styles.js'
-import { colors } from '../variables/colors.variables.js'
+import globalStyles from '../../styles/global.styles.js'
+import { colors } from '../../variables/colors.variables.js'
 
 const ImageCustomButton = ({ text, iconName, flag, handleShowingSignUp }) => {
   let bgColor =

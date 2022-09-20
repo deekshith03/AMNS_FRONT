@@ -1,8 +1,8 @@
 import { FontAwesome5 } from '@expo/vector-icons'
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import globalStyles from '../styles/global.styles.js'
-import { colors } from '../variables/colors.variables.js'
+import globalStyles from '../../styles/global.styles.js'
+import { colors } from '../../variables/colors.variables.js'
 const LoginOptions = () => {
   return (
     <View style={styles.body}>

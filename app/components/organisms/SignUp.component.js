@@ -1,21 +1,35 @@
 import { Feather } from '@expo/vector-icons'
+import axios from 'axios'
 import React, { useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import CustomButton from '../components/CustomButton.component.js'
-import globalStyles from '../styles/global.styles.js'
-import { colors, colors_dark } from '../variables/colors.variables.js'
+import CustomButton from '../molecules/CustomButton.component.js'
+import globalStyles from '../../styles/global.styles.js'
+import { colors, colors_dark } from '../../variables/colors.variables.js'
 import {
   emailIcon,
   passwordIcon,
   rePasswordIcon,
   userIcon
-} from '../variables/icons.variable.js'
-import InputBox from './common/input.component.js'
+} from '../../variables/icons.variable.js'
+import InputBox from '../atoms/input.component.js'
 const SignUp = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [rePassword, reSetPassword] = useState('')
   const [name, setName] = useState('')
+
+  const handleSubmit = async () => {
+    const res = await axios({
+      method: 'post',
+      url: '/api/register',
+      data: {
+        email: email,
+        name: name,
+        password: password
+      }
+    })
+    console.log(res)
+  }
   return (
     <View>
       <View>
@@ -75,7 +89,7 @@ const SignUp = () => {
             />
           </View>
         </View>
-        <CustomButton text="signup" />
+        <CustomButton text="signup" handleClick={handleSubmit} />
         <Text
           style={[
             globalStyles.globalStyles.LandingFontStyle,

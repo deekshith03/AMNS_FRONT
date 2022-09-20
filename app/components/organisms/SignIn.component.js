@@ -1,11 +1,11 @@
 import { Feather } from '@expo/vector-icons'
 import React, { useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import CustomButton from '../components/CustomButton.component.js'
-import globalStyles from '../styles/global.styles.js'
-import { colors, colors_dark } from '../variables/colors.variables.js'
-import { passwordIcon, userIcon } from '../variables/icons.variable.js'
-import InputBox from './common/input.component.js'
+import globalStyles from '../../styles/global.styles.js'
+import { colors, colors_dark } from '../../variables/colors.variables.js'
+import { passwordIcon, userIcon } from '../../variables/icons.variable.js'
+import InputBox from '../atoms/input.component.js'
+import CustomButton from '../molecules/CustomButton.component.js'
 
 const SignIn = () => {
   const [email, setEmail] = useState('')
