@@ -6,3 +6,7 @@ export const colors = {
   white: 'white',
   darkScreen: 'rgba(0,0,0,0.5)'
 }
+
+export const colors_dark = {
+  textColor: '#fff'
+}
