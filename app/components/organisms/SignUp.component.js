@@ -1,8 +1,6 @@
 import { Feather } from '@expo/vector-icons'
-import axios from 'axios'
 import React, { useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import CustomButton from '../molecules/CustomButton.component.js'
 import globalStyles from '../../styles/global.styles.js'
 import { colors, colors_dark } from '../../variables/colors.variables.js'
 import {
@@ -11,7 +9,9 @@ import {
   rePasswordIcon,
   userIcon
 } from '../../variables/icons.variable.js'
+import { axiosInstance } from '../../variables/variable.js'
 import InputBox from '../atoms/input.component.js'
+import CustomButton from '../molecules/CustomButton.component.js'
 const SignUp = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -19,16 +19,17 @@ const SignUp = () => {
   const [name, setName] = useState('')
 
   const handleSubmit = async () => {
-    const res = await axios({
-      method: 'post',
-      url: '/api/register',
-      data: {
-        email: email,
-        name: name,
-        password: password
-      }
-    })
-    console.log(res)
+    const data = {
+      email: email,
+      name: name,
+      password: password
+    }
+    axiosInstance
+      .post('/api/register', data)
+      .then((res) => {
+        console.log(res.data)
+      })
+      .catch((error) => console.log('error >> ', error.response.data))
   }
   return (
     <View>

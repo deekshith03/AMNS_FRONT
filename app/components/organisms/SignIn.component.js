@@ -4,12 +4,27 @@ import { StyleSheet, Text, View } from 'react-native'
 import globalStyles from '../../styles/global.styles.js'
 import { colors, colors_dark } from '../../variables/colors.variables.js'
 import { passwordIcon, userIcon } from '../../variables/icons.variable.js'
+import { axiosInstance } from '../../variables/variable.js'
 import InputBox from '../atoms/input.component.js'
 import CustomButton from '../molecules/CustomButton.component.js'
 
 const SignIn = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+
+  const handleSubmit = () => {
+    const data = {
+      email: email,
+      password: password
+    }
+    axiosInstance
+      .post('/api/login', data)
+      .then((res) => {
+        console.log(res.data)
+      })
+      .catch((error) => console.log('error >> ', error.response.data))
+  }
+
   return (
     <View>
       <View>
@@ -52,7 +67,7 @@ const SignIn = () => {
             />
           </View>
         </View>
-        <CustomButton text="login" />
+        <CustomButton text="login" handleClick={handleSubmit} />
         <Text
           style={[
             globalStyles.globalStyles.LandingFontStyle,
