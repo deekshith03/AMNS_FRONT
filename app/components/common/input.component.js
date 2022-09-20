@@ -17,18 +17,21 @@ const InputBox = ({
   autoCapitalize,
   icon,
   maxLength,
-  color
+  color,
+  secureTextEntry,
+  placeholderTextColor
 }) => {
   const styles = StyleSheet.create({
     color: {
-      borderColor: color,
+      borderColor:
+        placeholderTextColor != undefined ? placeholderTextColor : color,
       color: color
     },
     icon: {
-      alignItems: 'center',
-      height: 36,
+      alignSelf: 'center',
+      height: 24,
       left: -30,
-      width: 36,
+      width: 24,
       zIndex: -1
     },
     input: {
@@ -42,7 +45,6 @@ const InputBox = ({
       width: '100%'
     }
   })
-  console.log(color && styles.color)
   return (
     <View style={styles.inputContainer}>
       <TextInput
@@ -60,6 +62,8 @@ const InputBox = ({
         textContentType={textContentType}
         autoCapitalize={autoCapitalize}
         maxLength={maxLength ? maxLength : 40}
+        secureTextEntry={secureTextEntry}
+        placeholderTextColor={placeholderTextColor}
       />
       {icon !== undefined && (
         <Image style={[styles.icon, color && styles.color]} source={icon} />
@@ -82,7 +86,9 @@ InputBox.propTypes = {
   autoCapitalize: propTypes.bool,
   icon: propTypes.any,
   maxLength: propTypes.number,
-  color: propTypes.string
+  color: propTypes.string,
+  secureTextEntry: propTypes.bool,
+  placeholderTextColor: propTypes.string
 }
 
 export default InputBox

@@ -1,9 +1,9 @@
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
-import React from 'react'
 import { Feather } from '@expo/vector-icons'
+import PropTypes from 'prop-types'
+import React from 'react'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import globalStyles from '../styles/global.styles.js'
 import { colors } from '../variables/colors.variables.js'
-import PropTypes from 'prop-types'
 
 const ImageCustomButton = ({ text, iconName, flag, handleShowingSignUp }) => {
   let bgColor =
@@ -23,8 +23,7 @@ const ImageCustomButton = ({ text, iconName, flag, handleShowingSignUp }) => {
     <View>
       <TouchableOpacity
         style={[bgColor]}
-        onPress={() => (flag === false ? handleShowingSignUp() : null)}
-      >
+        onPress={() => (flag === false ? handleShowingSignUp() : null)}>
         <View style={styles.btnContainer}>
           <Feather
             name={iconName}

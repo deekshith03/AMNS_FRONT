@@ -20,8 +20,15 @@ const globalStyles = StyleSheet.create({
   container: {
     flex: 1,
     height: '100%',
-    marginTop: '8%',
+    marginTop: 40,
     width: '100%'
+  },
+  inputBoxContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-evenly',
+    paddingBottom: 20,
+    paddingTop: 20
   }
 })
 

@@ -1,12 +1,12 @@
-import { ImageBackground, View, StyleSheet, Image } from 'react-native'
 import React, { useState } from 'react'
-import globalStyles from '../styles/global.styles.js'
-import { logo } from '../variables/paths.variables.js'
-import SignIn from '../components/SignIn.component.js'
-import SignUp from '../components/SignUp.component.js'
+import { Image, ImageBackground, StyleSheet, View } from 'react-native'
 import ImageCustomButton from '../components/ImageCustomButton.component.js'
 import LoginOptions from '../components/LoginOptions.component.js'
+import SignIn from '../components/SignIn.component.js'
+import SignUp from '../components/SignUp.component.js'
+import globalStyles from '../styles/global.styles.js'
 import { colors } from '../variables/colors.variables.js'
+import { logo } from '../variables/paths.variables.js'
 const bgImage = require('../assets/images/loginbg.jpg')
 const AuthScreen = () => {
   const [isShowingSignIn, setIsShowingSignIn] = useState(true)
@@ -48,7 +48,9 @@ const AuthScreen = () => {
 const styles = StyleSheet.create({
   ImageBtnContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-evenly'
+    justifyContent: 'space-evenly',
+    top: 30,
+    zIndex: -1
   },
   body: {
     flexDirection: 'column',

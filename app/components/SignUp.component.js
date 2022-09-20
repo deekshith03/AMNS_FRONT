@@ -1,10 +1,21 @@
-import { View, Text, StyleSheet } from 'react-native'
-import React from 'react'
 import { Feather } from '@expo/vector-icons'
+import React, { useState } from 'react'
+import { StyleSheet, Text, View } from 'react-native'
 import CustomButton from '../components/CustomButton.component.js'
 import globalStyles from '../styles/global.styles.js'
-import { colors } from '../variables/colors.variables.js'
+import { colors, colors_dark } from '../variables/colors.variables.js'
+import {
+  emailIcon,
+  passwordIcon,
+  rePasswordIcon,
+  userIcon
+} from '../variables/icons.variable.js'
+import InputBox from './common/input.component.js'
 const SignUp = () => {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [rePassword, reSetPassword] = useState('')
+  const [name, setName] = useState('')
   return (
     <View>
       <View>
@@ -21,15 +32,55 @@ const SignUp = () => {
             />
             <Text style={styles.headingFont}>Signup</Text>
           </View>
-          {/* <View>//text inputs go here</View> */}
+          <View
+            style={[
+              globalStyles.globalStyles.inputBoxContainer,
+              styles.inputBoxContainer
+            ]}>
+            <InputBox
+              value={name}
+              handleChange={setName}
+              color={colors_dark.textColor}
+              placeholder={'Name'}
+              icon={userIcon}
+              placeholderTextColor={colors_dark.textColor_dark}
+              autoCapitalize={true}
+            />
+            <InputBox
+              value={email}
+              handleChange={setEmail}
+              color={colors_dark.textColor}
+              placeholder={'Email'}
+              keyboardType={'email-address'}
+              icon={emailIcon}
+              placeholderTextColor={colors_dark.textColor_dark}
+            />
+            <InputBox
+              value={password}
+              handleChange={setPassword}
+              color={colors_dark.textColor}
+              placeholder={'Password'}
+              icon={passwordIcon}
+              placeholderTextColor={colors_dark.textColor_dark}
+              secureTextEntry={true}
+            />
+            <InputBox
+              value={rePassword}
+              handleChange={reSetPassword}
+              color={colors_dark.textColor}
+              placeholder={'Retype password'}
+              icon={rePasswordIcon}
+              placeholderTextColor={colors_dark.textColor_dark}
+              secureTextEntry={true}
+            />
+          </View>
         </View>
         <CustomButton text="signup" />
         <Text
           style={[
             globalStyles.globalStyles.LandingFontStyle,
             styles.forgetPasStyles
-          ]}
-        >
+          ]}>
           Already Have an Account?
         </Text>
       </View>
@@ -52,6 +103,9 @@ const styles = StyleSheet.create({
 
   iconStyles: {
     paddingRight: 5
+  },
+  inputBoxContainer: {
+    height: 230
   },
   logintext: {
     flexDirection: 'row',
