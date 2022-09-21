@@ -1,14 +1,10 @@
 import { Feather } from '@expo/vector-icons'
 import React, { useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
+import { useDispatch } from 'react-redux'
+import { changeState } from '../../redux/slices/loading.slice.js'
 import globalStyles from '../../styles/global.styles.js'
 import { colors, colors_dark } from '../../variables/colors.variables.js'
-import {
-  emailIcon,
-  passwordIcon,
-  rePasswordIcon,
-  userIcon
-} from '../../variables/icons.variable.js'
 import { axiosInstance } from '../../variables/variable.js'
 import InputBox from '../atoms/input.component.js'
 import CustomButton from '../atoms/CustomButton.component.js'
@@ -40,8 +36,10 @@ const SignUp = () => {
   const [rePassword, reSetPassword] = useState('')
   const [name, setName] = useState('')
   const [error, setError] = useState({})
+  const dispatch = useDispatch()
 
   const handleSubmit = async () => {
+    dispatch(changeState(true))
     const values = {
       email: email,
       password: password,
@@ -97,6 +95,7 @@ const SignUp = () => {
         }
       })
     }
+    dispatch(changeState(false))
   }
 
   return (
@@ -126,7 +125,7 @@ const SignUp = () => {
               handleChange={setName}
               color={colors_dark.textColor}
               placeholder={'Name'}
-              icon={userIcon}
+              icon={'user'}
               placeholderTextColor={colors_dark.textColor_dark}
               autoCapitalize={true}
               keyboardAppearance="dark"
@@ -139,7 +138,7 @@ const SignUp = () => {
               color={colors_dark.textColor}
               placeholder={'Email'}
               keyboardType={'email-address'}
-              icon={emailIcon}
+              icon={'mail'}
               placeholderTextColor={colors_dark.textColor_dark}
               autoCompleteType="email"
               keyboardAppearance="dark"
@@ -151,7 +150,7 @@ const SignUp = () => {
               handleChange={setPassword}
               color={colors_dark.textColor}
               placeholder={'Password'}
-              icon={passwordIcon}
+              icon={'lock'}
               placeholderTextColor={colors_dark.textColor_dark}
               secureTextEntry={true}
               autoCapitalize={false}
@@ -164,7 +163,7 @@ const SignUp = () => {
               handleChange={reSetPassword}
               color={colors_dark.textColor}
               placeholder={'Retype password'}
-              icon={rePasswordIcon}
+              icon={'user-check'}
               placeholderTextColor={colors_dark.textColor_dark}
               secureTextEntry={true}
               autoCapitalize={false}

@@ -7,7 +7,9 @@ export const colors = {
   darkScreen: 'rgba(0,0,0,0.6)',
   textColor: '#000',
   textColor_dark: '#333',
-  errorColor: '#8B0000'
+  errorColor: '#8B0000',
+  backgroundColorDim: 'rgba(0, 0, 0, 0.6)',
+  loadingSpinner: '#00cc00'
 }
 
 export const colors_dark = {

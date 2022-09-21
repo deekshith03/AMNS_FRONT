@@ -30,6 +30,7 @@
     "eslint-plugin-react-native": "^4.0.0",
     "eslint-plugin-unused-imports": "^2.0.0",
     "expo": "~46.0.9",
+    "expo-splash-screen": "^0.16.2",
     "expo-status-bar": "~1.4.0",
     "formik": "^2.2.9",
     "husky": "^8.0.1",

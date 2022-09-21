@@ -1,9 +1,10 @@
 import { Feather } from '@expo/vector-icons'
 import React, { useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
+import { useDispatch } from 'react-redux'
+import { changeState } from '../../redux/slices/loading.slice.js'
 import globalStyles from '../../styles/global.styles.js'
 import { colors, colors_dark } from '../../variables/colors.variables.js'
-import { passwordIcon, userIcon } from '../../variables/icons.variable.js'
 import { axiosInstance } from '../../variables/variable.js'
 import InputBox from '../atoms/input.component.js'
 import CustomButton from '../atoms/CustomButton.component.js'
@@ -19,8 +20,10 @@ const SignIn = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState({})
+  const dispatch = useDispatch()
 
   const handleSubmit = async () => {
+    dispatch(changeState(true))
     const values = {
       email: email,
       password: password
@@ -74,6 +77,7 @@ const SignIn = () => {
         }
       })
     }
+    dispatch(changeState(false))
   }
 
   return (
@@ -105,7 +109,7 @@ const SignIn = () => {
               placeholder={'Email'}
               keyboardType={'email-address'}
               secureTextEntry={true}
-              icon={userIcon}
+              icon={'user'}
               placeholderTextColor={colors_dark.textColor_dark}
               autoCapitalize={false}
               autoCompleteType="email"
@@ -118,7 +122,7 @@ const SignIn = () => {
               handleChange={setPassword}
               color={colors_dark.textColor}
               placeholder={'Password'}
-              icon={passwordIcon}
+              icon={'lock'}
               placeholderTextColor={colors_dark.textColor_dark}
               secureTextEntry={true}
               autoCompleteType="password"
