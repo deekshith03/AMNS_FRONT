@@ -1,6 +1,7 @@
+import { Feather } from '@expo/vector-icons'
 import propTypes from 'prop-types'
 import React from 'react'
-import { Image, StyleSheet, TextInput, View } from 'react-native'
+import { StyleSheet, TextInput, View } from 'react-native'
 
 const InputBox = ({
   handleChange,
@@ -66,7 +67,12 @@ const InputBox = ({
         placeholderTextColor={placeholderTextColor}
       />
       {icon !== undefined && (
-        <Image style={[styles.icon, color && styles.color]} source={icon} />
+        <Feather
+          name={icon}
+          size={24}
+          color={placeholderTextColor}
+          style={styles.icon}
+        />
       )}
     </View>
   )
