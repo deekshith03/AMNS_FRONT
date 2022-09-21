@@ -11,26 +11,94 @@ import {
 } from '../../variables/icons.variable.js'
 import { axiosInstance } from '../../variables/variable.js'
 import InputBox from '../atoms/input.component.js'
-import CustomButton from '../molecules/CustomButton.component.js'
+import CustomButton from '../atoms/CustomButton.component.js'
+import * as Yup from 'yup'
+import { showMessage } from 'react-native-flash-message'
+
+const signupSchema = Yup.object().shape({
+  name: Yup.string()
+    .matches(/^[A-Za-z ]+$/, 'Enter a valid name')
+    .max(40)
+    .min(2)
+    .required(),
+  email: Yup.string().email('Invalid email').required('Email Required'),
+  password: Yup.string()
+    .required()
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
+      'password must contain 8 characters, one Uppercase, one Lowercase, one Number and one special case character'
+    ),
+  rePassword: Yup.string()
+    .label('Password Confirm')
+    .required()
+    .oneOf([Yup.ref('password')], 'Passwords does not match')
+})
+
 const SignUp = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [rePassword, reSetPassword] = useState('')
   const [name, setName] = useState('')
+  const [error, setError] = useState({})
 
   const handleSubmit = async () => {
-    const data = {
+    const values = {
       email: email,
-      name: name,
-      password: password
+      password: password,
+      rePassword: rePassword,
+      name: name
     }
-    axiosInstance
-      .post('/api/register', data)
-      .then((res) => {
-        console.log(res.data)
+    const isFormValid = await signupSchema.isValid(values, {
+      abortEarly: false
+    })
+
+    if (isFormValid) {
+      axiosInstance
+        .post('/api/register', values)
+        .then((res) => {
+          console.log(res.data)
+        })
+        .catch((error) => {
+          const statusCode = error.response ? error.response.status : null
+          if (statusCode === 500 || statusCode === 400) {
+            const errMsg =
+              error.response.data.errors[0].message === undefined
+                ? error.response.data.errors[0].msg
+                : error.response.data.errors[0].message
+
+            showMessage({
+              message: errMsg,
+              type: 'danger',
+              position: 'bottom'
+            })
+          } else {
+            error.handleGlobally && error.handleGlobally()
+          }
+        })
+    } else {
+      signupSchema.validate(values, { abortEarly: false }).catch((err) => {
+        const errors = err.inner.reduce((acc, error) => {
+          return {
+            ...acc,
+            [error.path]: error.errors[0]
+          }
+        }, {})
+
+        setError(errors)
+
+        let len = Object.entries(errors).length
+
+        if (len > 0) {
+          showMessage({
+            message: Object.values(errors)[0],
+            type: 'danger',
+            position: 'bottom'
+          })
+        }
       })
-      .catch((error) => console.log('error >> ', error.response.data))
+    }
   }
+
   return (
     <View>
       <View>
@@ -51,7 +119,8 @@ const SignUp = () => {
             style={[
               globalStyles.globalStyles.inputBoxContainer,
               styles.inputBoxContainer
-            ]}>
+            ]}
+          >
             <InputBox
               value={name}
               handleChange={setName}
@@ -60,6 +129,9 @@ const SignUp = () => {
               icon={userIcon}
               placeholderTextColor={colors_dark.textColor_dark}
               autoCapitalize={true}
+              keyboardAppearance="dark"
+              error={error.name}
+              errorColor={colors_dark.errorColor}
             />
             <InputBox
               value={email}
@@ -69,6 +141,10 @@ const SignUp = () => {
               keyboardType={'email-address'}
               icon={emailIcon}
               placeholderTextColor={colors_dark.textColor_dark}
+              autoCompleteType="email"
+              keyboardAppearance="dark"
+              error={error.email}
+              errorColor={colors_dark.errorColor}
             />
             <InputBox
               value={password}
@@ -78,6 +154,10 @@ const SignUp = () => {
               icon={passwordIcon}
               placeholderTextColor={colors_dark.textColor_dark}
               secureTextEntry={true}
+              autoCapitalize={false}
+              keyboardAppearance="dark"
+              error={error.password}
+              errorColor={colors_dark.errorColor}
             />
             <InputBox
               value={rePassword}
@@ -87,15 +167,32 @@ const SignUp = () => {
               icon={rePasswordIcon}
               placeholderTextColor={colors_dark.textColor_dark}
               secureTextEntry={true}
+              autoCapitalize={false}
+              keyboardAppearance="dark"
+              error={error.rePassword}
+              errorColor={colors_dark.errorColor}
             />
           </View>
         </View>
-        <CustomButton text="signup" handleClick={handleSubmit} />
+        <CustomButton
+          text="signup"
+          handleClick={handleSubmit}
+          alignItems={'center'}
+          backgroundColor={colors.loginpink}
+          fontColor={colors.white}
+          fontFamily={'Roboto'}
+          fontSize={18}
+          paddingHorizontal={20}
+          paddingVertical={10}
+          bordered
+          size={'large'}
+        />
         <Text
           style={[
             globalStyles.globalStyles.LandingFontStyle,
             styles.forgetPasStyles
-          ]}>
+          ]}
+        >
           Already Have an Account?
         </Text>
       </View>

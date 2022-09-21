@@ -19,13 +19,19 @@ const InputBox = ({
   maxLength,
   color,
   secureTextEntry,
-  placeholderTextColor
+  placeholderTextColor,
+  autoCompleteType,
+  keyboardAppearance,
+  error,
+  errorColor
 }) => {
+  const validationColor = error ? errorColor : placeholderTextColor
+
   const styles = StyleSheet.create({
     color: {
-      borderColor:
-        placeholderTextColor != undefined ? placeholderTextColor : color,
-      color: color
+      borderColor: placeholderTextColor != undefined ? validationColor : color,
+      color: color,
+      placeholderTextColor: validationColor
     },
     icon: {
       alignSelf: 'center',
@@ -45,6 +51,7 @@ const InputBox = ({
       width: '100%'
     }
   })
+
   return (
     <View style={styles.inputContainer}>
       <TextInput
@@ -64,6 +71,8 @@ const InputBox = ({
         maxLength={maxLength ? maxLength : 40}
         secureTextEntry={secureTextEntry}
         placeholderTextColor={placeholderTextColor}
+        autoCompleteType={autoCompleteType}
+        keyboardAppearance={keyboardAppearance}
       />
       {icon !== undefined && (
         <Image style={[styles.icon, color && styles.color]} source={icon} />
@@ -88,7 +97,11 @@ InputBox.propTypes = {
   maxLength: propTypes.number,
   color: propTypes.string,
   secureTextEntry: propTypes.bool,
-  placeholderTextColor: propTypes.string
+  placeholderTextColor: propTypes.string,
+  autoCompleteType: propTypes.string,
+  keyboardAppearance: propTypes.string,
+  error: propTypes.string,
+  errorColor: propTypes.string
 }
 
 export default InputBox
