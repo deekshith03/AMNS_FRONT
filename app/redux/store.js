@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
-import counterReducer from './slices/counterSlice'
+import loadingSlice from './slices/loading.slice'
 export const store = configureStore({
   reducer: {
-    counter: counterReducer
+    loader: loadingSlice
   }
 })

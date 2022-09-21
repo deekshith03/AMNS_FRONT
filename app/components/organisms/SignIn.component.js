@@ -1,6 +1,8 @@
 import { Feather } from '@expo/vector-icons'
 import React, { useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
+import { useDispatch } from 'react-redux'
+import { changeState } from '../../redux/slices/loading.slice.js'
 import globalStyles from '../../styles/global.styles.js'
 import { colors, colors_dark } from '../../variables/colors.variables.js'
 import { passwordIcon, userIcon } from '../../variables/icons.variable.js'
@@ -11,18 +13,21 @@ import CustomButton from '../molecules/CustomButton.component.js'
 const SignIn = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-
-  const handleSubmit = () => {
+  const dispatch = useDispatch()
+  const handleSubmit = async () => {
+    dispatch(changeState(true))
     const data = {
       email: email,
       password: password
     }
-    axiosInstance
+    await axiosInstance
       .post('/api/login', data)
       .then((res) => {
-        console.log(res.data)
+        console.log('res.data >> ', res.data)
       })
       .catch((error) => console.log('error >> ', error.response.data))
+
+    dispatch(changeState(false))
   }
 
   return (

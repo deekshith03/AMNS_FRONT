@@ -1,6 +1,8 @@
 import { Feather } from '@expo/vector-icons'
 import React, { useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
+import { useDispatch } from 'react-redux'
+import { changeState } from '../../redux/slices/loading.slice.js'
 import globalStyles from '../../styles/global.styles.js'
 import { colors, colors_dark } from '../../variables/colors.variables.js'
 import {
@@ -17,19 +19,21 @@ const SignUp = () => {
   const [password, setPassword] = useState('')
   const [rePassword, reSetPassword] = useState('')
   const [name, setName] = useState('')
-
+  const dispatch = useDispatch()
   const handleSubmit = async () => {
+    dispatch(changeState(true))
     const data = {
       email: email,
       name: name,
       password: password
     }
-    axiosInstance
+    await axiosInstance
       .post('/api/register', data)
       .then((res) => {
         console.log(res.data)
       })
       .catch((error) => console.log('error >> ', error.response.data))
+    dispatch(changeState(false))
   }
   return (
     <View>
