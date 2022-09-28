@@ -12,12 +12,8 @@ const ImageCustomButton = ({ text, iconName, flag, handleShowingSignUp }) => {
       : [styles.switchBtn]
   let textColor =
     flag === true
-      ? [globalStyles.globalStyles.LandingFontStyle, styles.fontStyles]
-      : [
-          globalStyles.globalStyles.LandingFontStyle,
-          styles.fontColor,
-          styles.fontStyles
-        ]
+      ? [globalStyles.LandingFontStyle, styles.fontStyles]
+      : [globalStyles.LandingFontStyle, styles.fontColor, styles.fontStyles]
 
   return (
     <View>

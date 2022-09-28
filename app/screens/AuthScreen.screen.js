@@ -16,7 +16,7 @@ const AuthScreen = () => {
   }
 
   return (
-    <View style={globalStyles.globalStyles.container}>
+    <View style={globalStyles.container}>
       <ImageBackground source={bgImage} resizeMode="cover" style={styles.image}>
         <View style={styles.darkness} />
         <View style={styles.body}>

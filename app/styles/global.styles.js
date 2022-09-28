@@ -23,13 +23,33 @@ const globalStyles = StyleSheet.create({
     marginTop: 40,
     width: '100%'
   },
+  font100: {
+    fontWeight: '100'
+  },
+  font200: {
+    fontWeight: '200'
+  },
+  font300: {
+    fontWeight: '300'
+  },
+  h1: {
+    fontSize: 24,
+    fontWeight: '700'
+  },
   inputBoxContainer: {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-evenly',
     paddingBottom: 20,
     paddingTop: 20
+  },
+  p: {
+    fontSize: 14,
+    letterSpacing: 1
+  },
+  textAlignCenter: {
+    textAlign: 'center'
   }
 })
 
-export default { globalStyles }
+export default globalStyles

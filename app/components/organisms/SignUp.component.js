@@ -1,15 +1,15 @@
 import { Feather } from '@expo/vector-icons'
 import React, { useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
+import { showMessage } from 'react-native-flash-message'
 import { useDispatch } from 'react-redux'
+import * as Yup from 'yup'
 import { changeState } from '../../redux/slices/loading.slice.js'
 import globalStyles from '../../styles/global.styles.js'
 import { colors, colors_dark } from '../../variables/colors.variables.js'
 import { axiosInstance } from '../../variables/variable.js'
-import InputBox from '../atoms/input.component.js'
 import CustomButton from '../atoms/CustomButton.component.js'
-import * as Yup from 'yup'
-import { showMessage } from 'react-native-flash-message'
+import InputBox from '../atoms/input.component.js'
 
 const signupSchema = Yup.object().shape({
   name: Yup.string()
@@ -102,7 +102,7 @@ const SignUp = () => {
     <View>
       <View>
         <View style={styles.textContainer}>
-          <Text style={globalStyles.globalStyles.LandingFontStyle}>
+          <Text style={globalStyles.LandingFontStyle}>
             Proceed With your registration
           </Text>
           <View style={styles.logintext}>
@@ -115,11 +115,7 @@ const SignUp = () => {
             <Text style={styles.headingFont}>Signup</Text>
           </View>
           <View
-            style={[
-              globalStyles.globalStyles.inputBoxContainer,
-              styles.inputBoxContainer
-            ]}
-          >
+            style={[globalStyles.inputBoxContainer, styles.inputBoxContainer]}>
             <InputBox
               value={name}
               handleChange={setName}
@@ -186,12 +182,7 @@ const SignUp = () => {
           bordered
           size={'large'}
         />
-        <Text
-          style={[
-            globalStyles.globalStyles.LandingFontStyle,
-            styles.forgetPasStyles
-          ]}
-        >
+        <Text style={[globalStyles.LandingFontStyle, styles.forgetPasStyles]}>
           Already Have an Account?
         </Text>
       </View>

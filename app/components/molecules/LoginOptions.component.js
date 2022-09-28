@@ -8,14 +8,13 @@ const LoginOptions = () => {
     <View style={styles.body}>
       <Text
         style={[
-          globalStyles.globalStyles.LandingFontStyle,
+          globalStyles.LandingFontStyle,
           styles.fontSize,
           styles.fontColor
         ]}>
         Or
       </Text>
-      <Text
-        style={[globalStyles.globalStyles.LandingFontStyle, styles.fontColor]}>
+      <Text style={[globalStyles.LandingFontStyle, styles.fontColor]}>
         Login With
       </Text>
       <View styles={styles.imageStyles}>
