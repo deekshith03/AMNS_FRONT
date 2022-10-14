@@ -23,6 +23,15 @@ const globalStyles = StyleSheet.create({
     marginTop: 40,
     width: '100%'
   },
+  dflex: {
+    display: 'flex'
+  },
+  flexColumn: {
+    flexDirection: 'column'
+  },
+  flexRow: {
+    flexDirection: 'row'
+  },
   font100: {
     fontWeight: '100'
   },
@@ -43,12 +52,21 @@ const globalStyles = StyleSheet.create({
     paddingBottom: 20,
     paddingTop: 20
   },
+  mh10: {
+    marginHorizontal: 10
+  },
+  mv5: {
+    marginVertical: 5
+  },
   p: {
     fontSize: 14,
     letterSpacing: 1
   },
   textAlignCenter: {
     textAlign: 'center'
+  },
+  w100: {
+    width: '100%'
   }
 })
 

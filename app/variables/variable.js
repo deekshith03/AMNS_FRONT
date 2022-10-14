@@ -1,12 +1,14 @@
 import axios from 'axios'
+import * as SecureStore from 'expo-secure-store'
 import { showMessage } from 'react-native-flash-message'
 import * as RootNavigation from '../navigator/RootNavigation.navigator'
+const Base_uri = 'http://10.0.2.2:8080/'
 
 export const axiosInstance = axios.create({
-  baseURL: 'http://10.0.2.2:8080/',
-  timeout: 1000,
-  headers: { 'Content-Type': 'application/json' }
+  baseURL: Base_uri,
+  timeout: 1000
 })
+
 const errorComposer = (error) => {
   return () => {
     const statusCode = error.response ? error.response.status : null
@@ -21,7 +23,47 @@ const errorComposer = (error) => {
   }
 }
 
+axiosInstance.interceptors.request.use(
+  async (config) => {
+    config.headers = {
+      Authorization: `Bearer ${await SecureStore.getItemAsync('AccessToken')}`,
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    }
+    return config
+  },
+  (error) => {
+    Promise.reject(error)
+  }
+)
+
 axiosInstance.interceptors.response.use(undefined, (error) => {
   error.handleGlobally = errorComposer(error)
   return Promise.reject(error)
 })
+
+axiosInstance.interceptors.response.use(
+  (response) => {
+    return response
+  },
+  async function (error) {
+    const originalRequest = error.config
+    if (
+      error.response?.status === 403 &&
+      !originalRequest._retry &&
+      error.response?.data.errors[0].message === 'Token expired'
+    ) {
+      originalRequest._retry = true
+      const res = await axios.post(Base_uri + 'api/refreshToken', {
+        refreshToken: await SecureStore.getItemAsync('RefreshToken')
+      })
+      const data = res?.data
+      const access_token = res.AccessToken
+      await SecureStore.setItemAsync('AccessToken', data.AccessToken)
+      await SecureStore.setItemAsync('RefreshToken', data.RefreshToken)
+      axios.defaults.headers.common['Authorization'] = 'Bearer ' + access_token
+      return axiosInstance(originalRequest)
+    }
+    return Promise.reject(error)
+  }
+)

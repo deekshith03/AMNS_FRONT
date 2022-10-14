@@ -1,16 +1,17 @@
 import { Feather } from '@expo/vector-icons'
+import * as SecureStore from 'expo-secure-store'
 import React, { useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { showMessage } from 'react-native-flash-message'
 import { useDispatch } from 'react-redux'
 import * as Yup from 'yup'
+import * as RootNavigation from '../../navigator/RootNavigation.navigator'
 import { changeState } from '../../redux/slices/loading.slice.js'
 import globalStyles from '../../styles/global.styles.js'
 import { colors, colors_dark } from '../../variables/colors.variables.js'
 import { axiosInstance } from '../../variables/variable.js'
 import CustomButton from '../atoms/CustomButton.component.js'
 import InputBox from '../atoms/input.component.js'
-
 const signupSchema = Yup.object().shape({
   name: Yup.string()
     .matches(/^[A-Za-z ]+$/, 'Enter a valid name')
@@ -31,10 +32,10 @@ const signupSchema = Yup.object().shape({
 })
 
 const SignUp = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [rePassword, reSetPassword] = useState('')
-  const [name, setName] = useState('')
+  const [email, setEmail] = useState('sample@gmail.com')
+  const [password, setPassword] = useState('Sample@2001')
+  const [rePassword, reSetPassword] = useState('Sample@2001')
+  const [name, setName] = useState('sample')
   const [error, setError] = useState({})
   const dispatch = useDispatch()
 
@@ -53,8 +54,11 @@ const SignUp = () => {
     if (isFormValid) {
       axiosInstance
         .post('/api/register', values)
-        .then((res) => {
-          console.log(res.data)
+        .then(async (res) => {
+          const data = res.data
+          await SecureStore.setItemAsync('AccessToken', data.AccessToken)
+          await SecureStore.setItemAsync('RefreshToken', data.RefreshToken)
+          RootNavigation.navigate('adminDashboard')
         })
         .catch((error) => {
           const statusCode = error.response ? error.response.status : null
