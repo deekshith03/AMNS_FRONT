@@ -24,11 +24,17 @@ const InputBox = ({
   autoCompleteType,
   keyboardAppearance,
   error,
-  errorColor
+  errorColor,
+  type
 }) => {
   const validationColor = error ? errorColor : placeholderTextColor
 
   const styles = StyleSheet.create({
+    border1: {
+      borderColor: placeholderTextColor != undefined ? validationColor : color,
+      borderRadius: 7,
+      borderWidth: 1
+    },
     color: {
       borderColor: placeholderTextColor != undefined ? validationColor : color,
       color: color,
@@ -44,6 +50,7 @@ const InputBox = ({
     input: {
       borderBottomWidth: 1,
       height: 40,
+      paddingHorizontal: 10,
       width: '98%'
     },
     inputContainer: {
@@ -56,7 +63,7 @@ const InputBox = ({
   return (
     <View style={styles.inputContainer}>
       <TextInput
-        style={[styles.input, color && styles.color]}
+        style={[styles.input, color && styles.color, type && styles.border1]}
         onChangeText={handleChange}
         value={value}
         placeholder={placeholder}
@@ -107,7 +114,8 @@ InputBox.propTypes = {
   autoCompleteType: propTypes.string,
   keyboardAppearance: propTypes.string,
   error: propTypes.string,
-  errorColor: propTypes.string
+  errorColor: propTypes.string,
+  type: propTypes.string
 }
 
 export default InputBox

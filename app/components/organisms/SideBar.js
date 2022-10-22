@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import { View } from 'react-native'
+import { AdminNavigator } from '../../navigator/Admin.navigator'
 
 export const SideBar = ({ type }) => {
-  console.log(type)
-  return <View></View>
+  // console.log(type)
+  return type === 'admin' && <AdminNavigator />
 }
 
 SideBar.propTypes = {

@@ -58,7 +58,7 @@ const SignUp = () => {
           const data = res.data
           await SecureStore.setItemAsync('AccessToken', data.AccessToken)
           await SecureStore.setItemAsync('RefreshToken', data.RefreshToken)
-          RootNavigation.navigate('adminDashboard')
+          RootNavigation.navigate('Home')
         })
         .catch((error) => {
           const statusCode = error.response ? error.response.status : null

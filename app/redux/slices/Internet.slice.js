@@ -15,7 +15,7 @@ const CheckInternetSlice = createSlice({
         const online = state.isConnected && state.isInternetReachable
         // console.log(online)
         if (!online) {
-          RootNavigation.navigate('NoInternetScreen')
+          RootNavigation.navigate('Home')
         }
       })
     }

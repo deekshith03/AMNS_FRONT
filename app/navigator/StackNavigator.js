@@ -2,8 +2,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { isConnected } from '../redux/slices/Internet.slice'
-import { AdminDashboard } from '../screens/Admin.screen'
 import AuthScreen from '../screens/AuthScreen.screen'
+import { Home } from '../screens/Home'
 import { NoInternet } from '../screens/NoInternet.screen'
 import { ServerDown } from '../screens/ServerDown.screen'
 import { navigationRef } from './RootNavigation.navigator'
@@ -22,7 +22,7 @@ const StackNavigator = () => {
 
   return (
     <Stack.Navigator
-      initialRouteName={'adminDashboard'}
+      initialRouteName={'AuthScreen'}
       navigationRef={navigationRef}>
       <Stack.Screen
         name="AuthScreen"
@@ -40,8 +40,8 @@ const StackNavigator = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="adminDashboard"
-        component={AdminDashboard}
+        name="Home"
+        component={Home}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

@@ -12,6 +12,10 @@ export const axiosInstance = axios.create({
 const errorComposer = (error) => {
   return () => {
     const statusCode = error.response ? error.response.status : null
+    console.log(
+      '🚀 ~ file: variable.js ~ line 15 ~ return ~ statusCode',
+      statusCode
+    )
 
     if (statusCode === 401) {
       showMessage({ message: '401 errors', type: 'danger', position: 'bottom' })
@@ -37,17 +41,13 @@ axiosInstance.interceptors.request.use(
   }
 )
 
-axiosInstance.interceptors.response.use(undefined, (error) => {
-  error.handleGlobally = errorComposer(error)
-  return Promise.reject(error)
-})
-
 axiosInstance.interceptors.response.use(
   (response) => {
     return response
   },
   async function (error) {
     const originalRequest = error.config
+
     if (
       error.response?.status === 403 &&
       !originalRequest._retry &&
@@ -57,13 +57,16 @@ axiosInstance.interceptors.response.use(
       const res = await axios.post(Base_uri + 'api/refreshToken', {
         refreshToken: await SecureStore.getItemAsync('RefreshToken')
       })
+      console.log('🚀 ~ file: variable.js ~ line 61 ~ data', res)
       const data = res?.data
       const access_token = res.AccessToken
       await SecureStore.setItemAsync('AccessToken', data.AccessToken)
       await SecureStore.setItemAsync('RefreshToken', data.RefreshToken)
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + access_token
       return axiosInstance(originalRequest)
+    } else {
+      error.handleGlobally = errorComposer(error)
+      return Promise.reject(error)
     }
-    return Promise.reject(error)
   }
 )

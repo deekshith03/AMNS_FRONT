@@ -45,6 +45,7 @@ const globalStyles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '700'
   },
+  h10: { height: 10 },
   inputBoxContainer: {
     display: 'flex',
     flexDirection: 'column',
