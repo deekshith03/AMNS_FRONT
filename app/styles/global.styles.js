@@ -63,6 +63,11 @@ const globalStyles = StyleSheet.create({
     fontSize: 14,
     letterSpacing: 1
   },
+  screenHeader: {
+    fontSize: 20,
+    fontWeight: '600',
+    padding: 4
+  },
   textAlignCenter: {
     textAlign: 'center'
   },

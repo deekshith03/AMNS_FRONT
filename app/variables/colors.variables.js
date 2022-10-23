@@ -9,7 +9,8 @@ export const colors = {
   textColor_dark: '#333',
   errorColor: '#8B0000',
   backgroundColorDim: 'rgba(0, 0, 0, 0.6)',
-  loadingSpinner: '#00cc00'
+  loadingSpinner: '#00cc00',
+  lightGrey: '#696969'
 }
 
 export const colors_dark = {
