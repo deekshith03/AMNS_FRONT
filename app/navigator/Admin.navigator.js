@@ -4,12 +4,16 @@ import React from 'react'
 import { TouchableOpacity } from 'react-native'
 import { AddStaff } from '../screens/admin/AddStaff.admin.screen'
 import globalStyles from '../styles/global.styles'
-
 const AdminNav = createDrawerNavigator()
+
+import * as RootNavigation from './RootNavigation.navigator'
+const navigateTo = () => {
+  RootNavigation.navigate('NotificationScreen')
+}
 
 const notificationIcon = () => {
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={navigateTo}>
       <Feather name="bell" size={26} style={globalStyles.mh10} />
     </TouchableOpacity>
   )
@@ -17,8 +21,7 @@ const notificationIcon = () => {
 
 const options = {
   headerTransparent: true,
-  headerRight: () => notificationIcon(),
-  title: 'Add Staff'
+  headerRight: () => notificationIcon()
 }
 
 export const AdminNavigator = () => {
@@ -40,6 +43,14 @@ export const AdminNavigator = () => {
           title: 'Students'
         }}
       />
+      {/* <AdminNav.Screen
+        name="NotificationScreen"
+        component={Notification}
+        options={{
+          headerTransparent: true,
+          title: 'Notifications'
+        }}
+      /> */}
     </AdminNav.Navigator>
   )
 }

@@ -1,5 +1,6 @@
 import { Feather } from '@expo/vector-icons'
-import React from 'react'
+import PropTypes from 'prop-types'
+import React, { useState } from 'react'
 import {
   SectionList,
   StyleSheet,
@@ -7,28 +8,38 @@ import {
   TouchableOpacity,
   View
 } from 'react-native'
-import { colors } from '../../variables/colors.variables'
-import PropTypes from 'prop-types'
 import globalStyles from '../../styles/global.styles'
+import { colors } from '../../variables/colors.variables'
 
 const NotificationList = ({ notification }) => {
-  notification.sort((a, b) => b.time.getTime() - a.time.getTime())
+  const [notifications, setNotifications] = useState(notification)
+
+  const markRead = (id) => {
+    // notification[id].read = true
+    setNotifications(
+      notifications.map((item) => {
+        return item.id === id ? { ...item, read: true } : item
+      })
+    )
+  }
+
+  notifications.sort((a, b) => b.time.getTime() - a.time.getTime())
   const DATA = [
     {
       title: 'Today',
-      data: notification.filter((item) => {
+      data: notifications.filter((item) => {
         return new Date().getDate() === item.time.getDate()
       })
     },
     {
       title: 'Earlier',
-      data: notification.filter((item) => {
+      data: notifications.filter((item) => {
         return new Date().getDate() > item.time.getDate()
       })
     }
   ]
 
-  return !notification.length ? (
+  return !notifications.length ? (
     <View style={styles.textContainer}>
       <Text style={[globalStyles.h1, globalStyles.textAlignCenter]}>
         No Notifications
@@ -48,47 +59,48 @@ const NotificationList = ({ notification }) => {
         sections={DATA}
         renderSectionHeader={({ section }) => (
           <Text style={styles.sectionHeader}>
-            {section.data.length ? section.title : <View></View>}
+            {section.data.length ? section.title : <View />}
           </Text>
         )}
         renderItem={(item) => {
           const Notification = item.item
           return (
-            <View style={styles.container}>
-              <View style={styles.feather}>
-                <Feather name="mail" size={18} />
-              </View>
+            <TouchableOpacity
+              onPress={() => !item.read && markRead(Notification.id)}>
+              <View style={styles.container}>
+                <View style={styles.feather}>
+                  <Feather name="mail" size={18} />
+                </View>
 
-              <View style={styles.content}>
-                <View style={styles.text}>
-                  <TouchableOpacity>
+                <View style={styles.content}>
+                  <View style={styles.text}>
                     <Text
                       style={
-                        Notification.read ? styles.unReadTitle : styles.title
+                        !Notification.read ? styles.unReadTitle : styles.title
                       }>
                       {Notification.title}
                     </Text>
-                  </TouchableOpacity>
 
-                  <Text
-                    style={
-                      Notification.read
-                        ? styles.unReadDescription
-                        : styles.description
-                    }>
-                    {Notification.description}
+                    <Text
+                      style={
+                        !Notification.read
+                          ? styles.unReadDescription
+                          : styles.description
+                      }>
+                      {Notification.description}
+                    </Text>
+                  </View>
+
+                  <Text style={styles.time}>
+                    {Notification.time.toLocaleString()}
                   </Text>
                 </View>
 
-                <Text style={styles.time}>
-                  {Notification.time.toLocaleString()}
-                </Text>
+                <TouchableOpacity>
+                  <Feather name="more-vertical" size={17} />
+                </TouchableOpacity>
               </View>
-
-              <TouchableOpacity>
-                <Feather name="more-vertical" size={17} />
-              </TouchableOpacity>
-            </View>
+            </TouchableOpacity>
           )
         }}></SectionList>
     </View>
