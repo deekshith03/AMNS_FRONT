@@ -49,7 +49,7 @@ const StackNavigator = () => {
       <Stack.Screen
         name="NotificationScreen"
         component={Notification}
-        options={{ headerShown: false }}
+        options={{ title: 'Notification' }}
       />
     </Stack.Navigator>
   )
