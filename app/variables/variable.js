@@ -70,3 +70,4 @@ axiosInstance.interceptors.response.use(
     }
   }
 )
+export const collegeStartYear = 1984

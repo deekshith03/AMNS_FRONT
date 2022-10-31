@@ -23,8 +23,9 @@ const StackNavigator = () => {
 
   return (
     <Stack.Navigator
-      initialRouteName={'NotificationScreen'}
-      navigationRef={navigationRef}>
+      initialRouteName={'AuthScreen'}
+      navigationRef={navigationRef}
+    >
       <Stack.Screen
         name="AuthScreen"
         component={AuthScreen}

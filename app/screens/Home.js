@@ -1,6 +1,6 @@
 import React from 'react'
-import { SideBar } from '../components/organisms/SideBar'
+import SearchBar from './SearchBar.screen'
 
 export const Home = () => {
-  return <SideBar type="admin" />
+  return <SearchBar userType={'admin'} />
 }

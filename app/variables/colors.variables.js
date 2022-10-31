@@ -10,7 +10,8 @@ export const colors = {
   errorColor: '#8B0000',
   backgroundColorDim: 'rgba(0, 0, 0, 0.6)',
   loadingSpinner: '#00cc00',
-  lightGrey: '#696969'
+  lightGrey: '#696969',
+  backgroundInputSearch: '#d9dbda'
 }
 
 export const colors_dark = {

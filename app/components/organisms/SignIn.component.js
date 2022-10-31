@@ -102,7 +102,8 @@ const SignIn = () => {
             <Text style={styles.headingFont}>{'Login'}</Text>
           </View>
           <View
-            style={[globalStyles.inputBoxContainer, styles.inputBoxContainer]}>
+            style={[globalStyles.inputBoxContainer, styles.inputBoxContainer]}
+          >
             <InputBox
               value={email}
               handleChange={setEmail}
@@ -135,6 +136,7 @@ const SignIn = () => {
           </View>
         </View>
         <CustomButton
+          width="20"
           text="login"
           handleClick={handleSubmit}
           alignItems={'center'}

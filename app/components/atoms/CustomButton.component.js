@@ -21,7 +21,7 @@ const CustomButton = ({
   paddingVertical
 }) => {
   const large = width / 1.3
-  const small = width / 2
+  const small = width / 6
   const btnSize = size === 'large' ? large : small
   const btnBgColor = backgroundColor ? backgroundColor : colors.black
   const btnTextColor = fontColor ? colors.white : fontColor
