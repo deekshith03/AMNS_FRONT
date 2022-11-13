@@ -68,7 +68,7 @@ const Pill = ({
 }
 
 Pill.propTypes = {
-  text: PropTypes.string.isRequired,
+  text: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   handleClick: PropTypes.func,
   alignItems: PropTypes.string,
   backgroundColor: PropTypes.string,

@@ -22,7 +22,9 @@ import { changeState } from '../redux/slices/loading.slice.js'
 import { collegeStartYear } from '../variables/variable.js'
 import { axiosInstance } from '../variables/variable.js'
 import { showMessage } from 'react-native-flash-message'
+
 import PropTypes from 'prop-types'
+import CustomContentLoader from '../components/atoms/CustomContentLoader.component.js'
 
 const styles = StyleSheet.create({
   addIconStyles: { marginLeft: 1 },
@@ -186,6 +188,8 @@ const SearchBar = ({ userType }) => {
     Skills: 'skills',
     Advisor: 'advisor.name'
   }
+  const [Contentloader, setContentLoader] = useState(true)
+
   useEffect(() => {
     userType === 'admin'
       ? setFilterOptions(adminFilterOptions)
@@ -374,11 +378,13 @@ const SearchBar = ({ userType }) => {
     const data = { searchStr: text, filter: { ...filters } }
 
     if (text.length > 0 || Object.entries(appliedFilters).length > 0) {
+      setContentLoader(true)
       dispatch(changeState(true))
       axiosInstance
         .post(`/api/student/20/1`, data)
         .then((res) => {
           setSearchPhraseResults([...res.data])
+          if (res.data > 0) setContentLoader(false)
         })
         .catch((error) => {
           const statusCode = error.response ? error.response.status : null
@@ -397,6 +403,7 @@ const SearchBar = ({ userType }) => {
             error.handleGlobally && error.handleGlobally()
           }
         })
+
       dispatch(changeState(false))
     }
 
@@ -499,6 +506,12 @@ const SearchBar = ({ userType }) => {
             )
           })}
         </ScrollView>
+      ) : null}
+      {searchPhrase.length > 0 && Contentloader ? (
+        <>
+          <CustomContentLoader />
+          <CustomContentLoader />
+        </>
       ) : null}
       <RBSheet
         ref={refRBSheet}
@@ -671,59 +684,60 @@ const SearchBar = ({ userType }) => {
                 })
               : null}
           </View>
-          {currentFilterOptions.map((option, ind) => {
-            const regex = new RegExp(filterSearchText, 'gi')
-            if (
-              option.isInteger
-                ? option.match(regex)
-                : option.toString().match(regex) &&
-                  searchWithFullResults.includes(currentFilter)
-            ) {
-              if (ind == currentFilterOptions.length - 1) {
+          {currentFilterOptions &&
+            currentFilterOptions.map((option, ind) => {
+              const regex = new RegExp(filterSearchText, 'gi')
+              if (
+                option.isInteger
+                  ? option.match(regex)
+                  : option.toString().match(regex) &&
+                    searchWithFullResults.includes(currentFilter)
+              ) {
+                if (ind == currentFilterOptions.length - 1) {
+                  return (
+                    <SearchTile
+                      key={ind}
+                      title={option}
+                      position="bottom"
+                      handleClick={() => {
+                        handleFilterSearchClick(option)
+                      }}
+                    />
+                  )
+                }
                 return (
                   <SearchTile
                     key={ind}
                     title={option}
-                    position="bottom"
+                    handleClick={() => {
+                      handleFilterSearchClick(option)
+                    }}
+                  />
+                )
+              } else if (searchWithInput.includes(currentFilter)) {
+                if (ind == currentFilterOptions.length - 1) {
+                  return (
+                    <SearchTile
+                      key={ind}
+                      title={option}
+                      position="bottom"
+                      handleClick={() => {
+                        handleFilterSearchClick(option)
+                      }}
+                    />
+                  )
+                }
+                return (
+                  <SearchTile
+                    key={ind}
+                    title={option}
                     handleClick={() => {
                       handleFilterSearchClick(option)
                     }}
                   />
                 )
               }
-              return (
-                <SearchTile
-                  key={ind}
-                  title={option}
-                  handleClick={() => {
-                    handleFilterSearchClick(option)
-                  }}
-                />
-              )
-            } else if (searchWithInput.includes(currentFilter)) {
-              if (ind == currentFilterOptions.length - 1) {
-                return (
-                  <SearchTile
-                    key={ind}
-                    title={option}
-                    position="bottom"
-                    handleClick={() => {
-                      handleFilterSearchClick(option)
-                    }}
-                  />
-                )
-              }
-              return (
-                <SearchTile
-                  key={ind}
-                  title={option}
-                  handleClick={() => {
-                    handleFilterSearchClick(option)
-                  }}
-                />
-              )
-            }
-          })}
+            })}
         </ScrollView>
       </RBSheet>
     </>
