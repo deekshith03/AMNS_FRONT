@@ -57,7 +57,6 @@ axiosInstance.interceptors.response.use(
       const res = await axios.post(Base_uri + 'api/refreshToken', {
         refreshToken: await SecureStore.getItemAsync('RefreshToken')
       })
-      console.log('🚀 ~ file: variable.js ~ line 61 ~ data', res)
       const data = res?.data
       const access_token = res.AccessToken
       await SecureStore.setItemAsync('AccessToken', data.AccessToken)

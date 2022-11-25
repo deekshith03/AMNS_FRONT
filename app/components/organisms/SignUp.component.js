@@ -58,6 +58,7 @@ const SignUp = () => {
           const data = res.data
           await SecureStore.setItemAsync('AccessToken', data.AccessToken)
           await SecureStore.setItemAsync('RefreshToken', data.RefreshToken)
+          await SecureStore.setItemAsync('type', data.type)
           RootNavigation.navigate('Home')
         })
         .catch((error) => {

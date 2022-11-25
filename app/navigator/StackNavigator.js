@@ -23,7 +23,7 @@ const StackNavigator = () => {
 
   return (
     <Stack.Navigator
-      initialRouteName={'AuthScreen'}
+      initialRouteName={'Home'}
       navigationRef={navigationRef}
     >
       <Stack.Screen
