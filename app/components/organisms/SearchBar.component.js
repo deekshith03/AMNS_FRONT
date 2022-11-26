@@ -2,29 +2,27 @@ import {
   View,
   StyleSheet,
   TextInput,
-  Keyboard,
   Text,
   Pressable,
   ScrollView
 } from 'react-native'
 import React, { useState, useRef, useEffect } from 'react'
-import { colors } from '../variables/colors.variables.js'
+import { colors } from '../../variables/colors.variables.js'
 import { Feather, Ionicons } from '@expo/vector-icons'
-import CustomButton from '../components/atoms/CustomButton.component.js'
+import CustomButton from '../atoms/CustomButton.component.js'
 import RBSheet from 'react-native-raw-bottom-sheet'
-import Pill from '../components/atoms/Pill.component.js'
-import SearchTile from '../components/atoms/SearchTile.component.js'
+import Pill from '../atoms/Pill.component.js'
+import SearchTile from '../atoms/SearchTile.component.js'
 import { useDispatch, useSelector } from 'react-redux'
-import { setTotalDepartments } from '../redux/slices/totalDepartments.slice.js'
-import { setTotalSkills } from '../redux/slices/totalSkills.slice.js'
-import { setTotalAdvisors } from '../redux/slices/totalAdvisors.slice.js'
-import { changeState } from '../redux/slices/loading.slice.js'
-import { collegeStartYear } from '../variables/variable.js'
-import { axiosInstance } from '../variables/variable.js'
+import { setTotalDepartments } from '../../redux/slices/totalDepartments.slice.js'
+import { setTotalSkills } from '../../redux/slices/totalSkills.slice.js'
+import { setTotalAdvisors } from '../../redux/slices/totalAdvisors.slice.js'
+import { changeState } from '../../redux/slices/loading.slice.js'
+import { collegeStartYear } from '../../variables/variable.js'
+import { axiosInstance } from '../../variables/variable.js'
 import { showMessage } from 'react-native-flash-message'
-
 import PropTypes from 'prop-types'
-import CustomContentLoader from '../components/atoms/CustomContentLoader.component.js'
+import CustomContentLoader from '../atoms/CustomContentLoader.component.js'
 
 const styles = StyleSheet.create({
   addIconStyles: { marginLeft: 1 },
@@ -33,9 +31,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    marginTop: 50,
     width: '98%'
   },
+
   filterButtonStyles: {
     display: 'flex',
     flexDirection: 'row',
@@ -60,6 +58,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     margin: 15
   },
+
   filterHeaderStyles: {
     color: colors.black,
     fontFamily: 'Roboto',
@@ -67,12 +66,9 @@ const styles = StyleSheet.create({
     textTransform: 'capitalize'
   },
 
-  filterIconStyles: { padding: 5 },
-
   filterMarginStyle: {
     margin: 10
   },
-
   filterOptionContainer: {
     padding: 10
   },
@@ -100,8 +96,9 @@ const styles = StyleSheet.create({
   input: {
     fontSize: 15,
     marginLeft: 10,
-    width: '90%'
+    width: '85%'
   },
+
   pillContainer: {
     display: 'flex',
     flexDirection: 'row',
@@ -109,19 +106,12 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     marginTop: 15
   },
+
   resetTextStyles: {
     color: colors.loginpink,
     fontFamily: 'Roboto'
   },
-  searchBar__clicked: {
-    alignItems: 'center',
-    backgroundColor: colors.backgroundInputSearch,
-    borderRadius: 15,
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    padding: 10,
-    width: '75%'
-  },
+
   searchBar__filter: {
     alignItems: 'center',
     borderColor: colors.backgroundInputSearch,
@@ -132,6 +122,7 @@ const styles = StyleSheet.create({
     padding: 5,
     width: '100%'
   },
+
   searchBar__unclicked: {
     alignItems: 'center',
     backgroundColor: colors.backgroundInputSearch,
@@ -140,11 +131,19 @@ const styles = StyleSheet.create({
     padding: 10,
     width: '95%'
   },
+
   searchIconStyles: { marginLeft: 1 }
 })
 
-const SearchBar = ({ userType }) => {
-  const [clicked, setClicked] = useState(false)
+const SearchBar = ({
+  userType,
+  studentSelected,
+  searchPhraseResults,
+  handleSearchPhraseResults,
+  searchPhrase,
+  changeSearchPhraseText,
+  handleappliedFilters
+}) => {
   const refRBSheet = useRef()
   const refRBSheetDynamic = useRef()
   const adminFilterOptions = [
@@ -162,13 +161,12 @@ const SearchBar = ({ userType }) => {
     'Graduation Year',
     'Skills'
   ]
-  const [searchPhrase, setSearchPhrase] = useState('')
+  const staffFilterOptions = ['Department', 'Location', 'Skills']
   const [filterOptions, setFilterOptions] = useState([])
   const [currentFilter, setCurrentFilter] = useState('')
   const [currentFilterOptions, setCurrentFilterOptions] = useState([])
   const [filterSearchText, setfilterSearchText] = useState('')
   const [appliedFilters, setAppliedFilters] = useState({})
-  const [searchPhraseResults, setSearchPhraseResults] = useState([])
   const dispatch = useDispatch()
   const { totalDepartments } = useSelector((state) => state.totalDepartments)
   const { totalSkills } = useSelector((state) => state.totalSkills)
@@ -180,21 +178,45 @@ const SearchBar = ({ userType }) => {
     'Advisor'
   ]
   const searchWithInput = ['Location', 'Company']
-  const filterMappings = {
+  const filterMappingStudent = {
     Department: 'academics.department_name',
     Company: 'work_exp.company_name',
-    Location: 'skills',
+    Location: 'personal_info.location',
     'Graduation Year': 'academics.year',
     Skills: 'skills',
     Advisor: 'advisor.name'
   }
+  const filterMappingStaff = {
+    Department: 'work_exp.department_name',
+    Location: 'personal_info.location',
+    Skills: 'skills'
+  }
+  const [filterMappings, setFilterMappings] = useState(filterMappingStudent)
   const [Contentloader, setContentLoader] = useState(true)
-
   useEffect(() => {
     userType === 'admin'
       ? setFilterOptions(adminFilterOptions)
       : setFilterOptions(studentFilterOptions)
   }, [])
+
+  useEffect(() => {
+    if (!studentSelected) {
+      setFilterOptions(staffFilterOptions)
+      setFilterMappings(filterMappingStaff)
+    } else if (studentSelected && userType === 'admin') {
+      setFilterOptions(adminFilterOptions)
+      setFilterMappings(filterMappingStudent)
+    } else if (studentSelected) {
+      setFilterOptions(studentFilterOptions)
+      setFilterMappings(filterMappingStudent)
+    }
+
+    handleSearchPhraseResults([])
+  }, [studentSelected])
+
+  useEffect(() => {
+    handleappliedFilters(appliedFilters)
+  }, [appliedFilters])
 
   const handleFilterOptions = async (currFilter) => {
     setCurrentFilter(currFilter)
@@ -368,7 +390,7 @@ const SearchBar = ({ userType }) => {
   }
 
   const handleSearchPhraseText = (text) => {
-    setSearchPhrase(text)
+    changeSearchPhraseText(text)
     let filters = {}
     Object.entries(appliedFilters).forEach(([key, value]) => {
       if (value.length > 0)
@@ -380,134 +402,89 @@ const SearchBar = ({ userType }) => {
     if (text.length > 0 || Object.entries(appliedFilters).length > 0) {
       setContentLoader(true)
       dispatch(changeState(true))
-      axiosInstance
-        .post(`/api/student/20/1`, data)
-        .then((res) => {
-          setSearchPhraseResults([...res.data])
-          if (res.data > 0) setContentLoader(false)
-        })
-        .catch((error) => {
-          const statusCode = error.response ? error.response.status : null
-          if (statusCode === 500 || statusCode === 400) {
-            const errMsg =
-              error.response.data.errors[0].message === undefined
-                ? error.response.data.errors[0].msg
-                : error.response.data.errors[0].message
+      if (studentSelected) {
+        axiosInstance
+          .post(`/api/student/20/1`, data)
+          .then((res) => {
+            handleSearchPhraseResults([...res.data])
+            if (res.data > 0) setContentLoader(false)
+          })
+          .catch((error) => {
+            const statusCode = error.response ? error.response.status : null
+            if (statusCode === 500 || statusCode === 400) {
+              const errMsg =
+                error.response.data.errors[0].message === undefined
+                  ? error.response.data.errors[0].msg
+                  : error.response.data.errors[0].message
 
-            showMessage({
-              message: errMsg,
-              type: 'danger',
-              position: 'bottom'
-            })
-          } else {
-            error.handleGlobally && error.handleGlobally()
-          }
-        })
+              showMessage({
+                message: errMsg,
+                type: 'danger',
+                position: 'bottom'
+              })
+            } else {
+              error.handleGlobally && error.handleGlobally()
+            }
+          })
+      } else {
+        axiosInstance
+          .post(`/api/staff/20/1`, data)
+          .then((res) => {
+            handleSearchPhraseResults([...res.data])
+            if (res.data > 0) setContentLoader(false)
+          })
+          .catch((error) => {
+            const statusCode = error.response ? error.response.status : null
+            if (statusCode === 500 || statusCode === 400) {
+              const errMsg =
+                error.response.data.errors[0].message === undefined
+                  ? error.response.data.errors[0].msg
+                  : error.response.data.errors[0].message
+
+              showMessage({
+                message: errMsg,
+                type: 'danger',
+                position: 'bottom'
+              })
+            } else {
+              error.handleGlobally && error.handleGlobally()
+            }
+          })
+      }
 
       dispatch(changeState(false))
     }
 
     refRBSheet.current.close()
   }
-
   return (
     <>
       <View style={styles.container}>
-        <View
-          style={
-            clicked ? styles.searchBar__clicked : styles.searchBar__unclicked
-          }
-        >
+        <View style={styles.searchBar__unclicked}>
           <Feather
             name="search"
             size={20}
             color="black"
             style={styles.searchIconStyles}
           />
-
           <TextInput
             style={styles.input}
             placeholder="Search"
             value={searchPhrase}
             onChangeText={(text) => handleSearchPhraseText(text)}
-            onFocus={() => {
-              setClicked(true)
-            }}
           />
-          {clicked && (
-            <Ionicons
-              name="filter-outline"
-              size={20}
-              color="black"
-              style={styles.filterIconStyles}
-              onPress={() => refRBSheet.current.open()}
-            />
-          )}
+          <Ionicons
+            name="filter-outline"
+            size={20}
+            color="black"
+            onPress={() => refRBSheet.current.open()}
+          />
         </View>
-        {clicked && (
-          <View>
-            <CustomButton
-              text="Cancel"
-              alignItems={'center'}
-              backgroundColor={colors.loginpink}
-              fontColor={colors.black}
-              fontFamily={'Roboto'}
-              fontSize={10}
-              paddingHorizontal={5}
-              paddingVertical={10}
-              size={'small'}
-              handleClick={() => {
-                Keyboard.dismiss()
-                setClicked(false)
-              }}
-            ></CustomButton>
-          </View>
-        )}
       </View>
-      {searchPhraseResults.length > 0 ? (
-        <ScrollView keyboardShouldPersistTaps={'always'}>
-          {searchPhraseResults.map((value, ind) => {
-            const department_name = value.academics.department_name
-              ? value.academics.department_name
-              : ''
-            const company_name = value.work_exp
-              ? value.work_exp.company_name
-                ? value.work_exp.company_name
-                : ''
-              : ''
-            if (ind == searchPhraseResults.length - 1) {
-              return (
-                <SearchTile
-                  key={ind}
-                  title={value.personal_info.name}
-                  subTitle={department_name + '⬩' + company_name}
-                  imageUrl={
-                    'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
-                  }
-                  position="bottom"
-                  handleClick={() => {
-                    console.log('profile clicked')
-                  }}
-                />
-              )
-            }
-            return (
-              <SearchTile
-                key={ind}
-                title={value.personal_info.name}
-                subTitle={department_name + '⬩' + company_name}
-                imageUrl={
-                  'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
-                }
-                handleClick={() => {
-                  console.log('profile clicked')
-                }}
-              />
-            )
-          })}
-        </ScrollView>
-      ) : null}
-      {searchPhrase.length > 0 && Contentloader ? (
+
+      {searchPhrase.length > 0 &&
+      searchPhraseResults.length === 0 &&
+      Contentloader ? (
         <>
           <CustomContentLoader />
           <CustomContentLoader />
@@ -744,7 +721,13 @@ const SearchBar = ({ userType }) => {
   )
 }
 SearchBar.propTypes = {
-  userType: PropTypes.string.isRequired
+  userType: PropTypes.string.isRequired,
+  studentSelected: PropTypes.bool.isRequired,
+  searchPhraseResults: PropTypes.array.isRequired,
+  handleSearchPhraseResults: PropTypes.func.isRequired,
+  searchPhrase: PropTypes.string.isRequired,
+  changeSearchPhraseText: PropTypes.func.isRequired,
+  handleappliedFilters: PropTypes.func.isRequired
 }
 
 export default SearchBar

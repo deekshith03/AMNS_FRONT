@@ -4,6 +4,8 @@ import CheckInternetSlice from './slices/Internet.slice'
 import totalDepartmentsReducer from './slices/totalDepartments.slice'
 import totalSkillsReducer from './slices/totalSkills.slice'
 import totalAdvisorReducer from './slices/totalAdvisors.slice'
+import totalExportStudentMappingsReducer from './slices/totalExportMappings.Slice'
+import defaultExportStudentMappingsReducer from './slices/defaultExportMappings.slice'
 
 export const store = configureStore({
   reducer: {
@@ -11,7 +13,9 @@ export const store = configureStore({
     isConnected: CheckInternetSlice,
     totalDepartments: totalDepartmentsReducer,
     totalSkills: totalSkillsReducer,
-    totalAdvisors: totalAdvisorReducer
+    totalAdvisors: totalAdvisorReducer,
+    totalExportStudentMappings: totalExportStudentMappingsReducer,
+    defaultExportStudentMappings: defaultExportStudentMappingsReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
