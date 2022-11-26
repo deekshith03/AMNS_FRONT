@@ -22,10 +22,7 @@ const StackNavigator = () => {
   dispatch(isConnected())
 
   return (
-    <Stack.Navigator
-      initialRouteName={'AuthScreen'}
-      navigationRef={navigationRef}
-    >
+    <Stack.Navigator initialRouteName={'Home'} navigationRef={navigationRef}>
       <Stack.Screen
         name="AuthScreen"
         component={AuthScreen}

@@ -58,6 +58,7 @@ const SignUp = () => {
           const data = res.data
           await SecureStore.setItemAsync('AccessToken', data.AccessToken)
           await SecureStore.setItemAsync('RefreshToken', data.RefreshToken)
+          await SecureStore.setItemAsync('type', data.type)
           RootNavigation.navigate('Home')
         })
         .catch((error) => {
@@ -119,7 +120,8 @@ const SignUp = () => {
             <Text style={styles.headingFont}>Signup</Text>
           </View>
           <View
-            style={[globalStyles.inputBoxContainer, styles.inputBoxContainer]}>
+            style={[globalStyles.inputBoxContainer, styles.inputBoxContainer]}
+          >
             <InputBox
               value={name}
               handleChange={setName}
