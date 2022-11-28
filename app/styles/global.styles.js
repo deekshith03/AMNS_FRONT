@@ -8,6 +8,10 @@ const globalStyles = StyleSheet.create({
     fontSize: 18,
     textTransform: 'capitalize'
   },
+  alignContentCenter: {
+    alignContent: 'center',
+    justifyContent: 'center'
+  },
   buttonStyle: {
     alignItems: 'center',
     backgroundColor: colors.loginpink,
@@ -18,7 +22,7 @@ const globalStyles = StyleSheet.create({
     paddingVertical: 10
   },
   container: {
-    flex: 1,
+    display: 'flex',
     height: '100%',
     marginTop: 40,
     width: '100%'
@@ -67,6 +71,9 @@ const globalStyles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '600',
     padding: 4
+  },
+  text: {
+    fontFamily: 'Roboto',
   },
   textAlignCenter: {
     textAlign: 'center'

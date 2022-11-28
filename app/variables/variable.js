@@ -6,7 +6,7 @@ const Base_uri = 'http://10.0.2.2:8080/'
 
 export const axiosInstance = axios.create({
   baseURL: Base_uri,
-  timeout: 1000
+  timeout: 1000,
 })
 
 const errorComposer = (error) => {
@@ -14,7 +14,7 @@ const errorComposer = (error) => {
     const statusCode = error.response ? error.response.status : null
     console.log(
       '🚀 ~ file: variable.js ~ line 15 ~ return ~ statusCode',
-      statusCode
+      error.response.data
     )
 
     if (statusCode === 401) {

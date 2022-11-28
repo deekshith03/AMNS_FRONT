@@ -25,7 +25,8 @@ const InputBox = ({
   keyboardAppearance,
   error,
   errorColor,
-  type
+  type,
+  width
 }) => {
   const validationColor = error ? errorColor : placeholderTextColor
 
@@ -56,7 +57,7 @@ const InputBox = ({
     inputContainer: {
       display: 'flex',
       flexDirection: 'row',
-      width: '100%'
+      width: width ? width : '100%'
     }
   })
 
@@ -115,7 +116,8 @@ InputBox.propTypes = {
   keyboardAppearance: propTypes.string,
   error: propTypes.string,
   errorColor: propTypes.string,
-  type: propTypes.string
+  type: propTypes.string,
+  width: propTypes.string
 }
 
 export default InputBox

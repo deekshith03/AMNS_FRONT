@@ -3,6 +3,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer'
 import React from 'react'
 import { TouchableOpacity } from 'react-native'
 import { AddStaff } from '../screens/admin/AddStaff.admin.screen'
+import { Logout } from '../screens/Logout.screen'
 import { Mailer } from '../screens/Mailer.screen'
 import globalStyles from '../styles/global.styles'
 const AdminNav = createDrawerNavigator()
@@ -50,6 +51,14 @@ export const AdminNavigator = () => {
         options={{
           ...options,
           title: 'Send Mail'
+        }}
+      />
+      <AdminNav.Screen
+        name="Logout"
+        component={Logout}
+        options={{
+          ...options,
+          title: 'Logout'
         }}
       />
       {/* <AdminNav.Screen
