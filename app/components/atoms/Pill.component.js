@@ -21,13 +21,14 @@ const Pill = ({
   textTransform = null,
   marginRight = 10,
   marginBottom = 10,
-  closeFlag = false
+  closeFlag = false,
+  outlined = false
 }) => {
   const btnBgColor = backgroundColor ? backgroundColor : colors.black
   const btnTextColor = fontColor ? colors.white : fontColor
   const styles = StyleSheet.create({
     fontStyle: {
-      color: btnTextColor,
+      color: outlined ? btnBgColor : btnTextColor,
       fontFamily: fontFamily,
       fontSize: fontSize,
       textTransform: textTransform ? textTransform : 'none'
@@ -37,8 +38,11 @@ const Pill = ({
     },
     pillStyle: {
       alignItems: alignItems,
-      backgroundColor: btnBgColor,
+      backgroundColor: outlined ? colors.white : btnBgColor,
+      borderColor: btnBgColor,
       borderRadius: borderRadius,
+      borderStyle: 'solid',
+      borderWidth: 1.5,
       display: 'flex',
       elevation: 8,
       flexDirection: 'row',
@@ -68,7 +72,7 @@ const Pill = ({
 }
 
 Pill.propTypes = {
-  text: PropTypes.string.isRequired,
+  text: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   handleClick: PropTypes.func,
   alignItems: PropTypes.string,
   backgroundColor: PropTypes.string,
@@ -82,7 +86,8 @@ Pill.propTypes = {
   textTransform: PropTypes.string,
   marginRight: PropTypes.number,
   marginBottom: PropTypes.number,
-  closeFlag: PropTypes.bool
+  closeFlag: PropTypes.bool,
+  outlined: PropTypes.bool
 }
 
 export default Pill

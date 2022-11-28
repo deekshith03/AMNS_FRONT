@@ -120,7 +120,8 @@ const SignUp = () => {
             <Text style={styles.headingFont}>Signup</Text>
           </View>
           <View
-            style={[globalStyles.inputBoxContainer, styles.inputBoxContainer]}>
+            style={[globalStyles.inputBoxContainer, styles.inputBoxContainer]}
+          >
             <InputBox
               value={name}
               handleChange={setName}

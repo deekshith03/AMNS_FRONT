@@ -9,8 +9,7 @@ export const Home = () => {
       const type = await SecureStore.getItemAsync('type')
       if (type === null) {
         RootNavigation.navigate('AuthScreen')
-      }
-      else {
+      } else {
         setType(type)
       }
     }
