@@ -1,12 +1,11 @@
-import { View, StyleSheet } from 'react-native'
-import React from 'react'
-import SearchProfileType from '../components/molecules/SearchProfileType.component'
 import PropTypes from 'prop-types'
-import { useState } from 'react'
+import React, { useState } from 'react'
+import { StyleSheet, View } from 'react-native'
+import DismissKeyBoard from '../components/atoms/DismissKeyBoard.component'
+import ExportSearchData from '../components/molecules/ExportSearchData.component'
+import SearchProfileType from '../components/molecules/SearchProfileType.component'
 import SearchBar from '../components/organisms/SearchBar.component'
 import SearchPageResults from '../components/organisms/SearchPageResults.component'
-import ExportSearchData from '../components/molecules/ExportSearchData.component'
-import DismissKeyBoard from '../components/atoms/DismissKeyBoard.component'
 
 const SearchScreen = ({ userType }) => {
   const styles = StyleSheet.create({

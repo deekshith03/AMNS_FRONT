@@ -1,12 +1,12 @@
-import { ScrollView } from 'react-native'
-import React from 'react'
-import SearchTile from '../atoms/SearchTile.component'
 import PropTypes from 'prop-types'
+import React from 'react'
+import { ScrollView } from 'react-native'
+import SearchTile from '../atoms/SearchTile.component'
 
 const SearchPageResults = ({ searchPhraseResults, studentSelected }) => {
   return (
     <ScrollView>
-      {searchPhraseResults.length > 0 ? (
+      {searchPhraseResults.length > 0 &&
         <ScrollView keyboardShouldPersistTaps={'always'}>
           {searchPhraseResults.map((value, ind) => {
             let department_name = ''
@@ -39,26 +39,10 @@ const SearchPageResults = ({ searchPhraseResults, studentSelected }) => {
                 department_name.length > 0
                   ? department_name
                   : company_name.length > 0
-                  ? company_name
-                  : ''
+                    ? company_name
+                    : ''
             }
 
-            if (ind == searchPhraseResults.length - 1) {
-              return (
-                <SearchTile
-                  key={ind}
-                  title={value.personal_info.name}
-                  subTitle={subTitle}
-                  imageUrl={
-                    'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
-                  }
-                  position="bottom"
-                  handleClick={() => {
-                    console.log('profile clicked')
-                  }}
-                />
-              )
-            }
             return (
               <SearchTile
                 key={ind}
@@ -70,11 +54,11 @@ const SearchPageResults = ({ searchPhraseResults, studentSelected }) => {
                 handleClick={() => {
                   console.log('profile clicked')
                 }}
+                position={ind == searchPhraseResults.length - 1 ? "bottom" : ""}
               />
             )
           })}
-        </ScrollView>
-      ) : null}
+        </ScrollView>}
     </ScrollView>
   )
 }

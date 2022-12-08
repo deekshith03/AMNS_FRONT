@@ -11,7 +11,8 @@ export const colors = {
   backgroundColorDim: 'rgba(0, 0, 0, 0.6)',
   loadingSpinner: '#00cc00',
   lightGrey: '#696969',
-  backgroundInputSearch: '#d9dbda'
+  backgroundInputSearch: '#d9dbda',
+  blue: '#1a89c8'
 }
 
 export const colors_dark = {

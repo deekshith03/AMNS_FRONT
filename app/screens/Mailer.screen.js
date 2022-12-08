@@ -5,21 +5,49 @@ import React, { useCallback, useRef, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { showMessage } from 'react-native-flash-message';
 import { actions, RichEditor, RichToolbar } from "react-native-pell-rich-editor";
+import RBSheet from 'react-native-raw-bottom-sheet';
 import CustomButton from '../components/atoms/CustomButton.component.js';
 import InputBox from "../components/atoms/input.component";
 import { UploadContainer } from '../components/atoms/UploadContainer.component.js';
+import SearchProfileType from '../components/molecules/SearchProfileType.component.js';
+import SearchBar from '../components/organisms/SearchBar.component.js';
+import { SearchResults } from '../components/organisms/SearchResults.compononts.js';
 import globalStyles from "../styles/global.styles";
 import { createFormData } from '../utils/FormData.utils.js';
 import { colors } from '../variables/colors.variables';
 import { axiosInstance } from '../variables/variable.js';
 
 export const Mailer = () => {
+  const refRBSheet = useRef()
+
   const [subject, setSubject] = useState('')
-  const [addresses, setAddresses] = useState('')
+  const [studentSelected, setStudentSelected] = useState(true)
+  const [searchPhraseResults, setSearchPhraseResults] = useState([])
+  const [searchPhrase, setSearchPhrase] = useState('')
+
   const [percent, setPercentage] = useState({})
   const [uploads, setUploads] = useState([])
   const [fileName, setfileNames] = useState({})
-  // console.log("🚀 ~ file: mailer.screen.js ~ line 22 ~ Mailer ~ fileName", fileName)
+
+  const [addresses, setAddressess] = useState([])
+  const [selectedStudents, setSelectedStudents] = useState([])
+
+  const [Html, setHtml] = useState("")
+
+  const handleAddAddress = (address) => {
+    setAddressess([...addresses, address])
+  }
+  const handleRemoveAddress = (address) => {
+    setAddressess((uls) => uls.filter((el) => el !== address))
+  }
+
+  const handleProfilesearchType = (value) => {
+    if (
+      (value != 'student' && studentSelected) ||
+      (value != 'staff' && !studentSelected)
+    )
+      setStudentSelected((prevData) => !prevData)
+  }
 
   const getConfig = (name) => {
     return {
@@ -47,6 +75,40 @@ export const Mailer = () => {
   }, []);
 
   const handleSend = async () => {
+    const body = {
+      to: addresses,
+      subject,
+      html: Html,
+      files: fileName
+    }
+    // console.log("🚀 ~ file: Mailer.screen.js:82 ~ handleSend ~ body", body)
+    await axiosInstance
+      .post('/api/sendmail', body)
+      .then(async (res) => {
+        showMessage({
+          message: res.data.msg,
+          type: 'success',
+          position: 'bottom'
+        })
+      })
+      .catch((error) => {
+        const statusCode = error.response ? error.response.status : null
+        console.log("🚀 ~ file: Mailer.screen.js:96 ~ handleSend ~ error.response", error.response)
+        if (statusCode === 500 || statusCode === 400) {
+          const errMsg =
+            error.response.data.errors[0].message === undefined
+              ? error.response.data.errors[0].msg
+              : error.response.data.errors[0].message
+
+          showMessage({
+            message: errMsg,
+            type: 'danger',
+            position: 'bottom'
+          })
+        } else {
+          error.handleGlobally && error.handleGlobally()
+        }
+      })
   }
 
   const deleteFile = async (name) => {
@@ -152,7 +214,8 @@ export const Mailer = () => {
       </View>
       <View style={[style.inputContainer]}>
         <Text style={[style.label, globalStyles.text]}>To:</Text>
-        <InputBox value={addresses} handleChange={setAddresses} width={"90%"} />
+        <CustomButton text='Select' backgroundColor={colors.white} width={500} handleClick={() => refRBSheet.current.open()} />
+
       </View>
       <View style={[style.inputContainer]}>
         <Text style={[style.label, globalStyles.text]}>Subject:</Text>
@@ -177,9 +240,37 @@ export const Mailer = () => {
         disabledIconTint={'#bfbfbf'}
         onPressAddImage={onPressAddImage}
       />
-      <RichEditor placeholder={"Enter your message"} ref={message} initialHeight={300} />
+      <RichEditor placeholder={"Enter your message"} ref={message} initialHeight={300} onChange={setHtml} />
     </View>
     {uploads && <View style={style.uploadContainer}>{uploads.map((item) => <UploadContainer file={item} percentage={percent[item]} key={item} deleteFile={deleteFile} />)}</View>}
+
+    <RBSheet ref={refRBSheet}
+      closeOnDragDown={true}
+      closeOnPressMask={true}
+      closeOnPressBack={true}
+      height={710}
+      customStyles={{
+        wrapper: {
+          backgroundColor: 'transparent'
+        },
+        draggableIcon: {
+          backgroundColor: '#000'
+        }
+      }}>
+      <SearchProfileType
+        userType={"admin"}
+        studentSelected={studentSelected}
+        handleProfilesearchType={handleProfilesearchType}
+      />
+      <SearchBar userType='admin'
+        studentSelected={studentSelected}
+        searchPhraseResults={searchPhraseResults}
+        handleSearchPhraseResults={setSearchPhraseResults}
+        searchPhrase={searchPhrase}
+        changeSearchPhraseText={setSearchPhrase}
+      />
+      <SearchResults results={searchPhraseResults} selectable={true} setAddressess={handleAddAddress} removeAddress={handleRemoveAddress} selectedStudents={selectedStudents} setSelectedStudents={setSelectedStudents} />
+    </RBSheet>
   </ScrollView>
 }
 

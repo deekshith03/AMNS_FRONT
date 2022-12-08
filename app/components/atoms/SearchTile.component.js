@@ -1,24 +1,36 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
-import React from 'react'
-import { colors } from '../../variables/colors.variables'
-import PropTypes from 'prop-types'
+import Checkbox from 'expo-checkbox';
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { colors } from '../../variables/colors.variables';
 
 const SearchTile = ({
   imageUrl = '',
   title,
+  email,
   subTitle = '',
   position,
   handleClick,
-  titleFontWeight = 'normal'
+  titleFontWeight = 'normal',
+  selectable,
+  setAddressess,
+  removeAddress,
+  member,
+  selected,
+  setSelectedStudents
 }) => {
   const styles = StyleSheet.create({
+    checkBoxContainer: {
+      margin: 12,
+      padding: 2
+    },
+
     imageStyles: {
       borderRadius: 75,
       borderWidth: 2,
-      height: 50,
-      width: 50
+      height: 40,
+      width: 40
     },
-
     subTitleFontStyles: {
       fontFamily: 'Roboto',
       fontSize: 15
@@ -27,6 +39,7 @@ const SearchTile = ({
       marginLeft: 15
     },
     tileStyles: {
+      alignItems: 'center',
       borderBottomWidth: 1,
       borderColor: colors.backgroundInputSearch,
       borderStyle: 'solid',
@@ -45,38 +58,66 @@ const SearchTile = ({
     }
   })
 
+  const [isChecked, setChecked] = useState(selected === true)
+
   let dynamicTitleStyles = [styles.tileStyles]
 
-  if (position == 'bottom') {
+  if (position === 'bottom') {
     dynamicTitleStyles = [...dynamicTitleStyles, styles.tileStylesBottom]
   }
+
+  const hancleCheckBox = () => {
+    !isChecked ? setAddressess(email) : removeAddress(email)
+    if (!isChecked) {
+      console.log("🚀 ~ file: SearchTile.component.js:73 ~ hancleCheckBox ~ setSelectedStudents &&", setSelectedStudents)
+      setSelectedStudents && setSelectedStudents(oldValue => [...oldValue, member])
+    }
+    else {
+      console.log("🚀 ~ file: SearchTile.component.js:73 ~ hancleCheckBox ~ setSelectedStudents &&", setSelectedStudents)
+      setSelectedStudents && setSelectedStudents((uls) => uls.filter((el) => el.personal_info.email !== email))
+    }
+    setChecked(!isChecked)
+  }
+
+  if (selectable) {
+    handleClick = hancleCheckBox
+  }
+
   return (
     <TouchableOpacity style={dynamicTitleStyles} onPress={handleClick}>
-      {imageUrl.length > 0 ? (
-        <Image
+      {selectable && <Checkbox value={isChecked} onValueChange={hancleCheckBox} style={styles.checkBoxContainer} color={colors.blue} />}
+      {
+        imageUrl.length > 0 && <Image
           style={styles.imageStyles}
           source={{
             uri: imageUrl
           }}
           resizeMode={'cover'}
         />
-      ) : null}
+      }
       <View style={styles.textContainer}>
         <Text style={styles.titleFontStyles}>{title}</Text>
-        {subTitle.length > 0 ? (
+        {subTitle.length > 0 &&
           <Text style={styles.subTitleFontStyles}>{subTitle}</Text>
-        ) : null}
+        }
       </View>
-    </TouchableOpacity>
+    </TouchableOpacity >
   )
 }
 SearchTile.propTypes = {
   imageUrl: PropTypes.string,
   title: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   subTitle: PropTypes.string,
+  email: PropTypes.string,
   position: PropTypes.string,
   handleClick: PropTypes.func.isRequired,
-  titleFontWeight: PropTypes.string
+  titleFontWeight: PropTypes.string,
+  selectable: PropTypes.bool,
+  setAddressess: PropTypes.func,
+  removeAddress: PropTypes.func,
+  member: PropTypes.object,
+  selected: PropTypes.bool,
+  setSelectedStudents: PropTypes.func
 }
 
 export default SearchTile

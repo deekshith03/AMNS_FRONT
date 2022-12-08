@@ -1,28 +1,23 @@
-import {
-  View,
-  StyleSheet,
-  TextInput,
-  Text,
-  Pressable,
-  ScrollView
-} from 'react-native'
-import React, { useState, useRef, useEffect } from 'react'
-import { colors } from '../../variables/colors.variables.js'
 import { Feather, Ionicons } from '@expo/vector-icons'
-import CustomButton from '../atoms/CustomButton.component.js'
+import PropTypes from 'prop-types'
+import React, { useEffect, useRef, useState } from 'react'
+import {
+  Pressable,
+  ScrollView, StyleSheet, Text, TextInput, View
+} from 'react-native'
+import { showMessage } from 'react-native-flash-message'
 import RBSheet from 'react-native-raw-bottom-sheet'
-import Pill from '../atoms/Pill.component.js'
-import SearchTile from '../atoms/SearchTile.component.js'
 import { useDispatch, useSelector } from 'react-redux'
+import { changeState } from '../../redux/slices/loading.slice.js'
+import { setTotalAdvisors } from '../../redux/slices/totalAdvisors.slice.js'
 import { setTotalDepartments } from '../../redux/slices/totalDepartments.slice.js'
 import { setTotalSkills } from '../../redux/slices/totalSkills.slice.js'
-import { setTotalAdvisors } from '../../redux/slices/totalAdvisors.slice.js'
-import { changeState } from '../../redux/slices/loading.slice.js'
-import { collegeStartYear } from '../../variables/variable.js'
-import { axiosInstance } from '../../variables/variable.js'
-import { showMessage } from 'react-native-flash-message'
-import PropTypes from 'prop-types'
+import { colors } from '../../variables/colors.variables.js'
+import { axiosInstance, collegeStartYear } from '../../variables/variable.js'
+import CustomButton from '../atoms/CustomButton.component.js'
 import CustomContentLoader from '../atoms/CustomContentLoader.component.js'
+import Pill from '../atoms/Pill.component.js'
+import SearchTile from '../atoms/SearchTile.component.js'
 
 const styles = StyleSheet.create({
   addIconStyles: { marginLeft: 1 },
@@ -97,14 +92,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginLeft: 10,
     width: '85%'
-  },
-
-  pillContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginBottom: 15,
-    marginTop: 15
   },
 
   resetTextStyles: {
@@ -215,7 +202,7 @@ const SearchBar = ({
   }, [studentSelected])
 
   useEffect(() => {
-    handleappliedFilters(appliedFilters)
+    handleappliedFilters && handleappliedFilters(appliedFilters)
   }, [appliedFilters])
 
   const handleFilterOptions = async (currFilter) => {
@@ -483,8 +470,8 @@ const SearchBar = ({
       </View>
 
       {searchPhrase.length > 0 &&
-      searchPhraseResults.length === 0 &&
-      Contentloader ? (
+        searchPhraseResults.length === 0 &&
+        Contentloader ? (
         <>
           <CustomContentLoader />
           <CustomContentLoader />
@@ -538,14 +525,13 @@ const SearchBar = ({
                       />
                     </View>
                     {appliedFilters[option] &&
-                    appliedFilters[option].length > 0 ? (
+                      appliedFilters[option].length > 0 ? (
                       <Pill
                         key={ind}
                         text={
                           appliedFilters[option].length > 1
-                            ? `${appliedFilters[option][0]} + ${
-                                appliedFilters[option].length - 1
-                              }`
+                            ? `${appliedFilters[option][0]} + ${appliedFilters[option].length - 1
+                            }`
                             : `${appliedFilters[option][0]}`
                         }
                         alignItems={'center'}
@@ -640,25 +626,25 @@ const SearchBar = ({
           <View style={styles.pillContainer}>
             {appliedFilters[currentFilter]
               ? appliedFilters[currentFilter].map((value, ind) => {
-                  return (
-                    <Pill
-                      key={ind}
-                      text={value}
-                      alignItems={'center'}
-                      backgroundColor={colors.loginpink}
-                      fontColor={colors.black}
-                      fontFamily={'Roboto'}
-                      fontSize={12}
-                      paddingHorizontal={5}
-                      paddingVertical={6}
-                      borderRadius={15}
-                      marginBottom={6}
-                      handleClick={() => {
-                        handlePillCancel(value)
-                      }}
-                    />
-                  )
-                })
+                return (
+                  <Pill
+                    key={ind}
+                    text={value}
+                    alignItems={'center'}
+                    backgroundColor={colors.loginpink}
+                    fontColor={colors.black}
+                    fontFamily={'Roboto'}
+                    fontSize={12}
+                    paddingHorizontal={5}
+                    paddingVertical={6}
+                    borderRadius={15}
+                    marginBottom={6}
+                    handleClick={() => {
+                      handlePillCancel(value)
+                    }}
+                  />
+                )
+              })
               : null}
           </View>
           {currentFilterOptions &&
@@ -668,7 +654,7 @@ const SearchBar = ({
                 option.isInteger
                   ? option.match(regex)
                   : option.toString().match(regex) &&
-                    searchWithFullResults.includes(currentFilter)
+                  searchWithFullResults.includes(currentFilter)
               ) {
                 if (ind == currentFilterOptions.length - 1) {
                   return (
@@ -727,7 +713,7 @@ SearchBar.propTypes = {
   handleSearchPhraseResults: PropTypes.func.isRequired,
   searchPhrase: PropTypes.string.isRequired,
   changeSearchPhraseText: PropTypes.func.isRequired,
-  handleappliedFilters: PropTypes.func.isRequired
+  handleappliedFilters: PropTypes.func
 }
 
 export default SearchBar
