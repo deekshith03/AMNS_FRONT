@@ -1,7 +1,6 @@
 import { Feather } from '@expo/vector-icons';
 import * as DocumentPicker from 'expo-document-picker';
-import * as ImagePicker from 'expo-image-picker';
-import React, { useCallback, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { showMessage } from 'react-native-flash-message';
 import { actions, RichEditor, RichToolbar } from "react-native-pell-rich-editor";
@@ -63,17 +62,6 @@ export const Mailer = () => {
 
   let message = useRef();
 
-  let onPressAddImage = useCallback(async () => {
-    let image = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-      base64: true
-    });
-    message.current?.insertImage(`data:${image.mime};base64,${image.base64}`);
-  }, []);
-
   const handleSend = async () => {
     const body = {
       to: addresses,
@@ -81,7 +69,6 @@ export const Mailer = () => {
       html: Html,
       files: fileName
     }
-    // console.log("🚀 ~ file: Mailer.screen.js:82 ~ handleSend ~ body", body)
     await axiosInstance
       .post('/api/sendmail', body)
       .then(async (res) => {
@@ -93,7 +80,6 @@ export const Mailer = () => {
       })
       .catch((error) => {
         const statusCode = error.response ? error.response.status : null
-        console.log("🚀 ~ file: Mailer.screen.js:96 ~ handleSend ~ error.response", error.response)
         if (statusCode === 500 || statusCode === 400) {
           const errMsg =
             error.response.data.errors[0].message === undefined
@@ -228,7 +214,6 @@ export const Mailer = () => {
           actions.setUnderline,
           actions.insertBulletsList,
           actions.insertOrderedList,
-          actions.insertImage,
           actions.undo,
           actions.redo,
           'attachments'
@@ -238,7 +223,6 @@ export const Mailer = () => {
         editor={message}
         selectedIconTint={'#2095F2'}
         disabledIconTint={'#bfbfbf'}
-        onPressAddImage={onPressAddImage}
       />
       <RichEditor placeholder={"Enter your message"} ref={message} initialHeight={300} onChange={setHtml} />
     </View>

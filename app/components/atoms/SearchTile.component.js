@@ -69,11 +69,9 @@ const SearchTile = ({
   const hancleCheckBox = () => {
     !isChecked ? setAddressess(email) : removeAddress(email)
     if (!isChecked) {
-      console.log("🚀 ~ file: SearchTile.component.js:73 ~ hancleCheckBox ~ setSelectedStudents &&", setSelectedStudents)
       setSelectedStudents && setSelectedStudents(oldValue => [...oldValue, member])
     }
     else {
-      console.log("🚀 ~ file: SearchTile.component.js:73 ~ hancleCheckBox ~ setSelectedStudents &&", setSelectedStudents)
       setSelectedStudents && setSelectedStudents((uls) => uls.filter((el) => el.personal_info.email !== email))
     }
     setChecked(!isChecked)
