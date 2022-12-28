@@ -1,34 +1,53 @@
 import { Feather } from '@expo/vector-icons'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import React from 'react'
-import { TouchableOpacity } from 'react-native'
+import { TouchableOpacity, View } from 'react-native'
 import { AddStaff } from '../screens/admin/AddStaff.admin.screen'
-import { Logout } from '../screens/Logout.screen'
 import { Mailer } from '../screens/Mailer.screen'
+import { SearchScreenAdmin } from '../screens/searchScreenAdmin.screen'
 import globalStyles from '../styles/global.styles'
+import { colors } from '../variables/colors.variables'
 const AdminNav = createDrawerNavigator()
 
 import * as RootNavigation from './RootNavigation.navigator'
-const navigateTo = () => {
-  RootNavigation.navigate('NotificationScreen')
+const navigateTo = (screen) => {
+  RootNavigation.navigate(screen)
 }
 
 const notificationIcon = () => {
   return (
-    <TouchableOpacity onPress={navigateTo}>
+    <TouchableOpacity onPress={() => navigateTo('NotificationScreen')}>
       <Feather name="bell" size={26} style={globalStyles.mh10} />
+    </TouchableOpacity>
+  )
+}
+
+const logoutIcon = () => {
+  return (
+    <TouchableOpacity onPress={() => navigateTo('AuthScreen')}>
+      <Feather
+        name="log-out"
+        size={26}
+        style={globalStyles.mh10}
+        color={colors.red}
+      />
     </TouchableOpacity>
   )
 }
 
 const options = {
   headerTransparent: true,
-  headerRight: () => notificationIcon()
+  headerRight: () => (
+    <View style={[globalStyles.dflex, globalStyles.flexRow]}>
+      {notificationIcon()}
+      {logoutIcon()}
+    </View>
+  )
 }
 
 export const AdminNavigator = () => {
   return (
-    <AdminNav.Navigator initialRouteName="Mailer">
+    <AdminNav.Navigator initialRouteName="Search">
       <AdminNav.Screen
         name="AddStaff"
         component={AddStaff}
@@ -37,14 +56,14 @@ export const AdminNavigator = () => {
           title: 'Add Staff'
         }}
       />
-      {/* <AdminNav.Screen
-        name="Students"
-        component={SearchBar}
+      <AdminNav.Screen
+        name="Search"
+        component={SearchScreenAdmin}
         options={{
           ...options,
-          title: 'Students'
+          title: 'Search'
         }}
-      /> */}
+      />
       <AdminNav.Screen
         name="Mailer"
         component={Mailer}
@@ -53,22 +72,6 @@ export const AdminNavigator = () => {
           title: 'Send Mail'
         }}
       />
-      <AdminNav.Screen
-        name="Logout"
-        component={Logout}
-        options={{
-          ...options,
-          title: 'Logout'
-        }}
-      />
-      {/* <AdminNav.Screen
-        name="NotificationScreen"
-        component={Notification}
-        options={{
-          headerTransparent: true,
-          title: 'Notifications'
-        }}
-      /> */}
     </AdminNav.Navigator>
   )
 }

@@ -2,6 +2,8 @@ import { Feather } from '@expo/vector-icons'
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import {
+  Modal,
+  ScrollView,
   SectionList,
   StyleSheet,
   Text,
@@ -10,56 +12,148 @@ import {
 } from 'react-native'
 import globalStyles from '../../styles/global.styles'
 import { colors } from '../../variables/colors.variables'
+import CenteredMessage from '../atoms/CenteredMessage.component'
+import CustomButton from '../atoms/CustomButton.component'
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'flex-start',
+    flexDirection: 'row',
+    marginHorizontal: 10,
+    marginVertical: 5
+  },
+  containerUnread: {
+    backgroundColor: colors.notificationTile,
+    borderRadius: 15
+  },
+  content: {
+    flex: 1,
+    marginHorizontal: 10,
+    marginVertical: 3
+  },
+  contentHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginEnd: 10
+  },
+  feather: {
+    marginLeft: 5,
+    marginVertical: 10
+  },
+  modalBody: {
+    marginHorizontal: 5,
+    padding: 5
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'flex-end'
+  },
+  modalView: {
+    alignItems: 'center',
+    backgroundColor: colors.white,
+    borderRadius: 20,
+    elevation: 10,
+    margin: 10,
+    maxHeight: 300,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    shadowColor: colors.textColor,
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4
+  },
+  sectionHeader: {
+    fontSize: 20,
+    fontWeight: '700',
+    letterSpacing: 0.5,
+    padding: 6
+  },
+  time: {
+    color: colors.lightGrey,
+    fontSize: 12
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: '500',
+    letterSpacing: 1
+  },
+  unReadTitle: {
+    color: colors.black,
+    fontSize: 16,
+    fontWeight: '700',
+    letterSpacing: 1
+  }
+})
 
 const NotificationList = ({ notification }) => {
-  const [notifications, setNotifications] = useState(notification)
+  const [modalVisible, setModalVisible] = useState(false)
+  const [selectedItem, setSelectedItem] = useState(null)
+  const [notifications, setNotifications] = useState([...notification])
 
-  const markRead = (id) => {
-    // notification[id].read = true
-    setNotifications(
-      notifications.map((item) => {
-        return item.id === id ? { ...item, read: true } : item
-      })
-    )
+  const markRead = async (id) => {
+    try {
+      setNotifications(
+        notifications.map((item) => {
+          return item._id === id ? { ...item, read: true } : item
+        })
+      )
+      // apiWrapper(putNotification, id)
+    } catch (err) {
+      console.log(err)
+    }
   }
 
-  notifications.sort((a, b) => b.time.getTime() - a.time.getTime())
+  notifications.sort(
+    (a, b) =>
+      new Date(b.notification.time).getTime() -
+      new Date(a.notification.time).getTime()
+  )
+
+  const date = new Date(),
+    yesterday = new Date()
+  yesterday.setDate(yesterday.getDate() - 1)
+
   const DATA = [
     {
       title: 'Today',
       data: notifications.filter((item) => {
-        return new Date().getDate() === item.time.getDate()
+        return date.getDate() === new Date(item.notification.time).getDate()
+      })
+    },
+    {
+      title: 'Yesterday',
+      data: notifications.filter((item) => {
+        return (
+          yesterday.getDate() === new Date(item.notification.time).getDate()
+        )
       })
     },
     {
       title: 'Earlier',
       data: notifications.filter((item) => {
-        return new Date().getDate() > item.time.getDate()
+        return (
+          date.getDate() !== new Date(item.notification.time).getDate() &&
+          yesterday.getDate() !== new Date(item.notification.time).getDate()
+        )
       })
     }
   ]
 
   return !notifications.length ? (
-    <View style={styles.textContainer}>
-      <Text style={[globalStyles.h1, globalStyles.textAlignCenter]}>
-        No Notifications
-      </Text>
-      <Text
-        style={[
-          globalStyles.textAlignCenter,
-          globalStyles.p,
-          globalStyles.font300
-        ]}
-      >
-        Please come back later to see what you have got.
-      </Text>
-    </View>
+    <CenteredMessage
+      title={'No Notifications'}
+      message={
+        'Please come back later to see what you have got.'
+      }></CenteredMessage>
   ) : (
     <View>
       <SectionList
         sections={DATA}
         renderSectionHeader={({ section }) => (
-          <Text style={styles.sectionHeader}>
+          <Text style={[styles.sectionHeader, globalStyles.textAlignCenter]}>
             {section.data.length ? section.title : <View />}
           </Text>
         )}
@@ -67,115 +161,103 @@ const NotificationList = ({ notification }) => {
           const Notification = item.item
           return (
             <TouchableOpacity
-              onPress={() => !item.read && markRead(Notification.id)}
-            >
-              <View style={styles.container}>
+              onPress={() => {
+                !Notification.read && markRead(Notification._id),
+                  setSelectedItem(Notification),
+                  setModalVisible(!modalVisible)
+              }}>
+              <View
+                style={[
+                  !Notification.read
+                    ? [styles.container, styles.containerUnread]
+                    : [styles.container]
+                ]}>
                 <View style={styles.feather}>
-                  <Feather name="mail" size={18} />
+                  <Feather name="mail" size={24} color={'grey'} />
                 </View>
 
                 <View style={styles.content}>
-                  <View style={styles.text}>
+                  <View style={[styles.contentHeader, globalStyles.mv5]}>
                     <Text
                       style={
                         !Notification.read ? styles.unReadTitle : styles.title
-                      }
-                    >
-                      {Notification.title}
+                      }>
+                      {Notification.notification.title}
                     </Text>
-
-                    <Text
-                      style={
-                        !Notification.read
-                          ? styles.unReadDescription
-                          : styles.description
-                      }
-                    >
-                      {Notification.description}
+                    <Text style={styles.time}>
+                      {new Date(Notification.notification.time).getHours()}
+                      {':'}
+                      {String(
+                        new Date(Notification.notification.time).getMinutes()
+                      ).padStart(2, '0')}
                     </Text>
                   </View>
 
+                  <Text
+                    numberOfLines={3}
+                    ellipsizeMode="tail"
+                    style={
+                      !Notification.read
+                        ? [globalStyles.p, globalStyles.font500]
+                        : globalStyles.p
+                    }>
+                    {Notification.notification.description}
+                  </Text>
+
                   <Text style={styles.time}>
-                    {Notification.time.toLocaleString()}
+                    {new Date(
+                      Notification.notification.time
+                    ).toLocaleDateString()}
                   </Text>
                 </View>
-
-                <TouchableOpacity>
-                  <Feather name="more-vertical" size={17} />
-                </TouchableOpacity>
               </View>
             </TouchableOpacity>
           )
-        }}
-      ></SectionList>
+        }}></SectionList>
+      {selectedItem ? (
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => setModalVisible(!modalVisible)}>
+          <View style={styles.modalContainer}>
+            <View style={styles.modalView}>
+              <Text style={[globalStyles.h1, globalStyles.mv5]}>
+                {selectedItem.notification.title}
+              </Text>
+              <ScrollView>
+                <Text style={[globalStyles.p, styles.modalBody]}>
+                  {selectedItem.notification.description}
+                </Text>
+              </ScrollView>
+              <View style={globalStyles.mv5}>
+                <CustomButton
+                  text="Close"
+                  alignItems={'center'}
+                  backgroundColor={colors.loginpink}
+                  fontColor={colors.white}
+                  fontFamily={'Roboto'}
+                  fontSize={14}
+                  paddingHorizontal={5}
+                  paddingVertical={10}
+                  handleClick={() => {
+                    setModalVisible(!modalVisible)
+                  }}
+                  size={'small'}
+                  bordered={true}
+                />
+              </View>
+            </View>
+          </View>
+        </Modal>
+      ) : (
+        <></>
+      )}
     </View>
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'flex-start',
-    flexDirection: 'row',
-    paddingBottom: 3,
-    paddingLeft: 15,
-    paddingRight: 15,
-    paddingTop: 3
-  },
-  content: {
-    flex: 1,
-    marginHorizontal: 10,
-    paddingBottom: 8
-  },
-  description: {
-    fontSize: 13,
-    letterSpacing: 0.5
-  },
-  feather: {
-    padding: 3
-  },
-  sectionHeader: {
-    fontSize: 18,
-    fontWeight: '600',
-    marginBottom: 8,
-    paddingHorizontal: 15,
-    paddingVertical: 3
-  },
-  text: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginBottom: 5
-  },
-  textContainer: {
-    alignItems: 'center',
-    alignSelf: 'center',
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    width: '80%'
-  },
-  time: {
-    color: colors.lightGrey,
-    fontSize: 11
-  },
-  title: {
-    color: colors.textColor_dark,
-    fontSize: 16,
-    fontWeight: '400'
-  },
-  unReadDescription: {
-    fontSize: 13,
-    fontWeight: '600',
-    letterSpacing: 0.5
-  },
-  unReadTitle: {
-    color: colors.black,
-    fontSize: 16,
-    fontWeight: '600'
-  }
-})
-
 NotificationList.propTypes = {
   notification: PropTypes.array.isRequired
 }
-
 export default NotificationList

@@ -7,7 +7,7 @@ import SearchProfileType from '../components/molecules/SearchProfileType.compone
 import SearchBar from '../components/organisms/SearchBar.component'
 import SearchPageResults from '../components/organisms/SearchPageResults.component'
 
-const SearchScreen = ({ userType }) => {
+export const SearchScreen = ({ userType }) => {
   const styles = StyleSheet.create({
     menuContainer: {
       display: 'flex',
@@ -17,7 +17,7 @@ const SearchScreen = ({ userType }) => {
       width: '95%'
     },
     screenStyles: {
-      marginTop: 50
+      marginTop: 70
     }
   })
   const [studentSelected, setStudentSelected] = useState(true)
@@ -85,4 +85,3 @@ SearchScreen.propTypes = {
   userType: PropTypes.string.isRequired
 }
 
-export default SearchScreen

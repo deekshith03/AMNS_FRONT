@@ -45,6 +45,12 @@ const globalStyles = StyleSheet.create({
   font300: {
     fontWeight: '300'
   },
+  font500: {
+    fontWeight: '500'
+  },
+  font700: {
+    fontWeight: '700'
+  },
   h1: {
     fontSize: 24,
     fontWeight: '700'
@@ -69,11 +75,11 @@ const globalStyles = StyleSheet.create({
   },
   screenHeader: {
     fontSize: 20,
-    fontWeight: '600',
+    fontWeight: '500',
     padding: 4
   },
   text: {
-    fontFamily: 'Roboto',
+    fontFamily: 'Roboto'
   },
   textAlignCenter: {
     textAlign: 'center'

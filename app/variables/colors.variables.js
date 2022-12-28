@@ -12,7 +12,9 @@ export const colors = {
   loadingSpinner: '#00cc00',
   lightGrey: '#696969',
   backgroundInputSearch: '#d9dbda',
-  blue: '#1a89c8'
+  blue: '#1a89c8',
+  notificationTile: '#eff5f5',
+  red: '#ff0000'
 }
 
 export const colors_dark = {

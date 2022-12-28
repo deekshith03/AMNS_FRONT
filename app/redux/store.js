@@ -6,6 +6,7 @@ import totalSkillsReducer from './slices/totalSkills.slice'
 import totalAdvisorReducer from './slices/totalAdvisors.slice'
 import totalExportStudentMappingsReducer from './slices/totalExportMappings.Slice'
 import defaultExportStudentMappingsReducer from './slices/defaultExportMappings.slice'
+import notificationListReducer from './slices/notificationList.slice'
 
 export const store = configureStore({
   reducer: {
@@ -15,7 +16,8 @@ export const store = configureStore({
     totalSkills: totalSkillsReducer,
     totalAdvisors: totalAdvisorReducer,
     totalExportStudentMappings: totalExportStudentMappingsReducer,
-    defaultExportStudentMappings: defaultExportStudentMappingsReducer
+    defaultExportStudentMappings: defaultExportStudentMappingsReducer,
+    notificationList: notificationListReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
