@@ -1,6 +1,6 @@
 import Checkbox from 'expo-checkbox';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { colors } from '../../variables/colors.variables';
 
@@ -17,7 +17,8 @@ const SearchTile = ({
   removeAddress,
   member,
   selected,
-  setSelectedStudents
+  setSelectedStudents,
+  changeSelected
 }) => {
   const styles = StyleSheet.create({
     checkBoxContainer: {
@@ -58,8 +59,6 @@ const SearchTile = ({
     }
   })
 
-  const [isChecked, setChecked] = useState(selected === true)
-
   let dynamicTitleStyles = [styles.tileStyles]
 
   if (position === 'bottom') {
@@ -67,14 +66,15 @@ const SearchTile = ({
   }
 
   const hancleCheckBox = () => {
-    !isChecked ? setAddressess(email) : removeAddress(email)
-    if (!isChecked) {
+    !selected ? setAddressess(email) : removeAddress(email)
+    if (!selected) {
       setSelectedStudents && setSelectedStudents(oldValue => [...oldValue, member])
+      changeSelected(email, true)
     }
     else {
       setSelectedStudents && setSelectedStudents((uls) => uls.filter((el) => el.personal_info.email !== email))
+      changeSelected(email, false)
     }
-    setChecked(!isChecked)
   }
 
   if (selectable) {
@@ -83,7 +83,7 @@ const SearchTile = ({
 
   return (
     <TouchableOpacity style={dynamicTitleStyles} onPress={handleClick}>
-      {selectable && <Checkbox value={isChecked} onValueChange={hancleCheckBox} style={styles.checkBoxContainer} color={colors.blue} />}
+      {selectable && <Checkbox value={selected} onValueChange={hancleCheckBox} style={styles.checkBoxContainer} color={colors.blue} />}
       {
         imageUrl.length > 0 && <Image
           style={styles.imageStyles}
@@ -108,14 +108,15 @@ SearchTile.propTypes = {
   subTitle: PropTypes.string,
   email: PropTypes.string,
   position: PropTypes.string,
-  handleClick: PropTypes.func.isRequired,
+  handleClick: PropTypes.func,
   titleFontWeight: PropTypes.string,
   selectable: PropTypes.bool,
   setAddressess: PropTypes.func,
   removeAddress: PropTypes.func,
   member: PropTypes.object,
   selected: PropTypes.bool,
-  setSelectedStudents: PropTypes.func
+  setSelectedStudents: PropTypes.func,
+  changeSelected: PropTypes.func
 }
 
 export default SearchTile

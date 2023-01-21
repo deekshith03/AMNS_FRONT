@@ -73,7 +73,7 @@ export const SearchScreen = ({ userType }) => {
           handleappliedFilters={handleappliedFilters}
         />
         <SearchPageResults
-          searchPhraseResults={searchPhraseResults}
+          results={searchPhraseResults}
           studentSelected={studentSelected}
           handleSearchPhraseResults={handleSearchPhraseResults}
         />

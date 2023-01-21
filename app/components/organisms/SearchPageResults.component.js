@@ -1,11 +1,25 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState } from 'react';
 import { ScrollView, Text } from "react-native";
 import SearchTile from '../atoms/SearchTile.component';
 
 const SearchPageResults = ({ results, selectable, setAddressess, removeAddress, selectedStudents, setSelectedStudents }) => {
+  
+  const changeSelected = (email, val) => {
+    setSelected({ ...selected, [`${email}`]: val })
+  }
+  const sel = {}
+  results && results.map((obj) => {
+    sel[`${obj.personal_info.email}`] = false 
+    // console.log(obj.personal_info.email);
+  })
+
+  const [selected, setSelected] = useState(sel)
+
+
   return <ScrollView>
     {results && results.map((obj, ind) => {
+
       const department_name = obj.academics?.department_name || obj.work_exp?.department_name
       const company_name = obj.work_exp?.company_name || obj.work_exp?.designation
       const subTitle = department_name && (department_name + '⬩') + company_name
@@ -24,16 +38,17 @@ const SearchPageResults = ({ results, selectable, setAddressess, removeAddress, 
         position={ind == results.length - 1 ? "bottom" : ""}
         selectable={selectable}
         member={obj}
-        selected={false}
+        selected={selected[obj.personal_info.email]}
         setSelectedStudents={setSelectedStudents}
+        changeSelected = {changeSelected}
       />
     })}
-    {selectedStudents.length > 0 && <Text>Selected</Text>}
+    {selectedStudents && selectedStudents.length>0 && <Text>Selected</Text>}
     {selectedStudents && selectedStudents.map((obj, ind) => {
       const department_name = obj.academics?.department_name || obj.work_exp?.department_name
       const company_name = obj.work_exp?.company_name || obj.work_exp?.designation
       const subTitle = department_name && (department_name + '⬩') + company_name
-
+  
       return <SearchTile
         key={ind}
         email={obj.personal_info.email}
@@ -50,6 +65,7 @@ const SearchPageResults = ({ results, selectable, setAddressess, removeAddress, 
         member={obj}
         selected={true}
         setSelectedStudents={setSelectedStudents}
+        changeSelected = {changeSelected}
       />
     })}
   </ScrollView>
