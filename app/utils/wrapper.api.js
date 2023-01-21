@@ -1,12 +1,15 @@
 import { showMessage } from 'react-native-flash-message'
-import { useDispatch } from 'react-redux'
-import { changeState } from '../redux/slices/loading.slice'
+// import { useDispatch } from 'react-redux'
+// import { changeState } from '../redux/slices/loading.slice'
 
-export const apiWrapper = async (func, data) => {
-  const dispatch = useDispatch()
+export const apiWrapper = async (func, ...args) => {
+  // const dispatch = useDispatch()
 
   // dispatch(changeState(true))
-  await func(data).catch((error) => {
+  try {
+    await func(...args)
+  }
+  catch (error) {
     const statusCode = error.response ? error.response.status : null
     if (statusCode === 500 || statusCode === 400) {
       const errMsg =
@@ -22,6 +25,6 @@ export const apiWrapper = async (func, data) => {
     } else {
       error.handleGlobally && error.handleGlobally()
     }
-  })
-  dispatch(changeState(false))
+  }
+  // dispatch(changeState(false))
 }

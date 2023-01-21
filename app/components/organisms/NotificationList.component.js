@@ -100,7 +100,6 @@ const NotificationList = ({ notification }) => {
           return item._id === id ? { ...item, read: true } : item
         })
       )
-      // apiWrapper(putNotification, id)
     } catch (err) {
       console.log(err)
     }

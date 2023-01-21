@@ -5,6 +5,7 @@ import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { showMessage } from 'react-native-flash-message';
 import { actions, RichEditor, RichToolbar } from "react-native-pell-rich-editor";
 import RBSheet from 'react-native-raw-bottom-sheet';
+import { addAttachment, deleteAttachment, sendMail } from '../apis/mail.api.js';
 import CustomButton from '../components/atoms/CustomButton.component.js';
 import InputBox from "../components/atoms/input.component";
 import { UploadContainer } from '../components/atoms/UploadContainer.component.js';
@@ -13,8 +14,8 @@ import SearchBar from '../components/organisms/SearchBar.component.js';
 import SearchPageResults from '../components/organisms/SearchPageResults.component.js';
 import globalStyles from "../styles/global.styles";
 import { createFormData } from '../utils/FormData.utils.js';
+import { apiWrapper } from '../utils/wrapper.api.js';
 import { colors } from '../variables/colors.variables';
-import { axiosInstance } from '../variables/variable.js';
 
 export const Mailer = () => {
   const refRBSheet = useRef()
@@ -69,61 +70,19 @@ export const Mailer = () => {
       html: Html,
       files: fileName
     }
-    await axiosInstance
-      .post('/api/sendmail', body)
-      .then(async (res) => {
-        showMessage({
-          message: res.data.msg,
-          type: 'success',
-          position: 'bottom'
-        })
-      })
-      .catch((error) => {
-        const statusCode = error.response ? error.response.status : null
-        if (statusCode === 500 || statusCode === 400) {
-          const errMsg =
-            error.response.data.errors[0].message === undefined
-              ? error.response.data.errors[0].msg
-              : error.response.data.errors[0].message
-
-          showMessage({
-            message: errMsg,
-            type: 'danger',
-            position: 'bottom'
-          })
-        } else {
-          error.handleGlobally && error.handleGlobally()
-        }
-      })
+    await apiWrapper(sendMail, body)
   }
 
   const deleteFile = async (name) => {
-    await axiosInstance
-      .delete(`api/removeFile/${fileName[name]}`)
-      .then(() => {
-        setUploads((uls) => uls.filter((el) => el !== name))
-        setPercentage((cur) => {
-          const copy = { ...cur }
-          delete copy[`${name}`]
-          return { ...copy }
-        })
-      }
-      ).catch((error) => {
-        const statusCode = error.response ? error.response.status : null
-        if (statusCode === 500 || statusCode === 400) {
-          const errMsg =
-            error.response.data.errors[0].message === undefined
-              ? error.response.data.errors[0].msg
-              : error.response.data.errors[0].message
-          showMessage({
-            message: errMsg,
-            type: 'danger',
-            position: 'bottom'
-          })
-        } else {
-          error.handleGlobally && error.handleGlobally()
-        }
+    const success_func = () => {
+      setUploads((uls) => uls.filter((el) => el !== name))
+      setPercentage((cur) => {
+        const copy = { ...cur }
+        delete copy[`${name}`]
+        return { ...copy }
       })
+    }
+    await apiWrapper(deleteAttachment, fileName[name], success_func)
   }
 
   const paperClip = () => {
@@ -148,35 +107,11 @@ export const Mailer = () => {
 
     const formData = createFormData(file, {})
 
-    axiosInstance.defaults.headers.put['Content-Type'] = 'multipart/form-data';
-    axiosInstance.defaults.headers.put['mimeType'] = 'multipart/form-data';
+    const success_func = (res) => {
+      setfileNames({ ...fileName, [`${file.name}`]: res.data.fileName })
+    }
 
-    await axiosInstance
-      .post('api/upload/attachment', formData, getConfig(file.name))
-      .then((res) => {
-        setfileNames({ ...fileName, [`${file.name}`]: res.data.fileName })
-        showMessage({
-          message: res.data.msg,
-          type: 'success',
-          position: 'bottom'
-        })
-      }
-      ).catch((error) => {
-        const statusCode = error.response ? error.response.status : null
-        if (statusCode === 500 || statusCode === 400) {
-          const errMsg =
-            error.response.data.message === undefined
-              ? error.response.data.msg
-              : error.response.data.message
-          showMessage({
-            message: errMsg,
-            type: 'danger',
-            position: 'bottom'
-          })
-        } else {
-          error.handleGlobally && error.handleGlobally()
-        }
-      })
+    await apiWrapper(addAttachment, formData, getConfig(file.name), success_func)
   }
 
   return <ScrollView style={[globalStyles.container, style.container]}>
