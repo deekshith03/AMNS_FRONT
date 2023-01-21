@@ -10,7 +10,7 @@ import InputBox from "../components/atoms/input.component";
 import { UploadContainer } from '../components/atoms/UploadContainer.component.js';
 import SearchProfileType from '../components/molecules/SearchProfileType.component.js';
 import SearchBar from '../components/organisms/SearchBar.component.js';
-import { SearchResults } from '../components/organisms/SearchResults.compononts.js';
+import SearchPageResults from '../components/organisms/SearchPageResults.component.js';
 import globalStyles from "../styles/global.styles";
 import { createFormData } from '../utils/FormData.utils.js';
 import { colors } from '../variables/colors.variables';
@@ -253,7 +253,7 @@ export const Mailer = () => {
         searchPhrase={searchPhrase}
         changeSearchPhraseText={setSearchPhrase}
       />
-      <SearchResults results={searchPhraseResults} selectable={true} setAddressess={handleAddAddress} removeAddress={handleRemoveAddress} selectedStudents={selectedStudents} setSelectedStudents={setSelectedStudents} />
+      <SearchPageResults results={searchPhraseResults} selectable={true} setAddressess={handleAddAddress} removeAddress={handleRemoveAddress} selectedStudents={selectedStudents} setSelectedStudents={setSelectedStudents} />
     </RBSheet>
   </ScrollView>
 }

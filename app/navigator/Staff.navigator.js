@@ -1,14 +1,11 @@
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import React from 'react'
 import { View } from 'react-native'
-import { AddStaff } from '../screens/admin/AddStaff.admin.screen'
 import { Mailer } from '../screens/Mailer.screen'
 import { SearchScreenAdmin } from '../screens/searchScreenAdmin.screen'
 import globalStyles from '../styles/global.styles'
 import { logoutIcon, notificationIcon } from '../variables/icon.variables'
-const AdminNav = createDrawerNavigator()
-
-
+const StaffNav = createDrawerNavigator()
 
 const options = {
   headerTransparent: true,
@@ -20,18 +17,10 @@ const options = {
   )
 }
 
-export const AdminNavigator = () => {
+export const StaffNavigator = () => {
   return (
-    <AdminNav.Navigator initialRouteName="Search">
-      <AdminNav.Screen
-        name="AddStaff"
-        component={AddStaff}
-        options={{
-          ...options,
-          title: 'Add Staff'
-        }}
-      />
-      <AdminNav.Screen
+    <StaffNav.Navigator initialRouteName="Search">
+      <StaffNav.Screen
         name="Search"
         component={SearchScreenAdmin}
         options={{
@@ -39,7 +28,7 @@ export const AdminNavigator = () => {
           title: 'Search'
         }}
       />
-      <AdminNav.Screen
+      <StaffNav.Screen
         name="Mailer"
         component={Mailer}
         options={{
@@ -47,6 +36,6 @@ export const AdminNavigator = () => {
           title: 'Send Mail'
         }}
       />
-    </AdminNav.Navigator>
+    </StaffNav.Navigator>
   )
 }
