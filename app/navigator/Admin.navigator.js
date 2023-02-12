@@ -2,13 +2,12 @@ import { createDrawerNavigator } from '@react-navigation/drawer'
 import React from 'react'
 import { View } from 'react-native'
 import { AddStaff } from '../screens/admin/AddStaff.admin.screen'
+import { ImportScreen } from '../screens/ImportScreen.screen'
 import { Mailer } from '../screens/Mailer.screen'
 import { SearchScreenAdmin } from '../screens/searchScreenAdmin.screen'
 import globalStyles from '../styles/global.styles'
 import { logoutIcon, notificationIcon } from '../variables/icon.variables'
 const AdminNav = createDrawerNavigator()
-
-
 
 const options = {
   headerTransparent: true,
@@ -46,6 +45,11 @@ export const AdminNavigator = () => {
           ...options,
           title: 'Send Mail'
         }}
+      />
+      <AdminNav.Screen
+        name="Import"
+        component={ImportScreen}
+        options={{ ...options, title: 'Import Data' }}
       />
     </AdminNav.Navigator>
   )

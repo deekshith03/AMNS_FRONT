@@ -45,18 +45,20 @@ const SignIn = () => {
           RootNavigation.navigate('Home')
         })
         .catch((error) => {
+          console.log(error)
           const statusCode = error.response ? error.response.status : null
           if (statusCode === 500 || statusCode === 400) {
-            const errMsg =
-              error.response.data.errors[0].message === undefined
-                ? error.response.data.errors[0].msg
-                : error.response.data.errors[0].message
+            console.log(error)
+            // const errMsg =
+            //   error.response.data.errors[0].message === undefined
+            //     ? error.response.data.errors[0].msg
+            //     : error.response.data.errors[0].message
 
-            showMessage({
-              message: errMsg,
-              type: 'danger',
-              position: 'bottom'
-            })
+            // showMessage({
+            //   message: errMsg,
+            //   type: 'danger',
+            //   position: 'bottom'
+            // })
           } else {
             error.handleGlobally && error.handleGlobally()
           }

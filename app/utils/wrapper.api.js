@@ -8,8 +8,8 @@ export const apiWrapper = async (func, ...args) => {
   // dispatch(changeState(true))
   try {
     await func(...args)
-  }
-  catch (error) {
+  } catch (error) {
+    // console.log(error)
     const statusCode = error.response ? error.response.status : null
     if (statusCode === 500 || statusCode === 400) {
       const errMsg =
@@ -22,6 +22,8 @@ export const apiWrapper = async (func, ...args) => {
         type: 'danger',
         position: 'bottom'
       })
+
+      console.log(errMsg)
     } else {
       error.handleGlobally && error.handleGlobally()
     }
