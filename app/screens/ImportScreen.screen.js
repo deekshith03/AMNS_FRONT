@@ -8,8 +8,11 @@ import CustomButton from '../components/atoms/CustomButton.component'
 import { createFormData } from '../utils/FormData.utils'
 import { apiWrapper } from '../utils/wrapper.api'
 import { generateJSON, saveExcelData } from '../apis/import.api'
-import CustomSelect from '../components/atoms/CustomSelect.component'
+import CustomSelect from '../components/molecules/CustomSelect.component'
 import InputBox from '../components/atoms/input.component'
+import { hideMessage, showMessage } from 'react-native-flash-message'
+import { useDispatch } from 'react-redux'
+import { changeState } from '../redux/slices/loading.slice'
 
 export const ImportScreen = () => {
   const styles = StyleSheet.create({
@@ -24,6 +27,13 @@ export const ImportScreen = () => {
     btnStyles: {
       marginTop: 10
     },
+    customDialogContainer: {
+      alignItems: 'center',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between'
+    },
+
     dropDownContainer: { flex: 1, marginBottom: 100 },
 
     fileStyles: {
@@ -39,6 +49,7 @@ export const ImportScreen = () => {
       flexDirection: 'column',
       marginTop: 50
     },
+    resultMsg: { marginBottom: '5%' },
 
     screenStyles: {
       height: '100%',
@@ -68,6 +79,7 @@ export const ImportScreen = () => {
   const [excelData, setExcelData] = useState()
   const [headerNumber, setHeaderNumber] = useState(1)
   const [file, setFile] = useState()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (headerMappings && headerMappings.length > 0)
@@ -107,7 +119,6 @@ export const ImportScreen = () => {
       const value = element.value
       if (newHeaderMappings && newHeaderMappings[label]) {
         if (newHeaderMappings[label] !== 'not applicable') {
-          console.log(newHeaderMappings[label], label)
           val = { ...val, ...{ [newHeaderMappings[label]]: label } }
         }
       } else {
@@ -115,10 +126,44 @@ export const ImportScreen = () => {
       }
     })
 
-    const success_func = (res) => {
-      console.log(res)
-    }
+    const success_func = (success, savedDocs, errorDocs) => {
+      dispatch(changeState(false))
 
+      showMessage({
+        message: '',
+        type: success ? 'success' : 'danger',
+        position: 'center',
+        backgroundColor: colors.white,
+        statusBarHeight: '20%',
+        autoHide: false,
+        style: {
+          width: '80%'
+        },
+        renderCustomContent: () => {
+          return (
+            <View style={styles.customDialogContainer}>
+              <Text style={styles.resultMsg}>
+                Total documents saved {savedDocs}
+              </Text>
+              <Text style={styles.resultMsg}>
+                Error documents {errorDocs.length}
+              </Text>
+              <CustomButton
+                backgroundColor={colors.loginpink}
+                fontSize={10}
+                paddingVertical={8}
+                fontColor={colors.white}
+                text="OK"
+                handleClick={() => {
+                  hideMessage()
+                }}
+              />
+            </View>
+          )
+        }
+      })
+    }
+    dispatch(changeState(true))
     await apiWrapper(
       saveExcelData,
       { headerMappings: val, excelData },
@@ -132,6 +177,8 @@ export const ImportScreen = () => {
     setHeaderMappings()
     setSelectedHeader()
     setTotalHeaders()
+    setExcelData()
+    setNewHeaderMappings()
   }
 
   return (

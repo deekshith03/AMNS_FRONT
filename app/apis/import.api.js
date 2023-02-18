@@ -1,4 +1,3 @@
-import { showMessage } from 'react-native-flash-message'
 import { axiosInstance } from '../variables/variable'
 
 export const generateJSON = async (data, headerNumber, success_func) => {
@@ -13,13 +12,28 @@ export const generateJSON = async (data, headerNumber, success_func) => {
 }
 
 export const saveExcelData = async (data, success_func) => {
-  // console.log('from save excel api', data)
-  await axiosInstance.post('api/import/save', data).then((res) => {
-    success_func(res)
-    showMessage({
-      message: res.data.success ? 'Saved Successfully' : 'Failed to save',
-      type: res.data.success ? 'success' : 'danger',
-      position: 'bottom'
+  let total = data.excelData.length
+  const limit = 120
+  let start = 0
+  let end = limit
+  let success = true
+
+  let savedDocs = 0
+  let errorDocs = []
+  while (total > 0) {
+    const payload = {
+      headerMappings: data.headerMappings,
+      excelData: data.excelData.slice(start, end)
+    }
+    await axiosInstance.post('api/import/save', payload).then((res) => {
+      success = res.data.success
+      savedDocs += res.data.savedDocs
+      errorDocs = [...errorDocs, res.data.errorDocs]
     })
-  })
+    start = end
+    end = end + limit
+    total = total - limit
+  }
+
+  success_func(success, savedDocs, errorDocs)
 }
