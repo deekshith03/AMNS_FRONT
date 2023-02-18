@@ -5,17 +5,16 @@ import * as RootNavigation from '../navigator/RootNavigation.navigator'
 const Base_uri = 'http://10.0.2.2:8080/'
 
 export const axiosInstance = axios.create({
-  baseURL: Base_uri,
-  timeout: 1000,
+  baseURL: Base_uri
 })
 
 const errorComposer = (error) => {
   return () => {
     const statusCode = error.response ? error.response.status : null
-    console.log(
-      '🚀 ~ file: variable.js ~ line 15 ~ return ~ statusCode',
-      error.response.data
-    )
+    // console.log(
+    //   '🚀 ~ file: variable.js ~ line 15 ~ return ~ statusCode',
+    //   error.response.data
+    // )
 
     if (statusCode === 401) {
       showMessage({ message: '401 errors', type: 'danger', position: 'bottom' })

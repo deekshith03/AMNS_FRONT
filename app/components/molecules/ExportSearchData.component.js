@@ -14,7 +14,7 @@ import Pill from '../atoms/Pill.component.js'
 import SearchTile from '../atoms/SearchTile.component.js'
 import PropTypes from 'prop-types'
 import * as FileSystem from 'expo-file-system'
-import * as Sharing from 'expo-sharing'
+import { StorageAccessFramework } from 'expo-file-system'
 
 const ExportSearchData = ({
   studentSelected,
@@ -158,7 +158,7 @@ const ExportSearchData = ({
               showMessage({
                 message: errMsg,
                 type: 'danger',
-                position: 'bottom'
+                position: 'top'
               })
             } else {
               error.handleGlobally && error.handleGlobally()
@@ -196,44 +196,56 @@ const ExportSearchData = ({
       format: format,
       mappings: { ...currentExportMappings }
     }
-    if (studentSelected) {
-      await axiosInstance
-        .post(`/api/student/exportData`, data, { responseType: 'blob' })
-        .then((res) => {
-          const fr = new FileReader()
-          fr.onload = async () => {
-            let fileUri
-            if (format === 'pdf')
-              fileUri = `${FileSystem.documentDirectory}/studentdata.pdf`
-            else fileUri = `${FileSystem.documentDirectory}/studentdata.xlsx`
-            await FileSystem.writeAsStringAsync(
-              fileUri,
-              fr.result.split(',')[1],
-              { encoding: FileSystem.EncodingType.Base64 }
-            )
-            // console.log(fr.result.split(',')[1])
-            Sharing.shareAsync(fileUri)
-          }
-          fr.readAsDataURL(res.data)
-        })
-        .catch((error) => {
-          const statusCode = error.response ? error.response.status : null
-          if (statusCode === 500 || statusCode === 400) {
-            const errMsg =
-              error.response.data.errors[0].message === undefined
-                ? error.response.data.errors[0].msg
-                : error.response.data.errors[0].message
 
-            showMessage({
-              message: errMsg,
-              type: 'danger',
-              position: 'bottom'
-            })
-          } else {
-            error.handleGlobally && error.handleGlobally()
+    const exportURL = studentSelected ? 'student' : 'staff'
+    await axiosInstance
+      .post(`/api/${exportURL}/exportData`, data, { responseType: 'blob' })
+      .then(async (res) => {
+        const fr = new FileReader()
+        fr.onload = async () => {
+          const permissions =
+            await StorageAccessFramework.requestDirectoryPermissionsAsync()
+          if (!permissions.granted) {
+            return
           }
-        })
-    }
+          const fileName = `${exportURL}data_${searchPhrase}_${new Date().toLocaleString()}`
+          await StorageAccessFramework.createFileAsync(
+            permissions.directoryUri,
+            fileName,
+            `application/${format}`
+          )
+            .then(async (uri) => {
+              await FileSystem.writeAsStringAsync(
+                uri,
+                fr.result.split(',')[1],
+                {
+                  encoding: FileSystem.EncodingType.Base64
+                }
+              )
+              showMessage({
+                message: 'file succesfully saved',
+                type: 'success',
+                position: 'top'
+              })
+            })
+            .catch((e) => {
+              console.log(e)
+            })
+        }
+        fr.readAsDataURL(res.data)
+      })
+      .catch(async (error) => {
+        const statusCode = error.response ? error.response.status : null
+        if (statusCode === 500 || statusCode === 400) {
+          showMessage({
+            message: 'Export Falied',
+            type: 'danger',
+            position: 'top'
+          })
+        } else {
+          error.handleGlobally && error.handleGlobally()
+        }
+      })
   }
 
   return (
