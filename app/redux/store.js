@@ -1,12 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
-import loadingSlice from './slices/loading.slice'
-import CheckInternetSlice from './slices/Internet.slice'
-import totalDepartmentsReducer from './slices/totalDepartments.slice'
-import totalSkillsReducer from './slices/totalSkills.slice'
-import totalAdvisorReducer from './slices/totalAdvisors.slice'
-import totalExportStudentMappingsReducer from './slices/totalExportMappings.Slice'
 import defaultExportStudentMappingsReducer from './slices/defaultExportMappings.slice'
+import CheckInternetSlice from './slices/Internet.slice'
+import loadingSlice from './slices/loading.slice'
 import notificationListReducer from './slices/notificationList.slice'
+import postReducer from './slices/post.slice'
+import totalAdvisorReducer from './slices/totalAdvisors.slice'
+import totalDepartmentsReducer from './slices/totalDepartments.slice'
+import totalExportStudentMappingsReducer from './slices/totalExportMappings.Slice'
+import totalSkillsReducer from './slices/totalSkills.slice'
 
 export const store = configureStore({
   reducer: {
@@ -17,7 +18,8 @@ export const store = configureStore({
     totalAdvisors: totalAdvisorReducer,
     totalExportStudentMappings: totalExportStudentMappingsReducer,
     defaultExportStudentMappings: defaultExportStudentMappingsReducer,
-    notificationList: notificationListReducer
+    notificationList: notificationListReducer,
+    post: postReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -1,7 +1,9 @@
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import React from 'react'
 import { View } from 'react-native'
+import PostInput from '../components/organisms/PostInput.component'
 import { AddStaff } from '../screens/admin/AddStaff.admin.screen'
+import Feeds from '../screens/Feeds.screen'
 import { ImportScreen } from '../screens/ImportScreen.screen'
 import { Mailer } from '../screens/Mailer.screen'
 import { SearchScreenAdmin } from '../screens/searchScreenAdmin.screen'
@@ -50,6 +52,22 @@ export const AdminNavigator = () => {
         name="Import"
         component={ImportScreen}
         options={{ ...options, title: 'Import Data' }}
+      />
+      <AdminNav.Screen
+        name="Feeds"
+        component={Feeds}
+        options={{
+          ...options,
+          title: 'Feeds'
+        }}
+      />
+      <AdminNav.Screen
+        name="Create Post"
+        component={PostInput}
+        options={{
+          ...options,
+          title: 'Add Post'
+        }}
       />
     </AdminNav.Navigator>
   )
