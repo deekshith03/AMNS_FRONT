@@ -1,13 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit'
-import loadingSlice from './slices/loading.slice'
-import CheckInternetSlice from './slices/Internet.slice'
-import totalDepartmentsReducer from './slices/totalDepartments.slice'
-import totalSkillsReducer from './slices/totalSkills.slice'
-import totalAdvisorReducer from './slices/totalAdvisors.slice'
-import totalExportStudentMappingsReducer from './slices/totalExportMappings.Slice'
 import defaultExportStudentMappingsReducer from './slices/defaultExportMappings.slice'
+import CheckInternetSlice from './slices/Internet.slice'
+import loadingSlice from './slices/loading.slice'
 import notificationListReducer from './slices/notificationList.slice'
 import profileSelelectedReducer from './slices/profileSelected.slice'
+import postReducer from './slices/post.slice'
+import totalAdvisorReducer from './slices/totalAdvisors.slice'
+import totalDepartmentsReducer from './slices/totalDepartments.slice'
+import totalExportStudentMappingsReducer from './slices/totalExportMappings.Slice'
+import totalSkillsReducer from './slices/totalSkills.slice'
 
 export const store = configureStore({
   reducer: {
@@ -19,7 +20,8 @@ export const store = configureStore({
     totalExportStudentMappings: totalExportStudentMappingsReducer,
     defaultExportStudentMappings: defaultExportStudentMappingsReducer,
     notificationList: notificationListReducer,
-    profileSelected: profileSelelectedReducer
+    profileSelected: profileSelelectedReducer,
+    post: postReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
