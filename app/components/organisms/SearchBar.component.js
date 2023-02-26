@@ -3,7 +3,11 @@ import PropTypes from 'prop-types'
 import React, { useEffect, useRef, useState } from 'react'
 import {
   Pressable,
-  ScrollView, StyleSheet, Text, TextInput, View
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View
 } from 'react-native'
 import { showMessage } from 'react-native-flash-message'
 import RBSheet from 'react-native-raw-bottom-sheet'
@@ -390,9 +394,11 @@ const SearchBar = ({
       setContentLoader(true)
       dispatch(changeState(true))
       if (studentSelected) {
+        console.log(data)
         axiosInstance
           .post(`/api/student/20/1`, data)
           .then((res) => {
+            console.log(res.data)
             handleSearchPhraseResults([...res.data])
             if (res.data > 0) setContentLoader(false)
           })
@@ -470,8 +476,8 @@ const SearchBar = ({
       </View>
 
       {searchPhrase.length > 0 &&
-        searchPhraseResults.length === 0 &&
-        Contentloader ? (
+      searchPhraseResults.length === 0 &&
+      Contentloader ? (
         <>
           <CustomContentLoader />
           <CustomContentLoader />
@@ -525,13 +531,14 @@ const SearchBar = ({
                       />
                     </View>
                     {appliedFilters[option] &&
-                      appliedFilters[option].length > 0 ? (
+                    appliedFilters[option].length > 0 ? (
                       <Pill
                         key={ind}
                         text={
                           appliedFilters[option].length > 1
-                            ? `${appliedFilters[option][0]} + ${appliedFilters[option].length - 1
-                            }`
+                            ? `${appliedFilters[option][0]} + ${
+                                appliedFilters[option].length - 1
+                              }`
                             : `${appliedFilters[option][0]}`
                         }
                         alignItems={'center'}
@@ -626,25 +633,25 @@ const SearchBar = ({
           <View style={styles.pillContainer}>
             {appliedFilters[currentFilter]
               ? appliedFilters[currentFilter].map((value, ind) => {
-                return (
-                  <Pill
-                    key={ind}
-                    text={value}
-                    alignItems={'center'}
-                    backgroundColor={colors.loginpink}
-                    fontColor={colors.black}
-                    fontFamily={'Roboto'}
-                    fontSize={12}
-                    paddingHorizontal={5}
-                    paddingVertical={6}
-                    borderRadius={15}
-                    marginBottom={6}
-                    handleClick={() => {
-                      handlePillCancel(value)
-                    }}
-                  />
-                )
-              })
+                  return (
+                    <Pill
+                      key={ind}
+                      text={value}
+                      alignItems={'center'}
+                      backgroundColor={colors.loginpink}
+                      fontColor={colors.black}
+                      fontFamily={'Roboto'}
+                      fontSize={12}
+                      paddingHorizontal={5}
+                      paddingVertical={6}
+                      borderRadius={15}
+                      marginBottom={6}
+                      handleClick={() => {
+                        handlePillCancel(value)
+                      }}
+                    />
+                  )
+                })
               : null}
           </View>
           {currentFilterOptions &&
@@ -654,7 +661,7 @@ const SearchBar = ({
                 option.isInteger
                   ? option.match(regex)
                   : option.toString().match(regex) &&
-                  searchWithFullResults.includes(currentFilter)
+                    searchWithFullResults.includes(currentFilter)
               ) {
                 if (ind == currentFilterOptions.length - 1) {
                   return (

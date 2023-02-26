@@ -6,6 +6,7 @@ import AuthScreen from '../screens/AuthScreen.screen'
 import { Home } from '../screens/Home'
 import { NoInternet } from '../screens/NoInternet.screen'
 import Notification from '../screens/Notification.screen'
+import Profile from '../screens/Profile.screen'
 import { ServerDown } from '../screens/ServerDown.screen'
 import { navigationRef } from './RootNavigation.navigator'
 
@@ -47,6 +48,11 @@ const StackNavigator = () => {
         name="NotificationScreen"
         component={Notification}
         options={{ title: 'Notification' }}
+      />
+      <Stack.Screen
+        name="ProfileScreen"
+        component={Profile}
+        options={{ title: 'Profile' }}
       />
     </Stack.Navigator>
   )

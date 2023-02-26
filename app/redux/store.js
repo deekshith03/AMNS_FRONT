@@ -7,6 +7,7 @@ import totalAdvisorReducer from './slices/totalAdvisors.slice'
 import totalExportStudentMappingsReducer from './slices/totalExportMappings.Slice'
 import defaultExportStudentMappingsReducer from './slices/defaultExportMappings.slice'
 import notificationListReducer from './slices/notificationList.slice'
+import profileSelelectedReducer from './slices/profileSelected.slice'
 
 export const store = configureStore({
   reducer: {
@@ -17,7 +18,8 @@ export const store = configureStore({
     totalAdvisors: totalAdvisorReducer,
     totalExportStudentMappings: totalExportStudentMappingsReducer,
     defaultExportStudentMappings: defaultExportStudentMappingsReducer,
-    notificationList: notificationListReducer
+    notificationList: notificationListReducer,
+    profileSelected: profileSelelectedReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
