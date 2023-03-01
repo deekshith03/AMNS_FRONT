@@ -21,7 +21,7 @@ const CustomImage = ({
     },
     curvedSquare: {
       border: '2px solid #ddd',
-      borderRadius: 30,
+      borderRadius: 10,
       height: height,
       padding: 5,
       width: width

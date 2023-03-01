@@ -2,7 +2,7 @@ import axios from 'axios'
 import * as SecureStore from 'expo-secure-store'
 import { showMessage } from 'react-native-flash-message'
 import * as RootNavigation from '../navigator/RootNavigation.navigator'
-const Base_uri = 'http://10.0.2.2:8080/'
+export const Base_uri = 'http://10.0.2.2:8080/'
 
 export const axiosInstance = axios.create({
   baseURL: Base_uri
