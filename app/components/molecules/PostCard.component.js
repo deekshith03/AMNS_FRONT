@@ -14,6 +14,7 @@ import CustomImage from '../atoms/CustomImage.component'
 import ReadMore from '@fawazahmed/react-native-read-more'
 import PropTypes from 'prop-types'
 import { colors } from '../../variables/colors.variables'
+import { Base_uri } from '../../variables/variable'
 
 const PostCard = ({ post }) => {
   return (
@@ -70,8 +71,8 @@ const PostContent = ({ post }) => {
           renderItem={({ item }) => (
             // <Image source={{ uri: item }} />
             <CustomImage
-              source={{ uri: item }}
-              // shape={'square'}
+              source={{ uri: `${Base_uri}${item}`}}
+              shape={'curvedSquare'}
               width={imageWidth}
               height={imageHeight}
             />

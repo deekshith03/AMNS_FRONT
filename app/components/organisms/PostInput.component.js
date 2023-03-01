@@ -98,7 +98,7 @@ const PostInput = () => {
     const body = {
       caption: captionText,
       tags: hashtags,
-      attachments: fileName
+      attachments: Object.values(fileName)
     }
     console.log(body)
     await apiWrapper(addPost, body)
