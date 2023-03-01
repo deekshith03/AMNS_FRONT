@@ -8,7 +8,7 @@ import { apiWrapper } from '../utils/wrapper.api'
 // import { posts } from '../data/posts.sample'
 
 const Feeds = () => {
-  const {post} = useSelector((state) => state.post)
+  const { post } = useSelector((state) => state.post)
 
   if (post.length === 0) {
     apiWrapper(getPost)
@@ -19,14 +19,14 @@ const Feeds = () => {
   return !post.length ? (
     <CenteredMessage
       title={'No Feeds'}
-      message={
-        'Please follow any topic or come back later for newer post.'
-      }></CenteredMessage>
+      message={'Please follow any topic or come back later for newer post.'}
+    ></CenteredMessage>
   ) : (
     <View style={styles.container} key={post._id}>
       <FlatList
         data={post}
-        renderItem={({ item }) => <PostCard post={item} />}></FlatList>
+        renderItem={({ item }) => <PostCard post={item} />}
+      ></FlatList>
     </View>
   )
 }

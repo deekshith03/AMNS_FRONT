@@ -59,7 +59,8 @@ const PostContent = ({ post }) => {
       <ReadMore
         allowFontScaling={true}
         numberOfLines={3}
-        style={styles.caption}>
+        style={styles.caption}
+      >
         {post.caption}
       </ReadMore>
       <View style={styles.postImage}>
@@ -76,7 +77,8 @@ const PostContent = ({ post }) => {
               width={imageWidth}
               height={imageHeight}
             />
-          )}></FlatList>
+          )}
+        ></FlatList>
       </View>
       <View>
         <FlatList
@@ -85,7 +87,8 @@ const PostContent = ({ post }) => {
             <TouchableOpacity>
               <Text style={styles.tags}>#{item}</Text>
             </TouchableOpacity>
-          )}></FlatList>
+          )}
+        ></FlatList>
       </View>
     </View>
   )
@@ -100,7 +103,8 @@ const PostFooter = ({ post }) => {
         style={[globalStyles.flexRow, styles.footer]}
         onPress={() => {
           setLikeCount(likeCount + 1)
-        }}>
+        }}
+      >
         <Ionicons name={'heart'} size={24} color={'red'} />
         <Text> {likeCount} likes</Text>
       </TouchableOpacity>

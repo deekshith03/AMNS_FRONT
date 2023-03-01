@@ -3,6 +3,7 @@ import defaultExportStudentMappingsReducer from './slices/defaultExportMappings.
 import CheckInternetSlice from './slices/Internet.slice'
 import loadingSlice from './slices/loading.slice'
 import notificationListReducer from './slices/notificationList.slice'
+import profileSelelectedReducer from './slices/profileSelected.slice'
 import postReducer from './slices/post.slice'
 import totalAdvisorReducer from './slices/totalAdvisors.slice'
 import totalDepartmentsReducer from './slices/totalDepartments.slice'
@@ -19,6 +20,7 @@ export const store = configureStore({
     totalExportStudentMappings: totalExportStudentMappingsReducer,
     defaultExportStudentMappings: defaultExportStudentMappingsReducer,
     notificationList: notificationListReducer,
+    profileSelected: profileSelelectedReducer,
     post: postReducer
   },
   middleware: (getDefaultMiddleware) =>

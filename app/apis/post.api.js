@@ -11,33 +11,29 @@ export const getPost = async () => {
 }
 
 export const addPost = async (data) => {
-  await axiosInstance
-    .post('/api/posts/', data)
-    .then((res) => {
-      showMessage({
-        message: res.data.msg,
-        type: 'success',
-        position: 'bottom'
-      })
+  await axiosInstance.post('/api/posts/', data).then((res) => {
+    showMessage({
+      message: res.data.msg,
+      type: 'success',
+      position: 'bottom'
     })
+  })
 }
 
 export const removeFile = async (fileName, success_func) => {
-  await axiosInstance
-    .delete(`api/removeFile/${fileName}`)
-    .then(() => {
-      success_func()
-      showMessage({
-        message: 'File removed',
-        type: 'info',
-        position: 'bottom'
-      })
+  await axiosInstance.delete(`api/removeFile/${fileName}`).then(() => {
+    success_func()
+    showMessage({
+      message: 'File removed',
+      type: 'info',
+      position: 'bottom'
     })
+  })
 }
 
 export const uploadFile = async (data, config, success_func) => {
-  axiosInstance.defaults.headers.put['Content-Type'] = 'multipart/form-data';
-  axiosInstance.defaults.headers.put['mimeType'] = 'multipart/form-data';
+  axiosInstance.defaults.headers.put['Content-Type'] = 'multipart/form-data'
+  axiosInstance.defaults.headers.put['mimeType'] = 'multipart/form-data'
 
   await axiosInstance
     .post('api/upload/attachment', data, config)
@@ -48,6 +44,5 @@ export const uploadFile = async (data, config, success_func) => {
         type: 'success',
         position: 'bottom'
       })
-    }
-    )
+    })
 }

@@ -5,7 +5,52 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import globalStyles from '../../styles/global.styles.js'
 import { colors } from '../../variables/colors.variables.js'
 
-const ImageCustomButton = ({ text, iconName, flag, handleShowingSignUp }) => {
+const ImageCustomButton = ({
+  text,
+  iconName,
+  flag,
+  handleShowingSignUp,
+  width
+}) => {
+  const styles = StyleSheet.create({
+    backGroundStylePink: {
+      backgroundColor: colors.loginpink
+    },
+    btnContainer: { flex: 1, flexDirection: 'row' },
+    fontColor: {
+      color: colors.black
+    },
+    fontStyles: {
+      fontSize: 15
+    },
+    iconStyles: { paddingRight: 5, paddingTop: 2 },
+    switchBtn: {
+      backgroundColor: colors.logingray,
+      borderRadius: 30,
+      elevation: 8,
+      height: 42,
+      paddingHorizontal: 30,
+      paddingVertical: 10,
+      width: width ? width : 130
+    },
+    triangle: {
+      backgroundColor: colors.transparent,
+      borderBottomColor: colors.loginpink,
+      borderBottomWidth: 12,
+      borderLeftColor: colors.transparent,
+      borderLeftWidth: 12,
+      borderRightColor: colors.transparent,
+      borderRightWidth: 12,
+      borderStyle: 'solid',
+      borderTopColor: colors.transparent,
+      borderTopWidth: 0,
+      bottom: 52,
+      height: 0,
+      left: 50,
+      position: 'relative',
+      width: 0
+    }
+  })
   let bgColor =
     flag === true
       ? [styles.switchBtn, styles.backGroundStylePink]
@@ -19,7 +64,8 @@ const ImageCustomButton = ({ text, iconName, flag, handleShowingSignUp }) => {
     <View>
       <TouchableOpacity
         style={[bgColor]}
-        onPress={() => (flag === false ? handleShowingSignUp() : null)}>
+        onPress={() => (flag === false ? handleShowingSignUp() : null)}
+      >
         <View style={styles.btnContainer}>
           <Feather
             name={iconName}
@@ -35,51 +81,12 @@ const ImageCustomButton = ({ text, iconName, flag, handleShowingSignUp }) => {
   )
 }
 
-const styles = StyleSheet.create({
-  backGroundStylePink: {
-    backgroundColor: colors.loginpink
-  },
-  btnContainer: { flex: 1, flexDirection: 'row' },
-  fontColor: {
-    color: colors.black
-  },
-  fontStyles: {
-    fontSize: 15
-  },
-  iconStyles: { paddingRight: 5, paddingTop: 2 },
-  switchBtn: {
-    backgroundColor: colors.logingray,
-    borderRadius: 30,
-    elevation: 8,
-    height: 42,
-    paddingHorizontal: 30,
-    paddingVertical: 10,
-    width: 130
-  },
-  triangle: {
-    backgroundColor: colors.transparent,
-    borderBottomColor: colors.loginpink,
-    borderBottomWidth: 12,
-    borderLeftColor: colors.transparent,
-    borderLeftWidth: 12,
-    borderRightColor: colors.transparent,
-    borderRightWidth: 12,
-    borderStyle: 'solid',
-    borderTopColor: colors.transparent,
-    borderTopWidth: 0,
-    bottom: 52,
-    height: 0,
-    left: 50,
-    position: 'relative',
-    width: 0
-  }
-})
-
 ImageCustomButton.propTypes = {
   text: PropTypes.string.isRequired,
   iconName: PropTypes.string.isRequired,
   flag: PropTypes.bool.isRequired,
-  handleShowingSignUp: PropTypes.func.isRequired
+  handleShowingSignUp: PropTypes.func.isRequired,
+  width: PropTypes.number
 }
 
 export default ImageCustomButton
