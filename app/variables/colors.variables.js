@@ -14,7 +14,9 @@ export const colors = {
   backgroundInputSearch: '#d9dbda',
   blue: '#1a89c8',
   notificationTile: '#eff5f5',
-  red: '#ff0000'
+  red: '#ff0000',
+  grayTone: '#e1e1e1',
+  green: 'green'
 }
 
 export const colors_dark = {

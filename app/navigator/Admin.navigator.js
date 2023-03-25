@@ -3,6 +3,7 @@ import React from 'react'
 import { View } from 'react-native'
 import PostInput from '../components/organisms/PostInput.component'
 import { AddStaff } from '../screens/admin/AddStaff.admin.screen'
+import Chat from '../screens/Chat.screen'
 import Feeds from '../screens/Feeds.screen'
 import { ImportScreen } from '../screens/ImportScreen.screen'
 import { Mailer } from '../screens/Mailer.screen'
@@ -67,6 +68,14 @@ export const AdminNavigator = () => {
         options={{
           ...options,
           title: 'Add Post'
+        }}
+      />
+      <AdminNav.Screen
+        name="Chat"
+        component={Chat}
+        options={{
+          ...options,
+          title: 'Chats'
         }}
       />
     </AdminNav.Navigator>

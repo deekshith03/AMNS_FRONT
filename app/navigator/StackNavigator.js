@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import { isConnected } from '../redux/slices/Internet.slice'
 import AuthScreen from '../screens/AuthScreen.screen'
 import { Home } from '../screens/Home'
+import Messages from '../screens/Messages.screen'
 import { NoInternet } from '../screens/NoInternet.screen'
 import Notification from '../screens/Notification.screen'
 import Profile from '../screens/Profile.screen'
@@ -54,6 +55,7 @@ const StackNavigator = () => {
         component={Profile}
         options={{ title: 'Profile' }}
       />
+      <Stack.Screen name="Messaging" component={Messages} />
     </Stack.Navigator>
   )
 }
