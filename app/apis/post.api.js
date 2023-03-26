@@ -13,7 +13,7 @@ export const getPost = async () => {
 export const addPost = async (data) => {
   await axiosInstance.post('/api/posts/', data).then((res) => {
     showMessage({
-      message: res.data.msg,
+      message: res.data.message,
       type: 'success',
       position: 'bottom'
     })
@@ -44,5 +44,13 @@ export const uploadFile = async (data, config, success_func) => {
         type: 'success',
         position: 'bottom'
       })
+    })
+}
+
+export const getTags = async (data, success_func) => {
+  await axiosInstance
+    .post('api/posts/tags', data)
+    .then((res) => {
+      success_func(res)
     })
 }

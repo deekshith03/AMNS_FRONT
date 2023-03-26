@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React from 'react'
-import { useDispatch } from 'react-redux'
-import { isConnected } from '../redux/slices/Internet.slice'
+// import { useDispatch } from 'react-redux'
+// import { isConnected } from '../redux/slices/Internet.slice'
 import AuthScreen from '../screens/AuthScreen.screen'
 import { Home } from '../screens/Home'
 import Messages from '../screens/Messages.screen'
@@ -20,8 +20,8 @@ export function navigate(name, params) {
 }
 
 const StackNavigator = () => {
-  const dispatch = useDispatch()
-  dispatch(isConnected())
+  // const dispatch = useDispatch()
+  // dispatch(isConnected())
 
   return (
     <Stack.Navigator initialRouteName={'Home'} navigationRef={navigationRef}>

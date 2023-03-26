@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
 
 const postSlice = createSlice({
   name: 'post',
@@ -7,6 +7,7 @@ const postSlice = createSlice({
   },
   reducers: {
     setPost: (state, action) => {
+      console.log('in');
       state.post = action.payload
     }
   }

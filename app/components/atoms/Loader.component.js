@@ -5,7 +5,6 @@ import { colors } from '../../variables/colors.variables'
 
 const Loader = () => {
   const canView = useSelector((state) => state.loader.value)
-  // console.log(canView)
   return (
     <Modal
       transparent={true}

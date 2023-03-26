@@ -14,7 +14,7 @@ const ImageCustomButton = ({
 }) => {
   const styles = StyleSheet.create({
     backGroundStylePink: {
-      backgroundColor: colors.loginpink
+      backgroundColor: colors.loginPink
     },
     btnContainer: { flex: 1, flexDirection: 'row' },
     fontColor: {
@@ -35,7 +35,7 @@ const ImageCustomButton = ({
     },
     triangle: {
       backgroundColor: colors.transparent,
-      borderBottomColor: colors.loginpink,
+      borderBottomColor: colors.loginPink,
       borderBottomWidth: 12,
       borderLeftColor: colors.transparent,
       borderLeftWidth: 12,

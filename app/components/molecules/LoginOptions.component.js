@@ -18,7 +18,7 @@ const LoginOptions = () => {
         Login With
       </Text>
       <View styles={styles.imageStyles}>
-        <FontAwesome5 name="microsoft" size={30} color={colors.loginpink} />
+        <FontAwesome5 name="microsoft" size={30} color={colors.loginPink} />
       </View>
     </View>
   )

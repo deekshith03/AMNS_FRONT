@@ -1,8 +1,8 @@
-import { View, StyleSheet } from 'react-native'
-import React from 'react'
-import Pill from '../atoms/Pill.component'
 import PropTypes from 'prop-types'
+import React from 'react'
+import { StyleSheet, View } from 'react-native'
 import { colors } from '../../variables/colors.variables'
+import Pill from '../atoms/Pill.component'
 
 const styles = StyleSheet.create({
   profileSearchTypeContainer: {
@@ -24,7 +24,7 @@ const SearchProfileType = ({
             text={'Students'}
             value={'student'}
             alignItems={'center'}
-            backgroundColor={colors.loginpink}
+            backgroundColor={colors.loginPink}
             fontColor={colors.black}
             fontFamily={'Roboto'}
             fontSize={12}
@@ -40,7 +40,7 @@ const SearchProfileType = ({
             text={'Staffs'}
             value={'staff'}
             alignItems={'center'}
-            backgroundColor={colors.loginpink}
+            backgroundColor={colors.loginPink}
             fontColor={colors.black}
             fontFamily={'Roboto'}
             fontSize={12}

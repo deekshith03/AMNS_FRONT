@@ -121,7 +121,7 @@ export const Mailer = () => {
           text={"send"}
           handleClick={handleSend}
           alignItems={'center'}
-          backgroundColor={colors.loginpink}
+          backgroundColor={colors.loginPink}
           fontColor={colors.white}
           fontFamily={'Roboto'}
           fontSize={18}

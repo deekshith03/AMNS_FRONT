@@ -1,20 +1,19 @@
-import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native'
 import { Feather, MaterialCommunityIcons } from '@expo/vector-icons'
-import React, { useRef } from 'react'
-import { colors } from '../../variables/colors.variables.js'
-import RBSheet from 'react-native-raw-bottom-sheet'
-import { useState } from 'react'
-import { axiosInstance } from '../../variables/variable.js'
+import React, { useRef, useState } from 'react'
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { showMessage } from 'react-native-flash-message'
+import RBSheet from 'react-native-raw-bottom-sheet'
 import { useDispatch } from 'react-redux'
 import { changeState } from '../../redux/slices/loading.slice.js'
+import { colors } from '../../variables/colors.variables.js'
+import { axiosInstance } from '../../variables/variable.js'
 // import { setTotalExportStudentMappings } from '../../redux/slices/totalExportMappings.Slice.js'
 // import { setDefaultExportStudentMappings } from '../../redux/slices/defaultExportMappings.slice.js'
-import Pill from '../atoms/Pill.component.js'
-import SearchTile from '../atoms/SearchTile.component.js'
-import PropTypes from 'prop-types'
 import * as FileSystem from 'expo-file-system'
 import { StorageAccessFramework } from 'expo-file-system'
+import PropTypes from 'prop-types'
+import Pill from '../atoms/Pill.component.js'
+import SearchTile from '../atoms/SearchTile.component.js'
 
 const ExportSearchData = ({
   studentSelected,
@@ -23,7 +22,7 @@ const ExportSearchData = ({
 }) => {
   const styles = StyleSheet.create({
     exportTextStyles: {
-      color: colors.loginpink,
+      color: colors.loginPink,
       fontFamily: 'Roboto',
       fontSize: 17,
       fontWeight: '700'
@@ -255,7 +254,7 @@ const ExportSearchData = ({
           <MaterialCommunityIcons
             name="export-variant"
             size={25}
-            color={colors.loginpink}
+            color={colors.loginPink}
           />
         </Pressable>
       </View>
@@ -344,77 +343,77 @@ const ExportSearchData = ({
           <View style={styles.pillContainer}>
             {Object.keys(currentExportMappings).length > 0
               ? Object.keys(currentExportMappings).map((value, ind) => {
-                  return (
-                    <Pill
-                      key={ind}
-                      text={value}
-                      alignItems={'center'}
-                      backgroundColor={colors.loginpink}
-                      fontColor={colors.black}
-                      fontFamily={'Roboto'}
-                      fontSize={13}
-                      paddingHorizontal={5}
-                      paddingVertical={6}
-                      borderRadius={18}
-                      marginBottom={6}
-                      handleClick={() => {
-                        handlePillCancel(value)
-                      }}
-                    />
-                  )
-                })
+                return (
+                  <Pill
+                    key={ind}
+                    text={value}
+                    alignItems={'center'}
+                    backgroundColor={colors.loginPink}
+                    fontColor={colors.black}
+                    fontFamily={'Roboto'}
+                    fontSize={13}
+                    paddingHorizontal={5}
+                    paddingVertical={6}
+                    borderRadius={18}
+                    marginBottom={6}
+                    handleClick={() => {
+                      handlePillCancel(value)
+                    }}
+                  />
+                )
+              })
               : null}
           </View>
           <ScrollView>
             {studentSelected
               ? Object.keys(totalExportStudentMappings).length > 0 &&
-                Object.keys(totalExportStudentMappings).map((val, ind) => {
-                  if (ind == totalExportStudentMappings.length - 1) {
-                    return (
-                      <SearchTile
-                        key={ind}
-                        title={val}
-                        position="bottom"
-                        handleClick={() => {
-                          handleFilterSearchClick(val)
-                        }}
-                      />
-                    )
-                  }
+              Object.keys(totalExportStudentMappings).map((val, ind) => {
+                if (ind == totalExportStudentMappings.length - 1) {
                   return (
                     <SearchTile
                       key={ind}
                       title={val}
+                      position="bottom"
                       handleClick={() => {
                         handleFilterSearchClick(val)
                       }}
                     />
                   )
-                })
+                }
+                return (
+                  <SearchTile
+                    key={ind}
+                    title={val}
+                    handleClick={() => {
+                      handleFilterSearchClick(val)
+                    }}
+                  />
+                )
+              })
               : Object.keys(totalExportStaffMappings).length > 0 &&
-                Object.keys(totalExportStaffMappings).map((val, ind) => {
-                  if (ind == totalExportStaffMappings.length - 1) {
-                    return (
-                      <SearchTile
-                        key={ind}
-                        title={val}
-                        position="bottom"
-                        handleClick={() => {
-                          handleFilterSearchClick(val)
-                        }}
-                      />
-                    )
-                  }
+              Object.keys(totalExportStaffMappings).map((val, ind) => {
+                if (ind == totalExportStaffMappings.length - 1) {
                   return (
                     <SearchTile
                       key={ind}
                       title={val}
+                      position="bottom"
                       handleClick={() => {
                         handleFilterSearchClick(val)
                       }}
                     />
                   )
-                })}
+                }
+                return (
+                  <SearchTile
+                    key={ind}
+                    title={val}
+                    handleClick={() => {
+                      handleFilterSearchClick(val)
+                    }}
+                  />
+                )
+              })}
           </ScrollView>
         </View>
       </RBSheet>

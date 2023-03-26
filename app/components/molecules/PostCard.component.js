@@ -13,6 +13,7 @@ import CustomImage from '../atoms/CustomImage.component'
 
 import ReadMore from '@fawazahmed/react-native-read-more'
 import PropTypes from 'prop-types'
+import RenderHTML from 'react-native-render-html'
 import { colors } from '../../variables/colors.variables'
 import { Base_uri } from '../../variables/variable'
 
@@ -32,15 +33,15 @@ const PostProfileHeader = ({ post }) => {
   return (
     <View style={styles.header}>
       <CustomImage
-        source={{ uri: post.user.profilePic }}
+        source={{ uri: `${Base_uri}${post?.user?.profilePic}` }}
         shape={'circle'}
         height={50}
         width={50}
       />
       <View style={styles.profileContent}>
-        <Text style={styles.name}>{post.user.name}</Text>
+        <Text style={styles.name}>{post?.user?.name || 'Anonymous'}</Text>
         <Text style={styles.createdAt}>
-          {new Date(post.createdAt).toLocaleDateString()}
+          {new Date(post?.createdAt).toLocaleDateString()}
         </Text>
       </View>
     </View>
@@ -51,8 +52,7 @@ const PostContent = ({ post }) => {
   // dimensions for posting image in feeds
   const dimensions = useWindowDimensions()
   const imageHeight = Math.round((dimensions.width * 9) / 16) - 30
-  const imageWidth = dimensions.width - 30
-  console.log(post)
+  const imageWidth = dimensions.width - 40
 
   return (
     <View style={styles.body}>
@@ -61,7 +61,10 @@ const PostContent = ({ post }) => {
         numberOfLines={3}
         style={styles.caption}
       >
-        {post.caption}
+        <RenderHTML
+          source={{ html: `${post.caption}` }}
+          contentWidth={100}
+        />
       </ReadMore>
       <View style={styles.postImage}>
         <FlatList
@@ -72,7 +75,7 @@ const PostContent = ({ post }) => {
           renderItem={({ item }) => (
             // <Image source={{ uri: item }} />
             <CustomImage
-              source={{ uri: `${Base_uri}${item}`}}
+              source={{ uri: `${Base_uri}${item}` }}
               shape={'curvedSquare'}
               width={imageWidth}
               height={imageHeight}
@@ -82,10 +85,11 @@ const PostContent = ({ post }) => {
       </View>
       <View>
         <FlatList
+          horizontal
           data={post.tags}
           renderItem={({ item }) => (
             <TouchableOpacity>
-              <Text style={styles.tags}>#{item}</Text>
+              <Text style={styles.tags}>{item}</Text>
             </TouchableOpacity>
           )}
         ></FlatList>
@@ -95,7 +99,7 @@ const PostContent = ({ post }) => {
 }
 
 const PostFooter = ({ post }) => {
-  const [likeCount, setLikeCount] = useState(post.likes)
+  const [likeCount, setLikeCount] = useState(post.likes?.length || 0)
 
   return (
     <View style={globalStyles.flexRow}>
@@ -106,7 +110,7 @@ const PostFooter = ({ post }) => {
         }}
       >
         <Ionicons name={'heart'} size={24} color={'red'} />
-        <Text> {likeCount} likes</Text>
+        <Text> {likeCount} </Text>
       </TouchableOpacity>
       <TouchableOpacity style={[globalStyles.flexRow, styles.footer]}>
         <Ionicons name={'chatbubbles-outline'} size={24} color={'black'} />
@@ -118,8 +122,7 @@ const PostFooter = ({ post }) => {
 
 const styles = StyleSheet.create({
   body: {
-    marginBottom: 5,
-    marginHorizontal: 5
+    marginVertical: 10,
   },
   caption: { fontSize: 16, marginBottom: 5 },
   container: { marginBottom: 10, marginHorizontal: 8 },
@@ -134,7 +137,7 @@ const styles = StyleSheet.create({
   header: {
     alignItems: 'flex-start',
     flexDirection: 'row',
-    marginVertical: 5
+    marginVertical: 10
   },
   modalView: {
     backgroundColor: colors.white,
@@ -156,7 +159,8 @@ const styles = StyleSheet.create({
   },
   tags: {
     color: colors.blue,
-    fontSize: 13
+    fontSize: 13,
+    marginHorizontal: 5
   }
 })
 

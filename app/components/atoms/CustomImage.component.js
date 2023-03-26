@@ -16,20 +16,20 @@ const CustomImage = ({
       border: '2px solid #ddd',
       borderRadius: borderRadius,
       height: height,
-      padding: 5,
+      // padding: 5,
       width: width
     },
     curvedSquare: {
       border: '2px solid #ddd',
       borderRadius: 10,
       height: height,
-      padding: 5,
+      // padding: 5,
       width: width
     },
     square: {
       border: '2px solid #ddd',
       height: height,
-      padding: 5,
+      // padding: 5,
       width: width
     }
   })

@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import { ScrollView, Text } from 'react-native'
-import SearchTile from '../atoms/SearchTile.component'
-import { setProfileSelected } from '../../redux/slices/profileSelected.slice'
-import { navigateTo } from '../../helpers/navigation.helper'
 import { useDispatch } from 'react-redux'
 import { getProfile } from '../../apis/profile.api'
+import { navigateTo } from '../../helpers/navigation.helper'
+import { setProfileSelected } from '../../redux/slices/profileSelected.slice'
 import { apiWrapper } from '../../utils/wrapper.api'
+import { Base_uri } from '../../variables/variable'
+import SearchTile from '../atoms/SearchTile.component'
 
 const SearchPageResults = ({
   results,
@@ -66,7 +67,7 @@ const SearchPageResults = ({
               title={obj.personal_info.name}
               subTitle={subTitle}
               imageUrl={
-                'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
+                obj.user_id?.profilePic && `${Base_uri}${obj.user_id?.profilePic}`
               }
               handleClick={() => handleSelectedProfile(obj)}
               setAddressess={setAddressess}
@@ -97,7 +98,7 @@ const SearchPageResults = ({
               title={obj.personal_info.name}
               subTitle={subTitle}
               imageUrl={
-                'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
+                obj.user_id?.profilePic && `${Base_uri}${obj.user_id?.profilePic}`
               }
               handleClick={setAddressess}
               setAddressess={setAddressess}

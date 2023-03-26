@@ -1,6 +1,6 @@
 import { Feather } from '@expo/vector-icons'
 import * as DocumentPicker from 'expo-document-picker'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   ScrollView,
   StyleSheet,
@@ -11,7 +11,7 @@ import {
 } from 'react-native'
 import { showMessage } from 'react-native-flash-message'
 import { actions, RichEditor, RichToolbar } from 'react-native-pell-rich-editor'
-import { addPost, removeFile, uploadFile } from '../../apis/post.api'
+import { addPost, getTags, removeFile, uploadFile } from '../../apis/post.api'
 import globalStyles from '../../styles/global.styles'
 import { createFormData } from '../../utils/FormData.utils'
 import { apiWrapper } from '../../utils/wrapper.api'
@@ -24,11 +24,41 @@ const PostInput = () => {
 
   const [percent, setPercentage] = useState({})
   const [uploads, setUploads] = useState([])
-  const [fileName, setfileNames] = useState({})
+  const [fileName, setFileNames] = useState({})
   const [captionText, setCaptionText] = useState('')
 
   const [tagText, setTagText] = useState('')
   const [hashtags, setHashtags] = useState([])
+  const [editorFocused, setEditorFocused] = useState(true)
+  const [recommendedTags, setRecommendedTags] = useState([])
+
+  function handleEditorFocus() {
+    setEditorFocused(true)
+  }
+
+  function handleEditorBlur() {
+    setEditorFocused(false)
+  }
+
+  const setTags = (res) => {
+    setRecommendedTags(res.data || [])
+  }
+
+  useEffect(() => {
+    const data = {
+      content: captionText.replace(/<[^>]+>/g, '')
+    }
+    const image_files = Object.values(fileName).filter(fileName => /\.(jpg|jpeg|png)$/i.test(fileName))
+
+    if (image_files.length > 0) {
+      data.fileName = image_files[0]
+    }
+
+    if (!editorFocused && captionText.length > 0) {
+      apiWrapper(getTags(data, setTags))
+    }
+  }, [editorFocused, fileName])
+
 
   const handleTextChange = (value) => {
     setTagText(value)
@@ -88,7 +118,7 @@ const PostInput = () => {
     const formData = createFormData(file, {})
 
     const success_func = (res) => {
-      setfileNames({ ...fileName, [`${file.name}`]: res.data.fileName })
+      setFileNames({ ...fileName, [`${file.name}`]: res.data.fileName })
     }
 
     await apiWrapper(uploadFile, formData, getConfig(file.name), success_func)
@@ -100,9 +130,18 @@ const PostInput = () => {
       tags: hashtags,
       attachments: Object.values(fileName)
     }
-    console.log(body)
     await apiWrapper(addPost, body)
   }
+
+  const removeTag = (index) => {
+    setHashtags((tags) => tags.filter((item) => item !== tags[index]))
+  }
+
+  const addTag = (index) => {
+    setHashtags([...hashtags, recommendedTags[index]])
+    setRecommendedTags((tags) => tags.filter((item) => item !== tags[index]))
+  }
+
   return (
     <ScrollView style={[globalStyles.container, styles.container]}>
       <RichToolbar
@@ -110,13 +149,12 @@ const PostInput = () => {
           actions.setBold,
           actions.setItalic,
           actions.setUnderline,
-          actions.heading1,
           actions.setStrikethrough,
+          actions.heading1,
           'attachments',
-          actions.insertBulletsList,
+          actions.insertLink,
           actions.insertOrderedList,
-          actions.undo,
-          actions.redo
+          actions.insertBulletsList
         ]}
         iconSize={16}
         iconMap={{
@@ -133,9 +171,11 @@ const PostInput = () => {
       <RichEditor
         placeholder={'Type your post content here...'}
         ref={message}
-        initialHeight={200}
+        initialHeight={250}
         onChange={(text) => setCaptionText(text)}
         style={styles.textEditor}
+        onFocus={handleEditorFocus}
+        onBlur={handleEditorBlur}
       />
       {uploads && (
         <View style={styles.uploadContainer}>
@@ -161,18 +201,36 @@ const PostInput = () => {
       />
       <View style={styles.hashtagsContainer}>
         {hashtags.map((hashtag, index) => (
-          <Text key={index} style={styles.hashtag}>
-            {hashtag}
-          </Text>
+          <TouchableOpacity key={index} onPress={() => removeTag(index)}>
+            <Text style={styles.hashtag}>
+              {hashtag}
+            </Text>
+          </TouchableOpacity>
         ))}
       </View>
+      {
+        recommendedTags.length > 0 && (
+          <View style={[globalStyles.dflex, globalStyles.flexColumn, globalStyles.gap10]}>
+            <Text style={[globalStyles.p, globalStyles.text]}>Recommended Tags:</Text>
+            <View style={styles.hashtagsContainer}>
+              {recommendedTags.map((hashtag, index) => (
+                <TouchableOpacity key={index} onPress={() => addTag(index)}>
+                  <Text style={styles.hashtag}>
+                    {hashtag}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+        )
+      }
 
       <View style={styles.btn}>
         <CustomButton
           text="Post"
           handleClick={handlePost}
           alignItems="center"
-          backgroundColor={colors.loginpink}
+          backgroundColor={colors.loginPink}
           fontColor={colors.white}
           fontFamily={'Roboto'}
           fontSize={18}
@@ -206,14 +264,15 @@ const styles = StyleSheet.create({
     backgroundColor: colors.lightGrey,
     borderRadius: 10,
     color: colors.white,
-    marginBottom: 5,
-    marginRight: 5,
+    marginBottom: 8,
+    marginRight: 8,
     padding: 5
   },
   hashtagsContainer: {
+    display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginHorizontal: 20
+    marginTop: 10
   },
   headingOne: {
     color: colors.lightGrey,

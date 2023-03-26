@@ -14,7 +14,7 @@ const globalStyles = StyleSheet.create({
   },
   buttonStyle: {
     alignItems: 'center',
-    backgroundColor: colors.loginpink,
+    backgroundColor: colors.loginPink,
     borderRadius: 30,
     elevation: 8,
     justifyContent: 'center',
@@ -51,6 +51,9 @@ const globalStyles = StyleSheet.create({
   font700: {
     fontWeight: '700'
   },
+  gap10: {
+    gap: 10,
+  },
   h1: {
     fontSize: 24,
     fontWeight: '700'
@@ -71,7 +74,7 @@ const globalStyles = StyleSheet.create({
   },
   p: {
     fontSize: 14,
-    letterSpacing: 1
+    letterSpacing: 0.8
   },
   screenHeader: {
     fontSize: 20,
