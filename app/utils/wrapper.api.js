@@ -23,7 +23,7 @@ export const apiWrapper = async (func, ...args) => {
         position: 'bottom'
       })
 
-      console.log(errMsg)
+      console.log("🚀 ~ file: wrapper.api.js:27 ~ apiWrapper ~ errMsg:", error.response.data.errors)
     } else {
       error.handleGlobally && error.handleGlobally()
     }

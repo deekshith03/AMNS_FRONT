@@ -2,6 +2,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer'
 import React from 'react'
 import { View } from 'react-native'
 import PostInput from '../components/organisms/PostInput.component'
+import { AddStudent } from '../screens/admin/AddStudent.admin.screen'
 import Feeds from '../screens/Feeds.screen'
 import { Mailer } from '../screens/Mailer.screen'
 import { SearchScreenAdmin } from '../screens/searchScreenAdmin.screen'
@@ -28,6 +29,14 @@ export const StaffNavigator = () => {
         options={{
           ...options,
           title: 'Search'
+        }}
+      />
+      <StaffNav.Screen
+        name="Add student"
+        component={AddStudent}
+        options={{
+          ...options,
+          title: 'Add Student'
         }}
       />
       <StaffNav.Screen

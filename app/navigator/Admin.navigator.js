@@ -3,6 +3,7 @@ import React from 'react'
 import { View } from 'react-native'
 import PostInput from '../components/organisms/PostInput.component'
 import { AddStaff } from '../screens/admin/AddStaff.admin.screen'
+import { AddStudent } from '../screens/admin/AddStudent.admin.screen'
 import Chat from '../screens/Chat.screen'
 import Feeds from '../screens/Feeds.screen'
 import { ImportScreen } from '../screens/ImportScreen.screen'
@@ -31,6 +32,14 @@ export const AdminNavigator = () => {
         options={{
           ...options,
           title: 'Add Staff'
+        }}
+      />
+      <AdminNav.Screen
+        name="AddStudent"
+        component={AddStudent}
+        options={{
+          ...options,
+          title: 'Add Student'
         }}
       />
       <AdminNav.Screen
