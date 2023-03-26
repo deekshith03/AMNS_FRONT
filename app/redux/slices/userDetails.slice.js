@@ -1,6 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { getUserDetails } from '../../apis/profile.api'
-import { apiWrapper } from '../../utils/wrapper.api'
 
 const userDetailsSlice = createSlice({
   name: 'userDetails',
@@ -8,14 +6,9 @@ const userDetailsSlice = createSlice({
     userDetails: {}
   },
   reducers: {
-    setUserDetails: (state) => {
-      console.log(state)
-      if (Object.keys(state.userDetails).length === 0) {
-        const success_fun = (res) => {
-          state.userDetails = res.data
-        }
-        apiWrapper(getUserDetails, success_fun)
-      }
+    setUserDetails: (state, action) => {
+      state.userDetails = action.payload
+      console.log('statttt---', state.userDetails)
     }
   }
 })

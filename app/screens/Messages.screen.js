@@ -14,7 +14,7 @@ import { colors } from '../variables/colors.variables'
 const Messages = ({ route, navigation }) => {
   const [chatMessages, setChatMessages] = useState(route.params.messages)
 
-  console.log(chatMessages)
+  // console.log(chatMessages)
   const [message, setMessage] = useState('')
   // const [author, setauthor] = useState('')
 
@@ -93,8 +93,8 @@ const styles = StyleSheet.create({
 })
 
 Messages.propTypes = {
-  route: PropTypes.object,
-  navigation: PropTypes.object
+  route: PropTypes.any,
+  navigation: PropTypes.any
 }
 
 export default Messages
