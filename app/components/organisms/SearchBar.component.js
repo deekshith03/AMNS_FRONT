@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
   },
 
   resetTextStyles: {
-    color: colors.loginpink,
+    color: colors.loginPink,
     fontFamily: 'Roboto'
   },
 
@@ -394,11 +394,9 @@ const SearchBar = ({
       setContentLoader(true)
       dispatch(changeState(true))
       if (studentSelected) {
-        console.log(data)
         axiosInstance
           .post(`/api/student/20/1`, data)
           .then((res) => {
-            console.log(res.data)
             handleSearchPhraseResults([...res.data])
             if (res.data > 0) setContentLoader(false)
           })
@@ -476,8 +474,8 @@ const SearchBar = ({
       </View>
 
       {searchPhrase.length > 0 &&
-      searchPhraseResults.length === 0 &&
-      Contentloader ? (
+        searchPhraseResults.length === 0 &&
+        Contentloader ? (
         <>
           <CustomContentLoader />
           <CustomContentLoader />
@@ -531,18 +529,17 @@ const SearchBar = ({
                       />
                     </View>
                     {appliedFilters[option] &&
-                    appliedFilters[option].length > 0 ? (
+                      appliedFilters[option].length > 0 ? (
                       <Pill
                         key={ind}
                         text={
                           appliedFilters[option].length > 1
-                            ? `${appliedFilters[option][0]} + ${
-                                appliedFilters[option].length - 1
-                              }`
+                            ? `${appliedFilters[option][0]} + ${appliedFilters[option].length - 1
+                            }`
                             : `${appliedFilters[option][0]}`
                         }
                         alignItems={'center'}
-                        backgroundColor={colors.loginpink}
+                        backgroundColor={colors.loginPink}
                         fontColor={colors.black}
                         fontFamily={'Roboto'}
                         fontSize={12}
@@ -562,7 +559,7 @@ const SearchBar = ({
             <CustomButton
               text="Show Results"
               alignItems={'center'}
-              backgroundColor={colors.loginpink}
+              backgroundColor={colors.loginPink}
               fontColor={colors.white}
               fontFamily={'Roboto'}
               fontSize={15}
@@ -633,25 +630,25 @@ const SearchBar = ({
           <View style={styles.pillContainer}>
             {appliedFilters[currentFilter]
               ? appliedFilters[currentFilter].map((value, ind) => {
-                  return (
-                    <Pill
-                      key={ind}
-                      text={value}
-                      alignItems={'center'}
-                      backgroundColor={colors.loginpink}
-                      fontColor={colors.black}
-                      fontFamily={'Roboto'}
-                      fontSize={12}
-                      paddingHorizontal={5}
-                      paddingVertical={6}
-                      borderRadius={15}
-                      marginBottom={6}
-                      handleClick={() => {
-                        handlePillCancel(value)
-                      }}
-                    />
-                  )
-                })
+                return (
+                  <Pill
+                    key={ind}
+                    text={value}
+                    alignItems={'center'}
+                    backgroundColor={colors.loginPink}
+                    fontColor={colors.black}
+                    fontFamily={'Roboto'}
+                    fontSize={12}
+                    paddingHorizontal={5}
+                    paddingVertical={6}
+                    borderRadius={15}
+                    marginBottom={6}
+                    handleClick={() => {
+                      handlePillCancel(value)
+                    }}
+                  />
+                )
+              })
               : null}
           </View>
           {currentFilterOptions &&
@@ -661,7 +658,7 @@ const SearchBar = ({
                 option.isInteger
                   ? option.match(regex)
                   : option.toString().match(regex) &&
-                    searchWithFullResults.includes(currentFilter)
+                  searchWithFullResults.includes(currentFilter)
               ) {
                 if (ind == currentFilterOptions.length - 1) {
                   return (

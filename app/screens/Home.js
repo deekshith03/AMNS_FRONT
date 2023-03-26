@@ -8,7 +8,7 @@ export const Home = () => {
   const [type, setType] = useState('admin')
 
   const dispatch = useDispatch()
-  dispatch(setUserDetails)
+  dispatch(setUserDetails())
 
   useEffect(() => {
     async function navigate() {

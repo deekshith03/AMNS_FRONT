@@ -18,7 +18,7 @@ Title.propTypes = {
 
 const styles = StyleSheet.create({
   bar: {
-    backgroundColor: colors.loginpink,
+    backgroundColor: colors.loginPink,
     height: 25,
     margin: 5,
     width: 7

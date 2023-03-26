@@ -43,7 +43,6 @@ export const AddStaff = () => {
       axiosInstance
         .post('/api/addStaff', { staffs: [values] })
         .then(async (res) => {
-          // console.log(res.data)
           showMessage({
             message: res.data.message,
             type: 'success',
@@ -127,7 +126,7 @@ export const AddStaff = () => {
           text="Add"
           handleClick={handleSubmit}
           alignItems="center"
-          backgroundColor={colors.loginpink}
+          backgroundColor={colors.loginPink}
           fontColor={colors.white}
           fontFamily={'Roboto'}
           fontSize={18}

@@ -1,5 +1,5 @@
 export const colors = {
-  loginpink: '#ff2c55',
+  loginPink: '#ff2c55',
   logingray: '#eee',
   black: 'black',
   transparent: 'transparent',

@@ -1,6 +1,8 @@
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import React from 'react'
 import { View } from 'react-native'
+import PostInput from '../components/organisms/PostInput.component'
+import Feeds from '../screens/Feeds.screen'
 import { Mailer } from '../screens/Mailer.screen'
 import { SearchScreenAdmin } from '../screens/searchScreenAdmin.screen'
 import globalStyles from '../styles/global.styles'
@@ -19,7 +21,7 @@ const options = {
 
 export const StaffNavigator = () => {
   return (
-    <StaffNav.Navigator initialRouteName="Search">
+    <StaffNav.Navigator initialRouteName="Feeds">
       <StaffNav.Screen
         name="Search"
         component={SearchScreenAdmin}
@@ -34,6 +36,22 @@ export const StaffNavigator = () => {
         options={{
           ...options,
           title: 'Send Mail'
+        }}
+      />
+      <StaffNav.Screen
+        name="Feeds"
+        component={Feeds}
+        options={{
+          ...options,
+          title: 'Feeds'
+        }}
+      />
+      <StaffNav.Screen
+        name="Create Post"
+        component={PostInput}
+        options={{
+          ...options,
+          title: 'Add Post'
         }}
       />
     </StaffNav.Navigator>

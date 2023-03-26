@@ -144,7 +144,7 @@ const SignIn = () => {
           text="login"
           handleClick={handleSubmit}
           alignItems={'center'}
-          backgroundColor={colors.loginpink}
+          backgroundColor={colors.loginPink}
           fontColor={colors.white}
           fontFamily={'Roboto'}
           fontSize={18}

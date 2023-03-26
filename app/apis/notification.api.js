@@ -12,6 +12,5 @@ export const getNotification = async () => {
 }
 
 export const putNotification = async (id) => {
-  console.log('🚀 ~ file: notification.api.js:15 ~ putNotification ~ id', id)
   return await axiosInstance.put(`/api/notification/markread/${id}`).then()
 }

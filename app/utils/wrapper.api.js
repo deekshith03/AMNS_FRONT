@@ -9,8 +9,8 @@ export const apiWrapper = async (func, ...args) => {
   try {
     await func(...args)
   } catch (error) {
-    // console.log(error)
     const statusCode = error.response ? error.response.status : null
+
     if (statusCode === 500 || statusCode === 400) {
       const errMsg =
         error.response.data.errors[0].message === undefined

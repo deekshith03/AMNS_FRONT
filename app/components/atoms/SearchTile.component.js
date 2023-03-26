@@ -5,7 +5,7 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { colors } from '../../variables/colors.variables';
 
 const SearchTile = ({
-  imageUrl = '',
+  imageUrl,
   title,
   email,
   subTitle = '',
@@ -118,5 +118,10 @@ SearchTile.propTypes = {
   setSelectedStudents: PropTypes.func,
   changeSelected: PropTypes.func
 }
+
+SearchTile.defaultProps = {
+  imageUrl: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
+}
+
 
 export default SearchTile

@@ -1,18 +1,17 @@
-import React, { useEffect, useState } from 'react'
-import { View, StyleSheet, Text, ScrollView } from 'react-native'
+import { FontAwesome, Ionicons } from '@expo/vector-icons'
 import * as DocumentPicker from 'expo-document-picker'
-import { colors } from '../variables/colors.variables'
-import { Ionicons } from '@expo/vector-icons'
-import { FontAwesome } from '@expo/vector-icons'
-import CustomButton from '../components/atoms/CustomButton.component'
-import { createFormData } from '../utils/FormData.utils'
-import { apiWrapper } from '../utils/wrapper.api'
-import { generateJSON, saveExcelData } from '../apis/import.api'
-import CustomSelect from '../components/molecules/CustomSelect.component'
-import InputBox from '../components/atoms/input.component'
+import React, { useEffect, useState } from 'react'
+import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { hideMessage, showMessage } from 'react-native-flash-message'
 import { useDispatch } from 'react-redux'
+import { generateJSON, saveExcelData } from '../apis/import.api'
+import CustomButton from '../components/atoms/CustomButton.component'
+import InputBox from '../components/atoms/input.component'
+import CustomSelect from '../components/molecules/CustomSelect.component'
 import { changeState } from '../redux/slices/loading.slice'
+import { createFormData } from '../utils/FormData.utils'
+import { apiWrapper } from '../utils/wrapper.api'
+import { colors } from '../variables/colors.variables'
 
 export const ImportScreen = () => {
   const styles = StyleSheet.create({
@@ -149,7 +148,7 @@ export const ImportScreen = () => {
                 Error documents {errorDocs.length}
               </Text>
               <CustomButton
-                backgroundColor={colors.loginpink}
+                backgroundColor={colors.loginPink}
                 fontSize={10}
                 paddingVertical={8}
                 fontColor={colors.white}
@@ -204,7 +203,7 @@ export const ImportScreen = () => {
                 <View style={styles.btnSize}>
                   <CustomButton
                     text="cancel"
-                    backgroundColor={colors.loginpink}
+                    backgroundColor={colors.loginPink}
                     fontSize={10}
                     fontColor={colors.white}
                     paddingVertical={8}
@@ -215,7 +214,7 @@ export const ImportScreen = () => {
                   <View>
                     <CustomButton
                       text="Import"
-                      backgroundColor={colors.loginpink}
+                      backgroundColor={colors.loginPink}
                       fontSize={10}
                       fontColor={colors.white}
                       paddingVertical={8}
@@ -256,7 +255,7 @@ export const ImportScreen = () => {
             <View style={styles.btnStyles}>
               <CustomButton
                 text="Proceed"
-                backgroundColor={colors.loginpink}
+                backgroundColor={colors.loginPink}
                 fontSize={10}
                 fontColor={colors.white}
                 paddingVertical={8}

@@ -7,11 +7,6 @@ const notificationListSlice = createSlice({
   },
   reducers: {
     setNotificationList: (state, action) => {
-      console.log(
-        '🚀 ~ file: notificationList.slice.js:11 ~ action.payload',
-        action.payload
-      )
-
       state.notificationList = action.payload
     }
   }

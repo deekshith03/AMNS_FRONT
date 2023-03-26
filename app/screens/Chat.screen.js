@@ -30,7 +30,7 @@ const Chat = () => {
           <FlatList
             data={chatRoom}
             renderItem={({ item }) => <ChatRoomTile item={item} />}
-            // keyExtractor={(item) => item._id}
+          // keyExtractor={(item) => item._id}
           />
         ) : (
           <View style={styles.emptyChat}>
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   newChatContainer: {
     alignItems: 'center',
     alignSelf: 'center',
-    backgroundColor: colors.loginpink,
+    backgroundColor: colors.loginPink,
     borderRadius: 20,
     borderWidth: 1,
     marginVertical: 10,

@@ -17,7 +17,7 @@ export const SearchScreen = ({ userType }) => {
       width: '95%'
     },
     screenStyles: {
-      marginTop: 70
+      marginTop: 90
     }
   })
   const [studentSelected, setStudentSelected] = useState(true)
@@ -82,6 +82,9 @@ export const SearchScreen = ({ userType }) => {
   )
 }
 SearchScreen.propTypes = {
-  userType: PropTypes.string.isRequired
+  userType: PropTypes.string
 }
 
+SearchScreen.defaultProps = {
+  userType: 'student'
+}

@@ -1,9 +1,9 @@
-import { View, StyleSheet, Text } from 'react-native'
-import React from 'react'
 import { Feather, FontAwesome5 } from '@expo/vector-icons'
-import { colors } from '../../variables/colors.variables'
+import React from 'react'
+import { StyleSheet, Text, View } from 'react-native'
 import { Shadow } from 'react-native-shadow-2'
 import { useSelector } from 'react-redux'
+import { colors } from '../../variables/colors.variables'
 
 const styles = StyleSheet.create({
   ImageStyles: {
@@ -39,7 +39,7 @@ export const ActivityDeck = () => {
             style={styles.ImageStyles}
             name="message-circle"
             size={24}
-            color={colors.loginpink}
+            color={colors.loginPink}
           />
           <Text>Message</Text>
         </View>
