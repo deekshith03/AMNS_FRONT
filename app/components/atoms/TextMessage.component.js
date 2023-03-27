@@ -1,32 +1,32 @@
+import PropTypes from 'prop-types'
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import { colors } from '../../variables/colors.variables'
-import PropTypes from 'prop-types'
+import { useSelector } from 'react-redux'
 import globalStyles from '../../styles/global.styles'
-
+import { colors } from '../../variables/colors.variables'
 
 const TextMessage = ({ item, author }) => {
-  console.log('aaaa--aa---',item,'bbb---bbb', author)
-  const status = item.author != author
+  const { userDetails } = useSelector((state) => state.userDetails)
+
+  const status = userDetails._id != author
   return (
-    <View>
-      <View
-        style={
-          status
-            ? styles.messageWrapper
-            : [styles.messageWrapper, { alignItems: 'flex-end' }]
-        }>
-        <View style={globalStyles.flexRow}>
-          <View
-            style={
-              status
-                ? styles.mmessage
-                : [styles.mmessage, { backgroundColor: 'rgb(194, 243, 194)' }]
-            }>
-            <Text>{item.message}</Text>
+    <View
+      style={
+        status
+          ? styles.messageWrapper
+          : [styles.messageWrapper, { alignItems: 'flex-end' }]
+      }>
+      <View style={globalStyles.flexRow}>
+        <View style={styles.mmessage}>
+          <Text style={styles.msg}>{item.message}</Text>
+          <View style={styles.timeContainer}>
+            <Text style={styles.time}>
+              {new Date(item.timestamp).getHours()}
+              {':'}
+              {String(new Date(item.timestamp).getMinutes()).padStart(2, '0')}
+            </Text>
           </View>
         </View>
-        <Text>{item.timestamp}</Text>
       </View>
     </View>
   )
@@ -35,21 +35,35 @@ const TextMessage = ({ item, author }) => {
 const styles = StyleSheet.create({
   messageWrapper: {
     alignItems: 'flex-start',
-    marginBottom: 15,
     width: '100%'
   },
   mmessage: {
-    backgroundColor: colors.notificationTile,
+    backgroundColor: colors.logingray,
     borderRadius: 10,
-    marginBottom: 2,
-    maxWidth: '50%',
-    padding: 15
+    elevation: 3,
+    marginBottom: 10,
+    maxWidth: '90%'
+  },
+  msg: {
+    fontFamily: 'Roboto',
+    fontSize: 16,
+    marginHorizontal: 10,
+    marginTop: 10
+  },
+  time: {
+    fontSize: 12,
+    opacity: 0.7
+  },
+  timeContainer: {
+    alignItems: 'flex-end',
+    marginBottom: 5,
+    marginRight: 15
   }
 })
 
 TextMessage.propTypes = {
   item: PropTypes.object,
-  author: PropTypes.string
+  author: PropTypes.number
 }
 
 export default TextMessage
