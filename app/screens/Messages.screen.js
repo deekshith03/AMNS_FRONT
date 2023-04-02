@@ -1,4 +1,3 @@
-import { Feather } from '@expo/vector-icons'
 import PropTypes from 'prop-types'
 import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { FlatList, StyleSheet, TextInput, View } from 'react-native'
@@ -7,65 +6,52 @@ import CustomButton from '../components/atoms/CustomButton.component'
 import TextMessage from '../components/atoms/TextMessage.component'
 import { apiWrapper } from '../utils/wrapper.api'
 import { colors } from '../variables/colors.variables'
+import { useSelector } from 'react-redux'
+import { chatSocket } from '../utils/socket.utils'
 
 const Messages = ({ route, navigation }) => {
   const [message, setMessage] = useState('')
-  const [room, setRoom] = useState({})
-
-  console.log('new page ----====-------- route--')
-  console.log('route--', route.params)
+  const [room, setRoom] = useState(undefined)
+  const { userDetails } = useSelector((state) => state.userDetails)
 
   useEffect(() => {
     const success_fun = (data) => {
       setRoom(data)
-      console.log('dadtu--->', data.room_name)
     }
     apiWrapper(showRoom, route.params._id, success_fun)
   }, [])
 
+  useEffect(() => {
+    console.log(chatSocket.id)
+    if (room && room._id) {
+      chatSocket.emit('setup_connection', { roomId: room._id })
+      chatSocket.on('receive_message', (data) => {
+        if (data._id === room._id) setRoom(data)
+      })
+    }
+  }, [room])
+
   useLayoutEffect(() => {
-    console.log('rrrrooooommmmmmmmm', room.messages)
-    navigation.setOptions({ title: room.room_name })
+    if (room) navigation.setOptions({ title: room.room_name })
   }, [room])
 
   const handleNewMessage = () => {
-    
+    if (message.length > 0) {
+      const payload = {
+        roomId: room._id,
+        author: userDetails._id,
+        body: message,
+        media: ''
+      }
+      chatSocket.emit('send_message', payload)
+    }
   }
 
-  const msgs = [
-    {
-      author: 2,
-      timestamp: 1679896101088,
-      message: '22Hi how are you?',
-      media: ''
-    },
-    {
-      author: 4,
-      timestamp: 1679896109288,
-      message:
-        '44I am fine, how are you?I am fine, how are you?I am fine, how are you?I am fine, how are you?I am fine, how are you?',
-      media: ''
-    },
-    {
-      author: 2,
-      timestamp: 1679896909288,
-      message:
-        '22I goodI am fine, how are you?I am fine, how are you?I am fine, how are you?I am fine, how are you?I am fine, how are you?',
-      media: ''
-    },
-    {
-      author: 2,
-      timestamp: 1679896989388,
-      message: '22 I goodI am fine, how are you?',
-      media: ''
-    }
-  ]
-  console.log(room.messages, '---/')
   return (
     <View style={styles.messagingscreen}>
       <View style={[styles.messagingscreen, styles.msg]}>
         <FlatList
-          data={room.messages}
+          data={room && room.messages}
           renderItem={({ item }) => (
             <TextMessage item={item} author={item.author} />
           )}
