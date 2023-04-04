@@ -16,7 +16,8 @@ export const colors = {
   notificationTile: '#eff5f5',
   red: '#ff0000',
   grayTone: '#e1e1e1',
-  green: 'green'
+  green: 'green',
+  highlight: '#f2f2ff'
 }
 
 export const colors_dark = {
