@@ -1,14 +1,15 @@
-import { showMessage } from 'react-native-flash-message'
+import { showMessage } from 'react-native-flash-message';
 // import { useDispatch } from 'react-redux'
 // import { changeState } from '../redux/slices/loading.slice'
 
-export const apiWrapper = async (func, ...args) => {
+export const apiWrapper = (func, ...args) => {
   // const dispatch = useDispatch()
 
   // dispatch(changeState(true))
   try {
-    await func(...args)
+    func(...args)
   } catch (error) {
+    console.log("🚀 ~ file: wrapper.api.js:13 ~ apiWrapper ~ error:", error)
     const statusCode = error.response ? error.response.status : null
 
     if (statusCode === 500 || statusCode === 400) {

@@ -1,17 +1,14 @@
 import { showMessage } from 'react-native-flash-message'
-import { useDispatch } from 'react-redux'
-import { setPost } from '../redux/slices/post.slice'
 import { axiosInstance } from '../variables/variable'
 
-export const getPost = async () => {
-  const dispatch = useDispatch()
-  return await axiosInstance.get('/api/posts').then((res) => {
-    dispatch(setPost(res.data))
+export const getPost = (success_func) => {
+  axiosInstance.get('/api/posts').then((res) => {
+    success_func(res)
   })
 }
 
-export const addPost = async (data) => {
-  await axiosInstance.post('/api/posts/', data).then((res) => {
+export const addPost = (data) => {
+  axiosInstance.post('/api/posts/', data).then((res) => {
     showMessage({
       message: res.data.message,
       type: 'success',
@@ -20,8 +17,8 @@ export const addPost = async (data) => {
   })
 }
 
-export const removeFile = async (fileName, success_func) => {
-  await axiosInstance.delete(`api/removeFile/${fileName}`).then(() => {
+export const removeFile = (fileName, success_func) => {
+  axiosInstance.delete(`api/removeFile/${fileName}`).then(() => {
     success_func()
     showMessage({
       message: 'File removed',
@@ -31,11 +28,11 @@ export const removeFile = async (fileName, success_func) => {
   })
 }
 
-export const uploadFile = async (data, config, success_func) => {
+export const uploadFile = (data, config, success_func) => {
   axiosInstance.defaults.headers.put['Content-Type'] = 'multipart/form-data'
   axiosInstance.defaults.headers.put['mimeType'] = 'multipart/form-data'
 
-  await axiosInstance
+  axiosInstance
     .post('api/upload/attachment', data, config)
     .then((res) => {
       success_func(res)
@@ -48,7 +45,7 @@ export const uploadFile = async (data, config, success_func) => {
 }
 
 export const getTags = async (data, success_func) => {
-  await axiosInstance
+  axiosInstance
     .post('api/posts/tags', data)
     .then((res) => {
       success_func(res)

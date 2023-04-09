@@ -1,8 +1,8 @@
 import { showMessage } from "react-native-flash-message"
 import { axiosInstance } from "../variables/variable"
 
-export const sendMail = async (data) => {
-  await axiosInstance
+export const sendMail = (data) => {
+  axiosInstance
     .post('/api/sendmail', data)
     .then((res) => {
       showMessage({
@@ -13,8 +13,8 @@ export const sendMail = async (data) => {
     })
 }
 
-export const deleteAttachment = async (fileName, success_func) => {
-  await axiosInstance
+export const deleteAttachment = (fileName, success_func) => {
+  axiosInstance
     .delete(`api/removeFile/${fileName}`)
     .then(() => {
       success_func()
@@ -26,11 +26,11 @@ export const deleteAttachment = async (fileName, success_func) => {
     })
 }
 
-export const addAttachment = async (data, config, success_func) => {
+export const addAttachment = (data, config, success_func) => {
   axiosInstance.defaults.headers.put['Content-Type'] = 'multipart/form-data';
   axiosInstance.defaults.headers.put['mimeType'] = 'multipart/form-data';
 
-  await axiosInstance
+  axiosInstance
     .post('api/upload/attachment', data, config)
     .then((res) => {
       success_func(res)

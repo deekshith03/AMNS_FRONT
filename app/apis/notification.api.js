@@ -2,15 +2,15 @@ import { useDispatch } from 'react-redux'
 import { setNotificationList } from '../redux/slices/notificationList.slice'
 import { axiosInstance } from '../variables/variable'
 
-export const getNotification = async () => {
+export const getNotification = () => {
   const dispatch = useDispatch()
-  return await axiosInstance
+  axiosInstance
     .get('/api/notification/getnotification')
     .then((res) => {
       dispatch(setNotificationList(res.data))
     })
 }
 
-export const putNotification = async (id) => {
-  return await axiosInstance.put(`/api/notification/markread/${id}`).then()
+export const putNotification = (id) => {
+  axiosInstance.put(`/api/notification/markread/${id}`).then()
 }

@@ -1,31 +1,42 @@
-import React from 'react'
-import { FlatList, StyleSheet, View } from 'react-native'
-import { useSelector } from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { Dimensions, FlatList, RefreshControl, StyleSheet, View } from 'react-native'
+import { useDispatch, useSelector } from 'react-redux'
 import { getPost } from '../apis/post.api'
 import CenteredMessage from '../components/atoms/CenteredMessage.component'
 import PostCard from '../components/molecules/PostCard.component'
+import { setPost } from '../redux/slices/post.slice'
 import { apiWrapper } from '../utils/wrapper.api'
-// import { posts } from '../data/posts.sample'
+
 
 const Feeds = () => {
   const { post } = useSelector((state) => state.post)
+  const [refreshing, setRefreshing] = useState(false);
 
-  if (post.length === 0) {
-    apiWrapper(getPost)
+  const dispatch = useDispatch()
+
+  const success_func = (res) => {
+    console.log('inside');
+    dispatch(setPost(res.data))
   }
 
-  // const post = posts
+  useEffect(() => {
+    apiWrapper(getPost, success_func)
+  }, [refreshing])
 
-  return !post.length ? (
-    <CenteredMessage
-      title={'No Feeds'}
-      message={'Please follow any topic or come back later for newer post.'}
-    ></CenteredMessage>
-  ) : (
+  return (
     <View style={styles.container} key={post._id}>
       <FlatList
         data={post}
         renderItem={({ item }) => <PostCard post={item} />}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={() => setRefreshing(false)} />
+        }
+        ListEmptyComponent={
+          <CenteredMessage
+            title={'No Feeds'}
+            message={'Please follow any topic or come back later for newer post.'}
+          />
+        }
       ></FlatList>
     </View>
   )
@@ -34,8 +45,9 @@ const Feeds = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    height: Dimensions.get('window').height,
     paddingBottom: '25%',
-    top: 90
+    top: 100
   }
 })
 
