@@ -51,3 +51,19 @@ export const getTags = async (data, success_func) => {
       success_func(res)
     })
 }
+
+export const getComments = (data, success_func) => {
+  axiosInstance.get(`/api/posts/${data}/comments`).then((res) => {
+    success_func(res)
+  })
+}
+
+export const addComments = (data, id) => {
+  axiosInstance.post(`/api/posts/${id}/comments`, data).then((res) => {
+    showMessage({
+      message: res.data.message,
+      type: 'success',
+      position: 'bottom'
+    })
+  })
+}

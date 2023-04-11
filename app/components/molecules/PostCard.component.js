@@ -10,11 +10,9 @@ import {
 } from 'react-native'
 import globalStyles from '../../styles/global.styles'
 import CustomImage from '../atoms/CustomImage.component'
-
 import ReadMore from '@fawazahmed/react-native-read-more'
 import PropTypes from 'prop-types'
 import RenderHTML from 'react-native-render-html'
-import { comments } from '../../data/comments.sample'
 import { colors } from '../../variables/colors.variables'
 import { Base_uri } from '../../variables/variable'
 import Comments from './Comments'
@@ -123,7 +121,7 @@ const PostFooter = ({ post }) => {
           <Text> Comments</Text>
         </TouchableOpacity>
       </View>
-      {visible && comments && <Comments comments={comments} />}
+      {visible && <Comments postId={post._id} />}
     </View>
   )
 }

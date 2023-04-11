@@ -13,11 +13,26 @@ import {
 import globalStyles from '../../styles/global.styles'
 import { colors, colors_dark } from '../../variables/colors.variables'
 import CustomButton from '../atoms/CustomButton.component'
+// import { comments } from '../../data/comments.sample'
 
-const Comments = ({ comments }) => {
+const Comments = ({ postId }) => {
+  const [comments, setComments] = useState([])
   const [commentText, setCommentText] = useState('')
 
-  const handleAddComment = () => {}
+  const [id, setID] = useState(0) 
+
+  const addComment = (commentText, postId) => {
+    setID(id+1)
+    const newComment = { _id: id, name: 'sample', body: commentText, postId: postId }
+    setComments([...comments, newComment])
+  }
+
+  const handleAddComment = () => {
+    addComment(commentText, postId)
+    setCommentText('') 
+  }
+
+  console.log(commentText, comments)
 
   return (
     <View style={[globalStyles.dflex, styles.commentSection]}>
@@ -25,7 +40,7 @@ const Comments = ({ comments }) => {
       <ScrollView nestedScrollEnabled={true} style={styles.commentScrollHeight}>
         <FlatList
           data={comments}
-          renderItem={({ item }) => <CommentItem comment={item} />}
+          renderItem={({ item }) => <CommentItem comment={item} cid={item._id} />}
           keyExtractor={(item) => item._id}
         />
       </ScrollView>
@@ -34,6 +49,7 @@ const Comments = ({ comments }) => {
         <TextInput
           style={styles.commentInput}
           placeholder="Type a comment"
+          value={commentText}
           onChangeText={(value) => setCommentText(value)}
         />
         <CustomButton
@@ -51,7 +67,8 @@ const Comments = ({ comments }) => {
   )
 }
 
-const CommentItem = ({ comment }) => {
+const CommentItem = ({ comment, cid }) => {
+  const [replies, setReplies] = useState([])
   const [replyText, setReplyText] = useState('')
   const [replyVisible, setReplyVisible] = useState(false)
 
@@ -59,7 +76,19 @@ const CommentItem = ({ comment }) => {
     setReplyVisible(!replyVisible)
   }
 
-  const handleAddReply = () => {}
+  const [id, setID] = useState(0) 
+
+  const addReply = (replyText, cid) => {
+    setID(id+1)
+    const newReply = { _id: id, name: 'sample', body: replyText, cid: cid }
+    setReplies([...replies, newReply])
+  }
+
+  const handleAddReply = () => {
+    addReply(replyText, cid)
+    setReplyText('') 
+  }
+  // console.log(replyText, replies)
 
   return (
     <View style={styles.itemContainer}>
@@ -80,6 +109,7 @@ const CommentItem = ({ comment }) => {
           <TextInput
             style={styles.commentInput}
             placeholder="Add a reply"
+            value={replyText}
             onChangeText={(value) => setReplyText(value)}
           />
           <CustomButton
@@ -95,8 +125,9 @@ const CommentItem = ({ comment }) => {
         </View>
       )}
       <FlatList
-        data={comment.replies}
-        renderItem={({ item }) => <CommentItem comment={item} />}
+        // data={comment.replies}
+        data={replies}
+        renderItem={({ item }) => <CommentItem comment={item} cid={item._id} />}
         keyExtractor={(item) => item._id}
       />
     </View>
@@ -165,11 +196,12 @@ const styles = StyleSheet.create({
 })
 
 Comments.propTypes = {
-  comments: PropTypes.array
+  postId: PropTypes.number
 }
 
 CommentItem.propTypes = {
-  comment: PropTypes.object
+  comment: PropTypes.any,
+  cid: PropTypes.any
 }
 
 export default Comments
