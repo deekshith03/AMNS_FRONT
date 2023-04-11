@@ -39,11 +39,11 @@ const Chat = () => {
 }
 
 const styles = StyleSheet.create({
-  chatListContainer: { paddingBottom: '18%', paddingHorizontal: 3 },
+  chatListContainer: { marginBottom: '25%'},
   container: {
     flex: 1,
-    padding: 5,
-    top: 70
+    paddingHorizontal: 5,
+    top: 100
   },
   emptyChat: {
     alignItems: 'center',

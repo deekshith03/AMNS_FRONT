@@ -55,7 +55,7 @@ export const ActivityDeck = () => {
   return (
     <Shadow>
       <View style={[styles.activityDeck]}>
-        {/* {profile.user_id ? (
+        {profile.user_id ? (
           <TouchableOpacity onPress={handleMessageNavigation}>
             <View style={styles.deckItem}>
               <Feather
@@ -72,8 +72,8 @@ export const ActivityDeck = () => {
             <Feather name="bell-off" size={24} color={colors.loginpink} />
             <Text>Message</Text>
           </View>
-        )} */}
-        <TouchableOpacity onPress={handleMessageNavigation}>
+        )}
+        {/* <TouchableOpacity onPress={handleMessageNavigation}>
           <View style={styles.deckItem}>
             <Feather
               style={styles.ImageStyles}
@@ -83,7 +83,7 @@ export const ActivityDeck = () => {
             />
             <Text>Message</Text>
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         <View style={styles.deckItem}>
           <FontAwesome5
