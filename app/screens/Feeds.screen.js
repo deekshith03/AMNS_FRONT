@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getPost } from '../apis/post.api'
 import CenteredMessage from '../components/atoms/CenteredMessage.component'
 import PostCard from '../components/molecules/PostCard.component'
+import { navigateTo } from '../helpers/navigation.helper'
 import { setPost } from '../redux/slices/post.slice'
 import { apiWrapper } from '../utils/wrapper.api'
 
@@ -15,13 +16,20 @@ const Feeds = () => {
   const dispatch = useDispatch()
 
   const success_func = (res) => {
-    console.log('inside');
     dispatch(setPost(res.data))
+    navigateTo('Feeds')
   }
 
   useEffect(() => {
     apiWrapper(getPost, success_func)
-  }, [refreshing])
+  }, [])
+
+  const updateHandler = () => {
+    setRefreshing(true)
+    apiWrapper(getPost, success_func)
+    setRefreshing(false)
+  }
+
 
   return (
     <View style={styles.container} key={post._id}>
@@ -29,7 +37,7 @@ const Feeds = () => {
         data={post}
         renderItem={({ item }) => <PostCard post={item} />}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={() => setRefreshing(false)} />
+          <RefreshControl refreshing={refreshing} onRefresh={updateHandler} />
         }
         ListEmptyComponent={
           <CenteredMessage

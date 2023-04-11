@@ -25,7 +25,7 @@ const options = {
 
 export const AdminNavigator = () => {
   return (
-    <AdminNav.Navigator initialRouteName="Search">
+    <AdminNav.Navigator initialRouteName="Feeds">
       <AdminNav.Screen
         name="AddStaff"
         component={AddStaff}

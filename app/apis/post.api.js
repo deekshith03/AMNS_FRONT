@@ -1,5 +1,5 @@
-import { showMessage } from 'react-native-flash-message'
-import { axiosInstance } from '../variables/variable'
+import { showMessage } from 'react-native-flash-message';
+import { axiosInstance } from '../variables/variable';
 
 export const getPost = (success_func) => {
   axiosInstance.get('/api/posts').then((res) => {

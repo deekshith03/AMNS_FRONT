@@ -61,8 +61,9 @@ const PostContent = ({ post }) => {
       <ReadMore
         allowFontScaling={true}
         numberOfLines={3}
-        style={styles.caption}>
-        <RenderHTML source={{ html: `${post.caption}` }} contentWidth={100} />
+        style={styles.caption}
+      >
+        <RenderHTML source={{ html: post.caption }} contentWidth={100} />
       </ReadMore>
       {post.attachments && (
         <View style={styles.postImage}>
@@ -131,7 +132,7 @@ const styles = StyleSheet.create({
   body: {
     marginVertical: 10
   },
-  caption: { fontSize: 16, marginBottom: 5 },
+  caption: { fontSize: 16, marginBottom: 5},
   container: { marginBottom: 10, marginHorizontal: 5 },
   createdAt: {
     color: colors.lightGrey,
