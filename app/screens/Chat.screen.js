@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { FlatList, StyleSheet, Text, View } from 'react-native'
+import { FlatList, RefreshControl, StyleSheet, Text, View } from 'react-native'
 import { useSelector } from 'react-redux'
 import { getRooms } from '../apis/chat.api'
 import ChatRoomTile from '../components/atoms/ChatRoomTile.component'
@@ -8,16 +8,22 @@ import { apiWrapper } from '../utils/wrapper.api'
 
 const Chat = () => {
   const [rooms, setRooms] = useState([])
+  const [refreshing, setRefreshing] = useState(false)
   const { userDetails } = useSelector((state) => state.userDetails)
 
-  useEffect(() => {
-    const success_fun = (data) => {
-      setRooms(data)
-      console.log('ddddaaaaatttttaaaa---><<<<----', data)
-    }
+  const success_fun = (data) => {
+    setRooms(data)
+  }
 
+  useEffect(() => {
     apiWrapper(getRooms, userDetails._id, success_fun)
-  }, [])
+  }, []) 
+
+  const updateHandler = () => {
+    setRefreshing(true)
+    apiWrapper(getRooms, userDetails._id, success_fun)
+    setRefreshing(false)
+  }
 
   return (
     <View style={styles.container}>
@@ -26,6 +32,12 @@ const Chat = () => {
           <FlatList
             data={rooms}
             renderItem={({ item }) => <ChatRoomTile item={item} />}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={updateHandler}
+              />
+            }
           />
         ) : (
           <View style={styles.emptyChat}>
@@ -39,7 +51,7 @@ const Chat = () => {
 }
 
 const styles = StyleSheet.create({
-  chatListContainer: { marginBottom: '25%'},
+  chatListContainer: { marginBottom: '25%' },
   container: {
     flex: 1,
     paddingHorizontal: 5,

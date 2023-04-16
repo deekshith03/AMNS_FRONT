@@ -45,6 +45,7 @@ const Messages = ({ route, navigation }) => {
       }
       chatSocket.emit('send_message', payload)
     }
+    setMessage('')
   }
 
   return (
@@ -61,9 +62,9 @@ const Messages = ({ route, navigation }) => {
         <TextInput
           style={styles.messaginginput}
           placeholder={'Type Here'}
+          value={message}
           onChangeText={(value) => setMessage(value)}
         />
-        {/* <Feather name={'upload'} size={24} /> */}
         <CustomButton
           text={'Send'}
           alignItems="center"
@@ -72,10 +73,8 @@ const Messages = ({ route, navigation }) => {
           fontColor={colors.white}
           fontFamily={'Roboto'}
           fontSize={18}
-          // paddingHorizontal={10}
           bordered={true}
           customWidth={80}
-          // icon={'send'}
         />
       </View>
     </View>
