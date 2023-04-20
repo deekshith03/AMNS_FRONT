@@ -32,8 +32,6 @@ const Comments = ({ postId }) => {
     setCommentText('') 
   }
 
-  console.log(commentText, comments)
-
   return (
     <View style={[globalStyles.dflex, styles.commentSection]}>
       <Text style={styles.header}>{'Comments'}</Text>

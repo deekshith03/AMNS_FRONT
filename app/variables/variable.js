@@ -3,7 +3,8 @@ import * as SecureStore from 'expo-secure-store';
 import { showMessage } from 'react-native-flash-message';
 import * as RootNavigation from '../navigator/RootNavigation.navigator';
 export const Base_uri = 'http://10.0.2.2:8080/'
-// export const Base_uri = 'https://cyan-queens-pull-42-111-162-177.loca.lt'
+// export const Base_uri = 'https://e930-203-193-157-130.ngrok-free.app/'
+// export const Base_uri = 'https://ef13-2401-4900-338b-7d7-4c0f-2eb2-4e29-6670.ngrok-free.app'
 
 export const axiosInstance = axios.create({
   baseURL: Base_uri

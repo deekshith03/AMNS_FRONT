@@ -16,6 +16,8 @@ import RenderHTML from 'react-native-render-html'
 import { colors } from '../../variables/colors.variables'
 import { Base_uri } from '../../variables/variable'
 import Comments from './Comments'
+import { apiWrapper } from '../../utils/wrapper.api'
+import { likePost } from '../../apis/post.api'
 
 const PostCard = ({ post }) => {
   return (
@@ -103,13 +105,21 @@ const PostFooter = ({ post }) => {
     setVisible(!visible)
   }
 
+  const handleLike = (id) => {
+    const change_like = () => {
+      setLikeCount(likeCount + 1)
+    }
+
+    apiWrapper(likePost, id, change_like)
+  }
+
   return (
     <View>
       <View style={globalStyles.flexRow}>
         <TouchableOpacity
           style={[globalStyles.flexRow, styles.footer]}
           onPress={() => {
-            setLikeCount(likeCount + 1)
+            handleLike(post._id)
           }}>
           <Ionicons name={'heart'} size={24} color={'red'} />
           <Text> {likeCount} </Text>

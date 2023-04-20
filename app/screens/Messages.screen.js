@@ -53,6 +53,8 @@ const Messages = ({ route, navigation }) => {
       <View style={[styles.messagingscreen, styles.msg]}>
         <FlatList
           data={room && room.messages}
+          inverted
+          showsVerticalScrollIndicator={false}
           renderItem={({ item }) => (
             <TextMessage item={item} author={item.author} />
           )}

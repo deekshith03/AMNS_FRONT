@@ -18,6 +18,7 @@ const Feeds = () => {
   const success_func = (res) => {
     dispatch(setPost(res.data))
     navigateTo('Feeds')
+    setRefreshing(false)
   }
 
   useEffect(() => {
@@ -27,7 +28,6 @@ const Feeds = () => {
   const updateHandler = () => {
     setRefreshing(true)
     apiWrapper(getPost, success_func)
-    setRefreshing(false)
   }
 
 
